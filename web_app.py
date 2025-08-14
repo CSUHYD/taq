@@ -12,19 +12,34 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 
 class WebVideoSystem:
     def __init__(self, model="qwen2.5vl:32b", camera_id=0):
-        self.robot_service = RobotService(model)
+        # Load prompt configuration first
+        self.prompt_config = load_prompt_config()
+        self.language = self.prompt_config.get("language", "en")  # 从配置文件读取语言设置
+        
+        self.robot_service = RobotService(model, language=self.language)
         self.camera_id = camera_id
         self.cap = None
         self.is_running = False
-        self.current_status = "Ready"
+        self.current_status = "Ready" if self.language == "en" else "就绪"
         self.conversation_history = []
         
-        # Load prompt configuration
-        self.prompt_config = load_prompt_config()
         self.current_task = self.prompt_config.get("task_description", "general home assistance")
+        self.current_task_en = self.prompt_config.get("task_description_en", "general home assistance")
+        self.current_task_zh = self.prompt_config.get("task_description_zh", "通用家庭助理")
         
         # Initialize camera
         self.start_camera()
+    
+    def set_language(self, language):
+        """设置系统语言"""
+        if language not in ["en", "zh"]:
+            raise ValueError("Language must be 'en' or 'zh'")
+        self.language = language
+        self.robot_service.set_language(language)
+        # 更新当前状态的语言
+        if self.current_status == "Ready" or self.current_status == "就绪":
+            self.current_status = "Ready" if language == "en" else "就绪"
+            socketio.emit('status_update', {'status': self.current_status})
         
     def start_camera(self):
         """Start camera"""
@@ -60,7 +75,7 @@ class WebVideoSystem:
         """Capture frame and generate question"""
         try:
             # Update status
-            self.current_status = "Capturing image..."
+            self.current_status = "Capturing image..." if self.language == "en" else "正在捕获图像..."
             socketio.emit('status_update', {'status': self.current_status})
             
             frame = self.get_frame()
@@ -73,7 +88,7 @@ class WebVideoSystem:
             cv2.imwrite(filename, frame)
             
             # Update status
-            self.current_status = "Thinking..."
+            self.current_status = "Thinking..." if self.language == "en" else "思考中..."
             socketio.emit('status_update', {'status': self.current_status})
             
             print(f"Debug - Generating question for task: {self.current_task}")
@@ -103,7 +118,7 @@ class WebVideoSystem:
             self.conversation_history.append(robot_message)
             
             # Update status
-            self.current_status = "Ready"
+            self.current_status = "Ready" if self.language == "en" else "就绪"
             socketio.emit('status_update', {'status': self.current_status})
             
             return {
@@ -113,7 +128,7 @@ class WebVideoSystem:
             }
             
         except Exception as e:
-            self.current_status = "Error occurred"
+            self.current_status = "Error occurred" if self.language == "en" else "发生错误"
             socketio.emit('status_update', {'status': self.current_status})
             return {"error": str(e)}
     
@@ -139,7 +154,7 @@ class WebVideoSystem:
                 return {"error": "No previous robot question found"}
             
             # Update status
-            self.current_status = "Analyzing response..."
+            self.current_status = "Analyzing response..." if self.language == "en" else "分析回应中..."
             socketio.emit('status_update', {'status': self.current_status})
             
             # Analyze user response and generate robot reply
@@ -161,7 +176,7 @@ class WebVideoSystem:
             self.conversation_history.append(robot_response)
             
             # Update status
-            self.current_status = "Ready"
+            self.current_status = "Ready" if self.language == "en" else "就绪"
             socketio.emit('status_update', {'status': self.current_status})
             
             print(f"Debug - User response analysis:")
@@ -177,7 +192,7 @@ class WebVideoSystem:
             }
             
         except Exception as e:
-            self.current_status = "Error occurred"
+            self.current_status = "Error occurred" if self.language == "en" else "发生错误"
             socketio.emit('status_update', {'status': self.current_status})
             return {"error": str(e)}
     
@@ -236,9 +251,10 @@ def get_conversation():
 @app.route('/status', methods=['GET'])
 def get_status():
     """Get current status"""
+    current_task_display = video_system.current_task_zh if video_system.language == "zh" else video_system.current_task_en
     return jsonify({
         "status": video_system.current_status,
-        "task": video_system.current_task
+        "task": current_task_display
     })
 
 @app.route('/restart', methods=['POST'])
@@ -247,6 +263,18 @@ def restart_conversation():
     result = video_system.restart_conversation()
     socketio.emit('conversation_restarted', {'message': 'Conversation restarted'})
     return jsonify(result)
+
+@app.route('/set_language', methods=['POST'])
+def set_language():
+    """Set system language"""
+    data = request.get_json()
+    language = data.get('language', 'en')
+    
+    try:
+        video_system.set_language(language)
+        return jsonify({'success': True, 'language': language})
+    except ValueError as e:
+        return jsonify({'success': False, 'error': str(e)})
 
 @socketio.on('connect')
 def handle_connect():

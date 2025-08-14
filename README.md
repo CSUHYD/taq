@@ -1,15 +1,36 @@
-# Home Service Robot - Web Interface
+# Task-Adaptive Questioning (TAQ) System
 
-A web-based interface for the home service robot's video question system with real-time video streaming and interactive dialogue.
+An intelligent home service robot system that generates contextually relevant questions based on current tasks and visual scene analysis. The robot adapts its questioning strategy to specific household tasks while collaborating with human operators to execute physical actions.
 
-## Features
+English | [中文](README_zh.md)
 
-- **Real-time Video Streaming**: Live camera feed display in the browser
-- **Status Updates**: Real-time status updates (Ready, Thinking, Capturing, etc.)
-- **Interactive Dialogue**: Chat interface for robot questions and user responses
-- **Task-based Questions**: Robot generates questions based on configured tasks
-- **Structured Responses**: Robot provides reasoning and questions separately
-- **Conversation History**: Full conversation log with timestamps
+## Core Concept
+
+**Task-Adaptive Questioning** enables the robot to:
+- 🎯 Generate task-specific questions based on visual scene analysis
+- 🔄 Adapt questioning strategy as tasks progress
+- 🤝 Collaborate with human operators for physical task execution
+- 📚 Learn from conversation history to improve future interactions
+
+## Key Features
+
+### 🤖 Intelligent Questioning System
+- **Visual Scene Analysis**: Real-time camera feed analysis with VLM integration
+- **Task-Aware Questions**: Context-sensitive question generation based on current household task
+- **Adaptive Dialogue**: Questions evolve based on conversation history and user responses
+- **Reasoning Display**: Shows robot's analytical process behind each question
+
+### 🏠 Home Service Integration
+- **Operator Collaboration**: Clear instructions for human operators to execute physical actions
+- **Task Configuration**: JSON-based task and prompt management
+- **Session Management**: Persistent conversation history and context awareness
+- **Real-time Status**: Live updates during VLM processing and image capture
+
+### 🌐 Web Interface
+- **Live Video Stream**: Real-time camera feed with task status overlay
+- **Interactive Chat**: Seamless dialogue between user and robot
+- **Conversation History**: Complete interaction log with timestamps and reasoning
+- **Responsive Design**: Desktop and mobile-friendly interface
 
 ## Installation
 
@@ -27,28 +48,54 @@ pip install -r requirements.txt
 }
 ```
 
+## How Task-Adaptive Questioning Works
+
+### 1. **Task Context Setup**
+Configure the robot's current task in `config/prompt_config.json`:
+```json
+{
+  "task_description": "organize the kitchen counter"
+}
+```
+
+### 2. **Visual Scene Analysis**
+The robot captures video frames and analyzes them in the context of the current task, considering:
+- Objects and layout in the scene
+- Task requirements and constraints
+- Previous conversation context
+- User preferences from dialogue history
+
+### 3. **Adaptive Question Generation**
+Based on the analysis, the robot generates questions that:
+- Are specific to the current task context
+- Build upon previous conversation
+- Guide toward effective task completion
+- Consider user's preferred interaction style
+
+### 4. **Collaborative Execution**
+When users respond, the robot:
+- Understands user preferences and instructions
+- Generates clear operator instructions when physical actions are needed
+- Provides contextual follow-up questions
+- Adapts future questioning based on user feedback
+
 ## Usage
 
-1. Start the web application:
+1. Start the TAQ web application:
 ```bash
 python web_app.py
 ```
 
-2. Open your browser and navigate to:
-```
-http://localhost:5000
-```
+2. Access the interface at `http://localhost:5050`
 
-3. The interface will show:
-   - **Left Panel**: Live video feed with current task and status
-   - **Right Panel**: Conversation interface
+3. **Task-Adaptive Interaction Flow**:
+   - 📸 **Ask Question**: Robot analyzes current scene within task context
+   - 💬 **Respond**: User provides preferences or instructions  
+   - 🤖 **Robot Adapts**: System updates understanding and generates follow-up questions
+   - 📋 **Operator Instructions**: Clear guidance for physical task execution
+   - 🔄 **Continue**: Process repeats, adapting to evolving task context
 
-4. Click "📸 Ask Question" to:
-   - Capture current video frame
-   - Send to VLM for analysis
-   - Generate a task-specific question
-
-5. Respond to robot questions in the chat interface
+4. **View History**: Click "📋 History" to see complete task interaction log
 
 ## Interface Components
 
@@ -70,19 +117,38 @@ http://localhost:5000
 - 🟡 **Capturing**: Taking screenshot
 - 🔴 **Error**: System error occurred
 
-## Configuration
+## Task-Adaptive Configuration
 
-### Task Configuration
-Edit `config/prompt_config.json` to change the robot's task:
+### Task Adaptation Examples
+
+The system adapts its questioning approach based on the configured task:
+
+**Kitchen Organization Task**:
 ```json
 {
-  "task_description": "clean the kitchen",
-  "question_generation": {
-    "systext": "...",
-    "usertext": "..."
-  }
+  "task_description": "organize the kitchen counter"
 }
 ```
+- Questions focus on food safety, accessibility, and workflow
+- Considers cooking patterns and appliance usage
+- Adapts to user's cooking style preferences
+
+**Living Room Cleaning Task**:
+```json
+{
+  "task_description": "tidy up the living room"
+}
+```  
+- Questions about furniture arrangement and decoration
+- Considers family usage patterns and comfort
+- Adapts to aesthetic preferences and functionality
+
+**Workflow Adaptation**:
+The robot's questioning strategy evolves as tasks progress:
+1. **Initial Assessment**: Broad questions about preferences and priorities
+2. **Focused Inquiry**: Specific questions about challenging areas or items
+3. **Execution Guidance**: Detailed questions about implementation details
+4. **Quality Assurance**: Questions about satisfaction and adjustments
 
 ### Camera Settings
 Modify camera settings in `web_app.py`:
@@ -126,27 +192,58 @@ camera_id = 0  # Try 1, 2, etc. for other cameras
 - Increase frame delay in video streaming
 - Check system resources (CPU, memory)
 
-## File Structure
+## TAQ System Architecture
 
 ```
-taq/
-├── web_app.py              # Flask web application
-├── vlmCall_ollama.py       # VLM API integration
-├── video_question_system.py # Original CLI system
+taq/  # Task-Adaptive Questioning System
+├── web_app.py              # Web interface and video streaming
+├── robot_service.py        # Business logic and task adaptation
+├── vlmCall_ollama.py       # Basic VLM API integration
+├── video_question_system.py # CLI interface for TAQ
 ├── config/
-│   └── prompt_config.json  # Task and prompt configuration
+│   └── prompt_config.json  # Task-specific prompts and configuration
 ├── templates/
-│   └── index.html         # Web interface
+│   └── index.html         # Responsive web interface
+├── test_architecture.py   # Architecture validation tests
 ├── requirements.txt       # Python dependencies
-└── README.md             # This file
+└── README.md             # TAQ system documentation
 ```
 
-## Development
+### Architecture Principles
 
-To modify the interface:
-1. **Backend**: Edit `web_app.py` for API changes
-2. **Frontend**: Edit `templates/index.html` for UI changes
-3. **Prompts**: Edit `config/prompt_config.json` for VLM behavior
-4. **Styling**: Modify CSS in `index.html` for appearance changes
+**Layered Design**:
+- **API Layer** (`vlmCall_ollama.py`): Pure VLM API communication
+- **Business Logic** (`robot_service.py`): Task adaptation and question generation
+- **Application Layer** (`web_app.py`, `video_question_system.py`): User interfaces
 
-The application uses Flask-SocketIO for real-time communication and OpenCV for video processing.
+**Task Adaptation Core**:
+- JSON-based task and prompt configuration
+- Context-aware question generation
+- Conversation history integration
+- Operator collaboration protocols
+
+## Development & Customization
+
+### Extending Task-Adaptive Capabilities
+
+1. **New Task Types**: Add task-specific prompts in `config/prompt_config.json`
+2. **Question Strategies**: Modify business logic in `robot_service.py`
+3. **UI Enhancements**: Update web interface in `templates/index.html`
+4. **Integration**: Add new VLM capabilities via `vlmCall_ollama.py`
+
+### Task Adaptation Research
+
+The TAQ system provides a foundation for research in:
+- **Context-Aware Robotics**: How robots adapt behavior to specific tasks
+- **Human-Robot Collaboration**: Effective questioning strategies for task completion
+- **Conversational AI**: Dialogue systems that learn and adapt over time
+- **Vision-Language Integration**: Combining visual perception with natural language understanding
+
+### Example Applications
+
+- **Elderly Care**: Adaptive assistance based on individual needs and preferences
+- **Industrial Training**: Context-aware guidance for complex procedures
+- **Educational Robotics**: Personalized learning through adaptive questioning
+- **Smart Home Systems**: Intelligent assistance that learns household patterns
+
+The system demonstrates how robots can become more effective collaborators by asking the right questions at the right time, adapting their approach based on task context and user preferences.

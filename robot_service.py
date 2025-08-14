@@ -17,9 +17,16 @@ class ResponseAnalysis(BaseModel):
 class RobotService:
     """机器人业务逻辑服务"""
     
-    def __init__(self, model="qwen2.5vl:32b"):
+    def __init__(self, model="qwen2.5vl:32b", language="en"):
         self.vlm_api = VLMAPI(model)
         self.config = load_prompt_config()
+        self.language = language  # 默认英文，可选 "en" 或 "zh"
+    
+    def set_language(self, language):
+        """设置对话语言"""
+        if language not in ["en", "zh"]:
+            raise ValueError("Language must be 'en' or 'zh'")
+        self.language = language
     
     def _build_conversation_context(self, messages_history):
         """构建对话历史上下文"""
@@ -56,9 +63,14 @@ class RobotService:
         if not config_section:
             raise ValueError("question_generation configuration not found")
         
-        systext = config_section.get("systext", "")
-        usertext_template = config_section.get("usertext", "")
-        payload_options = config_section.get("payload_options", {})
+        # 根据语言选择对应的配置
+        lang_config = config_section.get(self.language, config_section.get("en", {}))
+        if not lang_config:
+            raise ValueError(f"Language '{self.language}' not found in question_generation configuration")
+        
+        systext = lang_config.get("systext", "")
+        usertext_template = lang_config.get("usertext", "")
+        payload_options = lang_config.get("payload_options", {})
         
         # 格式化用户文本
         usertext = usertext_template.format(task_description=task_description)
@@ -110,9 +122,14 @@ class RobotService:
         if not config_section:
             raise ValueError("response_analysis configuration not found")
         
-        systext = config_section.get("systext", "")
-        usertext_template = config_section.get("usertext", "")
-        payload_options = config_section.get("payload_options", {})
+        # 根据语言选择对应的配置
+        lang_config = config_section.get(self.language, config_section.get("en", {}))
+        if not lang_config:
+            raise ValueError(f"Language '{self.language}' not found in response_analysis configuration")
+        
+        systext = lang_config.get("systext", "")
+        usertext_template = lang_config.get("usertext", "")
+        payload_options = lang_config.get("payload_options", {})
         
         # 构建对话历史上下文
         conversation_context = self._build_conversation_context(messages_history)
@@ -142,11 +159,20 @@ class RobotService:
         except Exception as parse_error:
             print(f"Failed to parse response analysis: {parse_error}")
             print(f"Raw response: {raw_response}")
-            return ResponseAnalysis(
-                understanding=f"User said: {user_response}",
-                operator_instructions="",
-                robot_reply="I understand your response. Let me continue with the task."
-            )
+            
+            # 根据语言提供错误回复
+            if self.language == "zh":
+                return ResponseAnalysis(
+                    understanding=f"用户说: {user_response}",
+                    operator_instructions="",
+                    robot_reply="我理解您的回应。让我继续完成任务。"
+                )
+            else:
+                return ResponseAnalysis(
+                    understanding=f"User said: {user_response}",
+                    operator_instructions="",
+                    robot_reply="I understand your response. Let me continue with the task."
+                )
     
     def process_conversation_turn(self,
                                 user_response,
