@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Service Robot - Video Question System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            gap: 20px;
+            padding: 20px;
+            max-height: calc(100vh - 80px);
+        }
+
+        .video-section {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-container {
+            position: relative;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        #video-stream {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .status-bar {
+            background-color: #34495e;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .status-thinking {
+            background-color: #f39c12;
+            animation: pulse 1.5s infinite;
+        }
+
+        .status-error {
+            background-color: #e74c3c;
+        }
+
+        .status-ready {
+            background-color: #27ae60;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .chat-section {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .conversation {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #ecf0f1;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fafafa;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 90%;
+        }
+
+        .robot-message {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+        }
+
+        .user-message {
+            background-color: #f1f8e9;
+            border-left: 4px solid #4caf50;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .robot-response {
+            background-color: #fff3e0;
+            border-left: 4px solid #ff9800;
+        }
+
+        .action-needed {
+            background-color: #ffebee;
+            border: 1px solid #f44336;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .action-needed.active {
+            background-color: #e8f5e8;
+            border-color: #4caf50;
+        }
+
+        .operator-instructions {
+            background-color: #f3e5f5;
+            border: 1px solid #9c27b0;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .message-header {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        .reasoning {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: rgba(0,0,0,0.05);
+            border-radius: 5px;
+        }
+
+        .question {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .timestamp {
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 8px;
+        }
+
+        .response-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        #user-response {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        #user-response:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .btn-send {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .btn-send:hover {
+            background-color: #229954;
+        }
+
+        .btn-restart {
+            background-color: #e67e22;
+            color: white;
+        }
+
+        .btn-restart:hover {
+            background-color: #d35400;
+        }
+
+        .btn-history {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-history:hover {
+            background-color: #2980b9;
+        }
+
+        .task-info {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .task-label {
+            font-weight: bold;
+            color: #6c757d;
+        }
+
+        .task-description {
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        .empty-conversation {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            padding: 40px;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #2c3e50;
+        }
+
+        .history-message {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .history-robot {
+            background-color: #e3f2fd;
+            border-left-color: #2196f3;
+        }
+
+        .history-user {
+            background-color: #f1f8e9;
+            border-left-color: #4caf50;
+        }
+
+        .history-response {
+            background-color: #fff3e0;
+            border-left-color: #ff9800;
+        }
+
+        .history-timestamp {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+                padding: 10px;
+            }
+            
+            .video-section, .chat-section {
+                min-height: 300px;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 2% auto;
+                max-height: 90vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🤖 Home Service Robot - Video Question System</h1>
+    </div>
+
+    <div class="main-container">
+        <!-- Video Section -->
+        <div class="video-section">
+            <div class="task-info">
+                <div class="task-label">Current Task:</div>
+                <div class="task-description" id="current-task">Loading...</div>
+            </div>
+            
+            <div class="status-bar" id="status-bar">Ready</div>
+            
+            <div class="video-container">
+                <img id="video-stream" src="/video_feed" alt="Video Stream">
+            </div>
+            
+            <div class="controls">
+                <button class="btn btn-primary" id="capture-btn" onclick="captureAndAsk()">
+                    📸 Ask Question
+                </button>
+                <button class="btn btn-history" id="history-btn" onclick="toggleHistoryModal()">
+                    📋 History
+                </button>
+                <button class="btn btn-restart" id="restart-btn" onclick="restartConversation()">
+                    🔄 Restart
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Section -->
+        <div class="chat-section">
+            <div class="chat-title">💬 Conversation</div>
+            
+            <div class="conversation" id="conversation">
+                <div class="empty-conversation">
+                    Click "Ask Question" to start the conversation...
+                </div>
+            </div>
+            
+            <div class="response-area">
+                <input type="text" id="user-response" placeholder="Type your response here..." disabled>
+                <button class="btn btn-send" id="send-btn" onclick="sendResponse()" disabled>Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">📋 Conversation History</div>
+                <button class="close" onclick="closeHistoryModal()">&times;</button>
+            </div>
+            <div id="historyContent">
+                <div class="empty-conversation">Loading conversation history...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Socket.IO connection
+        const socket = io();
+        
+        let isProcessing = false;
+        let hasActiveQuestion = false;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStatus();
+            loadConversation();
+            
+            // Handle Enter key in response input
+            document.getElementById('user-response').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendResponse();
+                }
+            });
+        });
+
+        // Socket.IO event handlers
+        socket.on('status_update', function(data) {
+            updateStatus(data.status);
+        });
+
+        socket.on('conversation_restarted', function(data) {
+            const conversation = document.getElementById('conversation');
+            conversation.innerHTML = '<div class="empty-conversation">Conversation restarted. Click "Ask Question" to begin...</div>';
+            hasActiveQuestion = false;
+            updateButtonStates();
+            console.log(data.message);
+        });
+
+        // Update status display
+        function updateStatus(status) {
+            const statusBar = document.getElementById('status-bar');
+            statusBar.textContent = status;
+            
+            // Reset classes
+            statusBar.className = 'status-bar';
+            
+            // Add appropriate class based on status
+            if (status.includes('Thinking') || status.includes('Capturing')) {
+                statusBar.classList.add('status-thinking');
+                isProcessing = true;
+            } else if (status.includes('Error')) {
+                statusBar.classList.add('status-error');
+                isProcessing = false;
+            } else if (status === 'Ready') {
+                statusBar.classList.add('status-ready');
+                isProcessing = false;
+            }
+            
+            updateButtonStates();
+        }
+
+        // Load current status and task
+        function loadStatus() {
+            fetch('/status')
+                .then(response => response.json())
+                .then(data => {
+                    updateStatus(data.status);
+                    document.getElementById('current-task').textContent = data.task;
+                })
+                .catch(error => console.error('Error loading status:', error));
+        }
+
+        // Update button states
+        function updateButtonStates() {
+            const captureBtn = document.getElementById('capture-btn');
+            const responseInput = document.getElementById('user-response');
+            const sendBtn = document.getElementById('send-btn');
+            
+            captureBtn.disabled = isProcessing;
+            responseInput.disabled = !hasActiveQuestion || isProcessing;
+            sendBtn.disabled = !hasActiveQuestion || isProcessing;
+        }
+
+        // Capture frame and ask question
+        function captureAndAsk() {
+            if (isProcessing) return;
+            
+            isProcessing = true;
+            updateButtonStates();
+            
+            fetch('/capture_and_ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    addRobotMessage(data.reasoning, data.question);
+                    hasActiveQuestion = true;
+                } else {
+                    alert('Error: ' + (data.error || 'Unknown error'));
+                }
+                isProcessing = false;
+                updateButtonStates();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error capturing image');
+                isProcessing = false;
+                updateButtonStates();
+            });
+        }
+
+        // Send user response
+        function sendResponse() {
+            const responseInput = document.getElementById('user-response');
+            const responseText = responseInput.value.trim();
+            
+            if (!responseText || isProcessing) return;
+            
+            isProcessing = true;
+            updateButtonStates();
+            
+            fetch('/respond', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({response: responseText})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    addUserMessage(responseText);
+                    addRobotResponse(data);
+                    responseInput.value = '';
+                    hasActiveQuestion = false;
+                } else {
+                    alert('Error: ' + (data.error || 'Unknown error'));
+                }
+                isProcessing = false;
+                updateButtonStates();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error sending response');
+                isProcessing = false;
+                updateButtonStates();
+            });
+        }
+
+        // Add robot message to conversation
+        function addRobotMessage(reasoning, question) {
+            const conversation = document.getElementById('conversation');
+            
+            // Remove empty conversation message if it exists
+            const emptyMsg = conversation.querySelector('.empty-conversation');
+            if (emptyMsg) {
+                emptyMsg.remove();
+            }
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message robot-message';
+            
+            const now = new Date().toLocaleString();
+            
+            messageDiv.innerHTML = `
+                <div class="message-header">🤖 Robot</div>
+                ${reasoning ? `<div class="reasoning"><strong>Reasoning:</strong> ${reasoning}</div>` : ''}
+                <div class="question"><strong>Question:</strong> ${question}</div>
+                <div class="timestamp">${now}</div>
+            `;
+            
+            conversation.appendChild(messageDiv);
+            conversation.scrollTop = conversation.scrollHeight;
+        }
+
+        // Add user message to conversation
+        function addUserMessage(responseText) {
+            const conversation = document.getElementById('conversation');
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user-message';
+            
+            const now = new Date().toLocaleString();
+            
+            messageDiv.innerHTML = `
+                <div class="message-header">👤 You</div>
+                <div>${responseText}</div>
+                <div class="timestamp">${now}</div>
+            `;
+            
+            conversation.appendChild(messageDiv);
+            conversation.scrollTop = conversation.scrollHeight;
+        }
+
+        // Add robot response to conversation
+        function addRobotResponse(data) {
+            const conversation = document.getElementById('conversation');
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message robot-response';
+            
+            const now = new Date().toLocaleString();
+            
+            let operatorHtml = '';
+            if (data.operator_instructions && data.operator_instructions.trim()) {
+                operatorHtml = `
+                    <div class="operator-instructions">
+                        <strong>📋 Operator Instructions:</strong> ${data.operator_instructions}
+                    </div>
+                `;
+            }
+            
+            messageDiv.innerHTML = `
+                <div class="message-header">🤖 Robot Response</div>
+                <div><strong>Understanding:</strong> ${data.understanding}</div>
+                ${operatorHtml}
+                <div><strong>Reply:</strong> ${data.robot_reply}</div>
+                <div class="timestamp">${now}</div>
+            `;
+            
+            conversation.appendChild(messageDiv);
+            conversation.scrollTop = conversation.scrollHeight;
+        }
+
+        // Load conversation history
+        // Restart conversation
+        function restartConversation() {
+            if (!confirm('Are you sure you want to restart the conversation? This will clear all chat history.')) {
+                return;
+            }
+            
+            fetch('/restart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Conversation restarted successfully');
+                } else {
+                    alert('Error restarting conversation');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error restarting conversation');
+            });
+        }
+
+        function loadConversation() {
+            fetch('/conversation')
+                .then(response => response.json())
+                .then(data => {
+                    const conversation = document.getElementById('conversation');
+                    conversation.innerHTML = '';
+                    
+                    if (data.length === 0) {
+                        conversation.innerHTML = '<div class="empty-conversation">Click "Ask Question" to start the conversation...</div>';
+                        return;
+                    }
+                    
+                    data.forEach(message => {
+                        if (message.type === 'robot') {
+                            addRobotMessage(message.reasoning, message.question);
+                        } else if (message.type === 'user') {
+                            addUserMessage(message.response);
+                        } else if (message.type === 'robot_response') {
+                            addRobotResponse({
+                                understanding: message.understanding,
+                                operator_instructions: message.operator_instructions,
+                                robot_reply: message.robot_reply
+                            });
+                        }
+                    });
+                    
+                    // Check if there's an active question (last message is from robot)
+                    if (data.length > 0 && data[data.length - 1].type === 'robot') {
+                        hasActiveQuestion = true;
+                        updateButtonStates();
+                    }
+                })
+                .catch(error => console.error('Error loading conversation:', error));
+        }
+
+        // History modal functions
+        function toggleHistoryModal() {
+            const modal = document.getElementById('historyModal');
+            if (modal.style.display === 'block') {
+                closeHistoryModal();
+            } else {
+                showHistoryModal();
+            }
+        }
+
+        function showHistoryModal() {
+            const modal = document.getElementById('historyModal');
+            modal.style.display = 'block';
+            loadHistoryContent();
+        }
+
+        function closeHistoryModal() {
+            const modal = document.getElementById('historyModal');
+            modal.style.display = 'none';
+        }
+
+        function loadHistoryContent() {
+            const historyContent = document.getElementById('historyContent');
+            historyContent.innerHTML = '<div class="empty-conversation">Loading conversation history...</div>';
+            
+            fetch('/conversation')
+                .then(response => response.json())
+                .then(data => {
+                    historyContent.innerHTML = '';
+                    
+                    if (data.length === 0) {
+                        historyContent.innerHTML = '<div class="empty-conversation">No conversation history yet.</div>';
+                        return;
+                    }
+                    
+                    data.forEach(message => {
+                        const messageDiv = document.createElement('div');
+                        const timestamp = new Date(message.timestamp).toLocaleString();
+                        
+                        if (message.type === 'robot') {
+                            messageDiv.className = 'history-message history-robot';
+                            messageDiv.innerHTML = `
+                                <div><strong>🤖 Robot Question</strong></div>
+                                ${message.reasoning ? `<div><em>Reasoning:</em> ${message.reasoning}</div>` : ''}
+                                <div><strong>Question:</strong> ${message.question}</div>
+                                <div class="history-timestamp">${timestamp}</div>
+                            `;
+                        } else if (message.type === 'user') {
+                            messageDiv.className = 'history-message history-user';
+                            messageDiv.innerHTML = `
+                                <div><strong>👤 Your Response</strong></div>
+                                <div>${message.response}</div>
+                                <div class="history-timestamp">${timestamp}</div>
+                            `;
+                        } else if (message.type === 'robot_response') {
+                            messageDiv.className = 'history-message history-response';
+                            let operatorHtml = message.operator_instructions && message.operator_instructions.trim() ? 
+                                `<div><strong>📋 Operator:</strong> ${message.operator_instructions}</div>` : '';
+                            messageDiv.innerHTML = `
+                                <div><strong>🤖 Robot Response</strong></div>
+                                <div><strong>Understanding:</strong> ${message.understanding}</div>
+                                ${operatorHtml}
+                                <div><strong>Reply:</strong> ${message.robot_reply}</div>
+                                <div class="history-timestamp">${timestamp}</div>
+                            `;
+                        }
+                        
+                        historyContent.appendChild(messageDiv);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading history:', error);
+                    historyContent.innerHTML = '<div class="empty-conversation">Error loading conversation history.</div>';
+                });
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('historyModal');
+            if (event.target === modal) {
+                closeHistoryModal();
+            }
+        }
+    </script>
+</body>
+</html>

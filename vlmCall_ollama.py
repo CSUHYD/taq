@@ -7,9 +7,9 @@ from PIL import Image
 import io
 import time
 import os
-import json
-import requests
-import logging
+from pydantic import BaseModel
+
+# 基础API功能，不包含业务逻辑
 
 
 def get_data_engine_path():
@@ -158,6 +158,89 @@ class VLMAPI:
                 retry_count += 1
         
         return "Failed to generate completion after multiple attempts."
+    
+    def vlm_request_with_format(self,
+                               systext,
+                               usertext,
+                               format_schema=None,
+                               image_path1=None,
+                               image_path2=None,
+                               image_path3=None,
+                               options=None,
+                               retry_limit=3):
+        """
+        发送VLM请求到Ollama API，支持结构化输出格式
+        
+        Args:
+            systext: 系统提示文本
+            usertext: 用户提示文本
+            format_schema: JSON schema for structured output (optional)
+            image_path1/2/3: 图像路径（可选）
+            options: 请求选项字典 (temperature, num_predict等)
+            retry_limit: 重试次数
+        
+        Returns:
+            str: API响应内容
+        """
+        # 构建完整的提示文本
+        full_prompt = f"{systext}\n\n{usertext}"
+        
+        # 准备图像数据
+        images = []
+        if image_path1:
+            base64_image1 = self.encode_image(image_path1)
+            images.append(base64_image1)
+        if image_path2:
+            base64_image2 = self.encode_image(image_path2)
+            images.append(base64_image2)
+        if image_path3:
+            base64_image3 = self.encode_image(image_path3)
+            images.append(base64_image3)
+        
+        # 构建基础payload
+        payload = {
+            "model": self.model,
+            "prompt": full_prompt,
+            "stream": False,
+            "options": options or {}
+        }
+        
+        # 添加结构化输出格式
+        if format_schema:
+            payload["format"] = format_schema
+        
+        # 如果有图像，添加到payload中
+        if images:
+            payload["images"] = images
+        
+        retry_count = 0
+        while retry_count < retry_limit: 
+            try:
+                t1 = time.time()
+                print(f"********* start VLM call {self.model} *********")
+                
+                # 发送请求到Ollama API
+                response = requests.post(self.api_url, json=payload, timeout=60)
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    content = data.get("response", "")
+                    
+                    t2 = time.time() - t1
+                    print(f"********* end VLM call {self.model}: {t2:.2f} *********")
+                    
+                    return content
+                        
+                else:
+                    print(f"API request failed with status code: {response.status_code}")
+                    print(f"Response: {response.text}")
+                    
+            except Exception as ex:
+                print(f"Attempt VLM call {self.model} {retry_count + 1} failed: {ex}")
+                time.sleep(300)
+                retry_count += 1
+        
+        return "Failed to generate completion after multiple attempts."
 
 
 def save_data_to_json(json_data, base_path):
@@ -206,34 +289,7 @@ if __name__ == "__main__":
     prompt_config = PROMPT_CONFIG.get("vlm_call", {}).get("image_analysis", {})
     systext = prompt_config.get("systext", "You are a helpful assistant that can analyze images.")
     usertext = prompt_config.get("usertext", "请描述这张图片中你看到了什么？")
-    image_path1 = os.path.join(get_project_root(), "data/item_image/FloorPlan3_physics/FloorPlan3_physics_Apple_37512a22.png")
+    image_path1 = os.path.join(get_project_root(), "data/test.png")
     
     response = llmapi.vlm_request(systext, usertext, image_path1=image_path1)
     print("Response:", response)
-    
-    # 测试3: 两张图片请求
-    print("\n" + "=" * 50)
-    print("测试3: 两张图片请求")
-    print("=" * 50)
-    prompt_config = PROMPT_CONFIG.get("vlm_call", {}).get("multi_image_analysis", {})
-    systext = prompt_config.get("systext", "You are a helpful assistant that can analyze multiple images.")
-    usertext = prompt_config.get("usertext", "请比较这两张图片中的物体，它们有什么相同和不同之处？")
-    image_path1 = os.path.join(get_project_root(), "data/item_image/FloorPlan3_physics/FloorPlan3_physics_Apple_37512a22.png")
-    image_path2 = os.path.join(get_project_root(), "data/item_image/FloorPlan3_physics/FloorPlan3_physics_Bread_dca87251.png")
-    
-    response = llmapi.vlm_request(systext, usertext, image_path1=image_path1, image_path2=image_path2)
-    print("Response:", response)
-    
-    # 测试4: 三张图片请求
-    print("\n" + "=" * 50)
-    print("测试4: 三张图片请求")
-    print("=" * 50)
-    prompt_config = PROMPT_CONFIG.get("vlm_call", {}).get("three_image_analysis", {})
-    systext = prompt_config.get("systext", "You are a helpful assistant that can analyze multiple images.")
-    usertext = prompt_config.get("usertext", "请分析这三张图片中的厨房用品，它们分别是什么？")
-    image_path1 = os.path.join(get_project_root(), "data/item_image/FloorPlan3_physics/FloorPlan3_physics_Apple_37512a22.png")
-    image_path2 = os.path.join(get_project_root(), "data/item_image/FloorPlan3_physics/FloorPlan3_physics_Bread_dca87251.png")
-    image_path3 = os.path.join(get_project_root(), "data/item_image/FloorPlan3_physics/FloorPlan3_physics_Bowl_2813285c.png")
-    
-    response = llmapi.vlm_request(systext, usertext, image_path1=image_path1, image_path2=image_path2, image_path3=image_path3)
-    print("Response:", response) 

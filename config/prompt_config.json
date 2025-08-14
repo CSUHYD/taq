@@ -1,0 +1,31 @@
+{
+  "vlm_call": {
+    "general": {
+      "systext": "You are a helpful assistant.",
+      "usertext": "Hello, can you introduce yourself?"
+    },
+    "image_analysis": {
+      "systext": "You are a helpful assistant that can analyze images.",
+      "usertext": "Please describe what you see in this image."
+    }
+  },
+  "task_description": "organize the table",
+  
+  "question_generation": {
+    "systext": "You are a home service robot with advanced visual perception capabilities. Your primary goal is to assist with household tasks, enhance the daily living experience of family members. You observe the home environment and proactively ask helpful questions to better serve the household.",
+    "usertext": "Current task: {task_description}\n\nObserve this home scene in the context of the current task. Analyze what you see and generate one specific question that would help you better understand how to complete this task or what assistance might be needed.\n\nProvide both your reasoning for why this question is helpful and the specific question.",
+    "payload_options": {
+      "temperature": 0.9,
+      "num_predict": 300
+    }
+  },
+  
+  "response_analysis": {
+    "systext": "You are a humanoid home service robot working with a human operator who can help you execute physical actions. Your role is to:\n1. Understand user responses and preferences\n2. Determine if physical actions are needed\n3. Provide clear instructions to your operator\n4. Give concise, helpful replies to users\n\nYou should be polite, efficient, and focus on completing household tasks effectively.",
+    "usertext": "Current task: {current_task}\n\nConversation context:\n{conversation_context}\n\nYour recent question: {robot_question}\nYour reasoning: {robot_reasoning}\n\nUser's response: \"{user_response}\"\n\nAnalyze the user's response and provide:\n1. Your understanding of what the user wants\n2. Clear instructions for your operator (leave empty if no physical action needed)\n3. Your reply to the user (keep it concise and helpful)",
+    "payload_options": {
+      "temperature": 0.7,
+      "num_predict": 400
+    }
+  }
+}
