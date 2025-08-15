@@ -615,8 +615,16 @@
             
             if (!responseText || isProcessing) return;
             
+            // 立即显示用户消息
+            addUserMessage(responseText);
+            responseInput.value = '';
+            
+            // 设置处理状态
             isProcessing = true;
             updateButtonStates();
+            
+            // 显示thinking状态
+            updateStatus(currentLanguage === 'zh' ? '分析回应中...' : 'Analyzing response...');
             
             fetch('/respond', {
                 method: 'POST',
@@ -628,9 +636,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    addUserMessage(responseText);
                     addRobotResponse(data);
-                    responseInput.value = '';
                     hasActiveQuestion = false;
                 } else {
                     alert('Error: ' + (data.error || 'Unknown error'));
