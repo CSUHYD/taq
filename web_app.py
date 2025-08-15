@@ -1,7 +1,11 @@
 from flask import Flask, render_template, request, jsonify, Response
 from flask_socketio import SocketIO, emit
 import cv2
+import zmq
+import numpy as np
+import struct
 import time
+import threading
 from datetime import datetime
 from robot_service import RobotService
 from vlmCall_ollama import load_prompt_config
@@ -11,7 +15,7 @@ app.config['SECRET_KEY'] = 'your-secret-key'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 class WebVideoSystem:
-    def __init__(self, model="qwen2.5vl:32b", camera_id=0):
+    def __init__(self, model="qwen2.5vl:32b", camera_id=0, use_zmq_source=False, zmq_server_address="192.168.123.164", zmq_port=5555):
         # Load prompt configuration first
         self.prompt_config = load_prompt_config()
         self.language = self.prompt_config.get("language", "en")  # 从配置文件读取语言设置
@@ -27,8 +31,18 @@ class WebVideoSystem:
         self.current_task_en = self.prompt_config.get("task_description_en", "general home assistance")
         self.current_task_zh = self.prompt_config.get("task_description_zh", "通用家庭助理")
         
-        # Initialize camera
-        self.start_camera()
+        # Video source configuration
+        self.use_zmq_source = use_zmq_source
+        self.zmq_server_address = zmq_server_address
+        self.zmq_port = zmq_port
+        self.current_frame = None
+        self.frame_lock = threading.Lock()
+        
+        # Initialize video source
+        if self.use_zmq_source:
+            self.start_zmq_receiver()
+        else:
+            self.start_camera()
     
     def set_language(self, language):
         """设置系统语言"""
@@ -60,16 +74,71 @@ class WebVideoSystem:
             print(f"Failed to start camera: {e}")
             return False
     
+    def start_zmq_receiver(self):
+        """Start ZMQ image receiver in a separate thread"""
+        self.zmq_running = True
+        self.zmq_thread = threading.Thread(target=self._zmq_receive_loop, daemon=True)
+        self.zmq_thread.start()
+        print(f"ZMQ receiver started, connecting to {self.zmq_server_address}:{self.zmq_port}")
+    
+    def _zmq_receive_loop(self):
+        """ZMQ receive loop running in separate thread"""
+        try:
+            # Set up ZeroMQ context and socket
+            context = zmq.Context()
+            socket = context.socket(zmq.SUB)
+            socket.connect(f"tcp://{self.zmq_server_address}:{self.zmq_port}")
+            socket.setsockopt_string(zmq.SUBSCRIBE, "")
+            socket.setsockopt(zmq.RCVTIMEO, 1000)  # 1 second timeout
+            
+            print("ZMQ image receiver connected and waiting for data...")
+            
+            while self.zmq_running:
+                try:
+                    # Receive message
+                    message = socket.recv()
+                    
+                    # Decode image (assuming no header for simplicity, like image_client.py without Unit_Test)
+                    np_img = np.frombuffer(message, dtype=np.uint8)
+                    current_image = cv2.imdecode(np_img, cv2.IMREAD_COLOR)
+                    
+                    if current_image is not None:
+                        # Resize image like in image_client.py
+                        height, width = current_image.shape[:2]
+                        resized_image = cv2.resize(current_image, (width // 2, height // 2))
+                        
+                        # Update current frame thread-safely
+                        with self.frame_lock:
+                            self.current_frame = resized_image.copy()
+                    
+                except zmq.Again:
+                    # Timeout, continue loop
+                    continue
+                except Exception as e:
+                    print(f"Error in ZMQ receive loop: {e}")
+                    time.sleep(0.1)
+            
+            socket.close()
+            context.term()
+            print("ZMQ receiver stopped")
+            
+        except Exception as e:
+            print(f"Failed to start ZMQ receiver: {e}")
+    
     def get_frame(self):
-        """Get current camera frame"""
-        if not self.cap:
-            return None
-            
-        ret, frame = self.cap.read()
-        if not ret:
-            return None
-            
-        return frame
+        """Get current frame from either camera or ZMQ source"""
+        if self.use_zmq_source:
+            with self.frame_lock:
+                return self.current_frame.copy() if self.current_frame is not None else None
+        else:
+            if not self.cap:
+                return None
+                
+            ret, frame = self.cap.read()
+            if not ret:
+                return None
+                
+            return frame
     
     def capture_and_analyze(self):
         """Capture frame and generate question"""
@@ -204,7 +273,7 @@ class WebVideoSystem:
         return {"success": True, "message": "Conversation restarted"}
 
 # Global system instance
-video_system = WebVideoSystem()
+video_system = WebVideoSystem(use_zmq_source=False)  # Set to True to use ZMQ source from image_client.py
 
 @app.route('/')
 def index():
@@ -288,6 +357,26 @@ def handle_disconnect():
     print('Client disconnected')
 
 if __name__ == '__main__':
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Web Video Question System")
+    parser.add_argument("--use-zmq", action="store_true", help="Use ZMQ source from image_client.py instead of camera")
+    parser.add_argument("--zmq-server", default="192.168.123.164", help="ZMQ server address (default: 192.168.123.164)")
+    parser.add_argument("--zmq-port", type=int, default=5555, help="ZMQ server port (default: 5555)")
+    parser.add_argument("--camera-id", type=int, default=0, help="Camera ID for local camera (default: 0)")
+    
+    args = parser.parse_args()
+    
+    # Create video system with specified configuration
+    video_system = WebVideoSystem(
+        camera_id=args.camera_id,
+        use_zmq_source=args.use_zmq,
+        zmq_server_address=args.zmq_server,
+        zmq_port=args.zmq_port
+    )
+    
     print("Starting web application...")
     print(f"Current task: {video_system.current_task}")
+    print(f"Video source: {'ZMQ from ' + args.zmq_server + ':' + str(args.zmq_port) if args.use_zmq else 'Camera ' + str(args.camera_id)}")
+    
     socketio.run(app, host='0.0.0.0', port=5050, debug=True)
