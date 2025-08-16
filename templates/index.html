@@ -706,11 +706,11 @@
             
             const now = new Date().toLocaleString();
             
-            let operatorHtml = '';
-            if (data.operator_instructions && data.operator_instructions.trim()) {
-                operatorHtml = `
+            let operationHtml = '';
+            if (data.operation && data.operation.trim()) {
+                operationHtml = `
                     <div class="operator-instructions">
-                        <strong>📋 Operator Instructions:</strong> ${data.operator_instructions}
+                        <strong>🤖 Operation:</strong> ${data.operation}
                     </div>
                 `;
             }
@@ -718,7 +718,7 @@
             messageDiv.innerHTML = `
                 <div class="message-header">🤖 Robot Response</div>
                 <div><strong>Understanding:</strong> ${data.understanding}</div>
-                ${operatorHtml}
+                ${operationHtml}
                 <div><strong>Reply:</strong> ${data.robot_reply}</div>
                 <div class="timestamp">${now}</div>
             `;
@@ -830,7 +830,7 @@
                         } else if (message.type === 'robot_response') {
                             addRobotResponse({
                                 understanding: message.understanding,
-                                operator_instructions: message.operator_instructions,
+                                operation: message.operation,
                                 robot_reply: message.robot_reply
                             });
                         }
@@ -901,12 +901,12 @@
                             `;
                         } else if (message.type === 'robot_response') {
                             messageDiv.className = 'history-message history-response';
-                            let operatorHtml = message.operator_instructions && message.operator_instructions.trim() ? 
-                                `<div><strong>📋 Operator:</strong> ${message.operator_instructions}</div>` : '';
+                            let operationHtml = message.operation && message.operation.trim() ? 
+                                `<div><strong>🤖 Operation:</strong> ${message.operation}</div>` : '';
                             messageDiv.innerHTML = `
                                 <div><strong>🤖 Robot Response</strong></div>
                                 <div><strong>Understanding:</strong> ${message.understanding}</div>
-                                ${operatorHtml}
+                                ${operationHtml}
                                 <div><strong>Reply:</strong> ${message.robot_reply}</div>
                                 <div class="history-timestamp">${timestamp}</div>
                             `;

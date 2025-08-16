@@ -28,8 +28,8 @@ class WebVideoSystem:
         self.conversation_history = []
         
         self.current_task = self.prompt_config.get("task_description", "general home assistance")
-        self.current_task_en = self.prompt_config.get("task_description_en", "general home assistance")
-        self.current_task_zh = self.prompt_config.get("task_description_zh", "通用家庭助理")
+        self.current_task_en = self.current_task
+        self.current_task_zh = self.current_task
         
         # Video source configuration
         self.use_zmq_source = use_zmq_source
@@ -238,7 +238,7 @@ class WebVideoSystem:
             robot_response = {
                 "type": "robot_response",
                 "understanding": analysis.understanding,
-                "operator_instructions": analysis.operator_instructions,
+                "operation": analysis.operation,
                 "robot_reply": analysis.robot_reply,
                 "timestamp": datetime.now().isoformat()
             }
@@ -250,13 +250,13 @@ class WebVideoSystem:
             
             print(f"Debug - User response analysis:")
             print(f"Understanding: {analysis.understanding}")
-            print(f"Operator instructions: {analysis.operator_instructions}")
+            print(f"Operation: {analysis.operation}")
             print(f"Robot reply: {analysis.robot_reply}")
             
             return {
                 "success": True,
                 "understanding": analysis.understanding,
-                "operator_instructions": analysis.operator_instructions,
+                "operation": analysis.operation,
                 "robot_reply": analysis.robot_reply
             }
             

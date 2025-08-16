@@ -10,8 +10,8 @@ class VLMResponse(BaseModel):
 
 class ResponseAnalysis(BaseModel):
     understanding: str  # 对用户回答的理解
-    operator_instructions: str  # 给操作员的指令 (空字符串表示不需要动作)
-    robot_reply: str  # 机器人的回复
+    operation: str     # 具体操作描述 (空字符串表示不需要动作)
+    robot_reply: str   # 机器人的回复
 
 
 class RobotService:
@@ -164,13 +164,13 @@ class RobotService:
             if self.language == "zh":
                 return ResponseAnalysis(
                     understanding=f"用户说: {user_response}",
-                    operator_instructions="",
+                    operation="",
                     robot_reply="我理解您的回应。让我继续完成任务。"
                 )
             else:
                 return ResponseAnalysis(
                     understanding=f"User said: {user_response}",
-                    operator_instructions="",
+                    operation="",
                     robot_reply="I understand your response. Let me continue with the task."
                 )
     
