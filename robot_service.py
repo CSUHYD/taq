@@ -19,14 +19,16 @@ class RobotService:
     
     def __init__(self, model="qwen2.5vl:32b", language="en"):
         self.vlm_api = VLMAPI(model)
-        self.config = load_prompt_config()
         self.language = language  # 默认英文，可选 "en" 或 "zh"
+        self.config = load_prompt_config(language)
     
     def set_language(self, language):
         """设置对话语言"""
         if language not in ["en", "zh"]:
             raise ValueError("Language must be 'en' or 'zh'")
         self.language = language
+        # Reload config for new language
+        self.config = load_prompt_config(language)
     
     def _build_conversation_context(self, messages_history):
         """构建对话历史上下文"""
@@ -47,7 +49,8 @@ class RobotService:
     def generate_question(self, 
                          task_description, 
                          image_path=None, 
-                         messages_history=None):
+                         messages_history=None,
+                         strategy="user-preference-first"):
         """
         生成基于任务和图像的问题
         
@@ -55,18 +58,23 @@ class RobotService:
             task_description: 当前任务描述
             image_path: 图像路径
             messages_history: 对话历史
+            strategy: 提问策略 ("user-preference-first", "parallel-exploration", "direct-querying")
             
         Returns:
             VLMResponse: 包含推理和问题的响应
         """
-        config_section = self.config.get("question_generation", {})
-        if not config_section:
+        # 使用当前语言的配置和指定策略
+        question_config = self.config.get("question_generation", {})
+        if not question_config:
             raise ValueError("question_generation configuration not found")
         
-        # 根据语言选择对应的配置
-        lang_config = config_section.get(self.language, config_section.get("en", {}))
+        # 获取指定策略的配置
+        lang_config = question_config.get(strategy, {})
         if not lang_config:
-            raise ValueError(f"Language '{self.language}' not found in question_generation configuration")
+            # 如果指定策略不存在，使用默认策略
+            lang_config = question_config.get("user-preference-first", {})
+            if not lang_config:
+                raise ValueError(f"Strategy '{strategy}' not found and no default strategy available")
         
         systext = lang_config.get("systext", "")
         usertext_template = lang_config.get("usertext", "")
@@ -118,14 +126,10 @@ class RobotService:
         Returns:
             ResponseAnalysis: 包含理解、动作和回复的分析结果
         """
-        config_section = self.config.get("response_analysis", {})
-        if not config_section:
-            raise ValueError("response_analysis configuration not found")
-        
-        # 根据语言选择对应的配置
-        lang_config = config_section.get(self.language, config_section.get("en", {}))
+        # 使用当前语言的配置
+        lang_config = self.config.get("response_analysis", {})
         if not lang_config:
-            raise ValueError(f"Language '{self.language}' not found in response_analysis configuration")
+            raise ValueError("response_analysis configuration not found")
         
         systext = lang_config.get("systext", "")
         usertext_template = lang_config.get("usertext", "")

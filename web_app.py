@@ -15,10 +15,11 @@ app.config['SECRET_KEY'] = 'your-secret-key'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 class WebVideoSystem:
-    def __init__(self, model="qwen2.5vl:32b", camera_id=0, use_zmq_source=False, zmq_server_address="192.168.123.164", zmq_port=5555):
-        # Load prompt configuration first
-        self.prompt_config = load_prompt_config()
-        self.language = self.prompt_config.get("language", "en")  # 从配置文件读取语言设置
+    def __init__(self, model="qwen2.5vl:32b", camera_id=0, use_zmq_source=False, zmq_server_address="192.168.123.164", zmq_port=5555, language="en"):
+        # Initialize language first
+        self.language = language
+        # Load prompt configuration for the specified language
+        self.prompt_config = load_prompt_config(self.language)
         
         self.robot_service = RobotService(model, language=self.language)
         self.camera_id = camera_id
@@ -28,8 +29,14 @@ class WebVideoSystem:
         self.conversation_history = []
         
         self.current_task = self.prompt_config.get("task_description", "general home assistance")
-        self.current_task_en = self.current_task
-        self.current_task_zh = self.current_task
+        # Initialize both language versions
+        self.current_task_en = "general home assistance"
+        self.current_task_zh = "通用家庭助理"
+        # Load the correct version based on current language
+        if self.language == "en":
+            self.current_task_en = self.current_task
+        else:
+            self.current_task_zh = self.current_task
         
         # Video source configuration
         self.use_zmq_source = use_zmq_source
@@ -50,6 +57,12 @@ class WebVideoSystem:
             raise ValueError("Language must be 'en' or 'zh'")
         self.language = language
         self.robot_service.set_language(language)
+        # Reload prompt config for new language
+        self.prompt_config = load_prompt_config(language)
+        # Update task descriptions
+        self.current_task = self.prompt_config.get("task_description", "general home assistance")
+        self.current_task_en = self.prompt_config.get("task_description", "general home assistance") if language == "en" else self.current_task_en
+        self.current_task_zh = self.prompt_config.get("task_description", "通用家庭助理") if language == "zh" else self.current_task_zh
         # 更新当前状态的语言
         if self.current_status == "Ready" or self.current_status == "就绪":
             self.current_status = "Ready" if language == "en" else "就绪"
@@ -140,7 +153,7 @@ class WebVideoSystem:
                 
             return frame
     
-    def capture_and_analyze(self):
+    def capture_and_analyze(self, strategy="user-preference-first"):
         """Capture frame and generate question"""
         try:
             # Update status
@@ -166,7 +179,8 @@ class WebVideoSystem:
             vlm_response = self.robot_service.generate_question(
                 task_description=self.current_task,
                 image_path=filename,
-                messages_history=self.conversation_history
+                messages_history=self.conversation_history,
+                strategy=strategy
             )
             
             reasoning = vlm_response.reasoning
@@ -300,7 +314,9 @@ def video_feed():
 @app.route('/capture_and_ask', methods=['POST'])
 def capture_and_ask():
     """Capture frame and generate question"""
-    result = video_system.capture_and_analyze()
+    data = request.get_json() or {}
+    strategy = data.get('strategy', 'user-preference-first')
+    result = video_system.capture_and_analyze(strategy=strategy)
     return jsonify(result)
 
 @app.route('/respond', methods=['POST'])
@@ -367,16 +383,28 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
     
+    # Determine default language from existing config or use English
+    try:
+        default_config = load_prompt_config("en")  # Try English first
+        default_language = "en"
+    except:
+        try:
+            default_config = load_prompt_config("zh")  # Fall back to Chinese
+            default_language = "zh"
+        except:
+            default_language = "en"  # Final fallback
+    
     # Create video system with specified configuration
     video_system = WebVideoSystem(
         camera_id=args.camera_id,
         use_zmq_source=args.use_zmq,
         zmq_server_address=args.zmq_server,
-        zmq_port=args.zmq_port
+        zmq_port=args.zmq_port,
+        language=default_language
     )
     
     print("Starting web application...")
     print(f"Current task: {video_system.current_task}")
     print(f"Video source: {'ZMQ from ' + args.zmq_server + ':' + str(args.zmq_port) if args.use_zmq else 'Camera ' + str(args.camera_id)}")
     
-    socketio.run(app, host='0.0.0.0', port=5050, debug=False)
+    socketio.run(app, host='0.0.0.0', port=5050, debug=True)

@@ -24,15 +24,33 @@ def get_project_root():
     return os.path.dirname(data_engine_path)
 
 
-def load_prompt_config(config_path="config/prompt_config.json"):
-    """加载 prompt 配置文件"""
+def load_prompt_config(language="en"):
+    """Load prompt configuration from language-specific JSON file"""
+    config_path = f"config/prompt_config_{language}.json"
+    fallback_path = "config/prompt_config.json"  # Legacy fallback
+    
+    # Make paths absolute
     if not os.path.isabs(config_path):
         config_path = os.path.join(get_data_engine_path(), config_path)
+    if not os.path.isabs(fallback_path):
+        fallback_path = os.path.join(get_data_engine_path(), fallback_path)
+    
     try:
+        # Try language-specific config first
         with open(config_path, 'r', encoding='utf-8') as f:
             return json.load(f)
     except FileNotFoundError:
-        print(f"Warning: Config file {config_path} not found, using default config")
+        try:
+            # Fallback to legacy config
+            with open(fallback_path, 'r', encoding='utf-8') as f:
+                config = json.load(f)
+                print(f"Warning: Using legacy config {fallback_path}, consider migrating to {config_path}")
+                return config
+        except FileNotFoundError:
+            print(f"Warning: Neither {config_path} nor {fallback_path} found, using default configuration")
+            return {}
+    except json.JSONDecodeError:
+        print(f"Warning: Invalid JSON in {config_path}, using default configuration")
         return {}
 
 # 默认配置

@@ -92,9 +92,13 @@
             color: white;
             padding: 10px;
             border-radius: 5px;
-            margin-bottom: 15px;
-            text-align: center;
             font-weight: bold;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 999;
+            min-width: 200px;
+            text-align: center;
         }
 
         .status-thinking {
@@ -303,13 +307,19 @@
             background-color: #8e44ad;
         }
 
+        .task-strategy-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
         .task-info {
             background-color: #f8f9fa;
             border: 1px solid #e9ecef;
             border-radius: 5px;
             padding: 10px;
-            margin-bottom: 15px;
             text-align: center;
+            flex: 1;
         }
 
         .task-label {
@@ -320,6 +330,45 @@
         .task-description {
             color: #2c3e50;
             font-size: 1.1rem;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .strategy-selector {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            flex: 1;
+        }
+
+        .strategy-label {
+            font-weight: bold;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+
+        .strategy-dropdown {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            font-size: 14px;
+            color: #2c3e50;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        .strategy-dropdown:hover {
+            border-color: #3498db;
+        }
+
+        .strategy-dropdown:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
         }
 
         .empty-conversation {
@@ -439,15 +488,26 @@
         </div>
     </div>
 
+    <div class="status-bar" id="status-bar">Ready</div>
+
     <div class="main-container">
         <!-- Video Section -->
         <div class="video-section">
-            <div class="task-info">
-                <div class="task-label">Current Task:</div>
-                <div class="task-description" id="current-task">Loading...</div>
+            <div class="task-strategy-row">
+                <div class="task-info">
+                    <div class="task-label">Current Task:</div>
+                    <div class="task-description" id="current-task">Loading...</div>
+                </div>
+                
+                <div class="strategy-selector">
+                    <div class="strategy-label">Question Strategy:</div>
+                    <select id="question-strategy" class="strategy-dropdown">
+                        <option value="user-preference-first">User Preference First</option>
+                        <option value="parallel-exploration">Parallel Exploration</option>
+                        <option value="direct-querying">Direct Querying</option>
+                    </select>
+                </div>
             </div>
-            
-            <div class="status-bar" id="status-bar">Ready</div>
             
             <div class="video-container">
                 <img id="video-stream" src="/video_feed" alt="Video Stream">
@@ -583,11 +643,15 @@
             isProcessing = true;
             updateButtonStates();
             
+            // Get selected strategy
+            const selectedStrategy = document.getElementById('question-strategy').value;
+            
             fetch('/capture_and_ask', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                }
+                },
+                body: JSON.stringify({strategy: selectedStrategy})
             })
             .then(response => response.json())
             .then(data => {
@@ -792,6 +856,8 @@
             const chatTitle = document.querySelector('.chat-title');
             const responseInput = document.getElementById('user-response');
             const sendBtn = document.getElementById('send-btn');
+            const strategyLabel = document.querySelector('.strategy-label');
+            const strategyDropdown = document.getElementById('question-strategy');
             
             if (currentLanguage === 'zh') {
                 captureBtn.innerHTML = '📸 提问';
@@ -800,6 +866,14 @@
                 chatTitle.textContent = '💬 对话';
                 responseInput.placeholder = '在此输入您的回应...';
                 sendBtn.textContent = '发送';
+                strategyLabel.textContent = '提问策略:';
+                
+                // Update strategy dropdown options
+                strategyDropdown.innerHTML = `
+                    <option value="user-preference-first">用户偏好优先</option>
+                    <option value="parallel-exploration">并行探索</option>
+                    <option value="direct-querying">直接查询</option>
+                `;
             } else {
                 captureBtn.innerHTML = '📸 Ask Question';
                 historyBtn.innerHTML = '📋 History';
@@ -807,6 +881,14 @@
                 chatTitle.textContent = '💬 Conversation';
                 responseInput.placeholder = 'Type your response here...';
                 sendBtn.textContent = 'Send';
+                strategyLabel.textContent = 'Question Strategy:';
+                
+                // Update strategy dropdown options
+                strategyDropdown.innerHTML = `
+                    <option value="user-preference-first">User Preference First</option>
+                    <option value="parallel-exploration">Parallel Exploration</option>
+                    <option value="direct-querying">Direct Querying</option>
+                `;
             }
         }
 

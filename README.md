@@ -131,7 +131,7 @@ The system adapts its questioning approach based on the configured task:
 ```
 - Questions focus on food safety, accessibility, and workflow
 - Considers cooking patterns and appliance usage
-- Adapts to user's cooking style preferences
+- Adapts to user's cooking style preferencesclear
 
 **Living Room Cleaning Task**:
 ```json
