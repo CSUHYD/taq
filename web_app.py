@@ -273,7 +273,7 @@ class WebVideoSystem:
         return {"success": True, "message": "Conversation restarted"}
 
 # Global system instance
-video_system = WebVideoSystem(use_zmq_source=False)  # Set to True to use ZMQ source from image_client.py
+# video_system = WebVideoSystem(use_zmq_source=False)  # Set to True to use ZMQ source from image_client.py
 
 @app.route('/')
 def index():
@@ -379,4 +379,4 @@ if __name__ == '__main__':
     print(f"Current task: {video_system.current_task}")
     print(f"Video source: {'ZMQ from ' + args.zmq_server + ':' + str(args.zmq_port) if args.use_zmq else 'Camera ' + str(args.camera_id)}")
     
-    socketio.run(app, host='0.0.0.0', port=5050, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5050, debug=False)
