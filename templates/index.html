@@ -101,6 +101,21 @@
             text-align: center;
         }
 
+        .timer-bar {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+            min-width: 150px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+
         .status-thinking {
             background-color: #f39c12;
             animation: pulse 1.5s infinite;
@@ -119,6 +134,7 @@
             50% { opacity: 0.7; }
             100% { opacity: 1; }
         }
+
 
         .controls {
             display: flex;
@@ -371,6 +387,41 @@
             box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
         }
 
+        .session-input {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .session-label {
+            font-weight: bold;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+
+        .session-input-field {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #2c3e50;
+            transition: border-color 0.3s ease;
+        }
+
+        .session-input-field:hover {
+            border-color: #3498db;
+        }
+
+        .session-input-field:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
         .empty-conversation {
             text-align: center;
             color: #999;
@@ -489,6 +540,8 @@
     </div>
 
     <div class="status-bar" id="status-bar">Ready</div>
+    <div class="timer-bar" id="timer-bar">⏱️ 00:00:00</div>
+    
 
     <div class="main-container">
         <!-- Video Section -->
@@ -507,6 +560,11 @@
                         <option value="direct-querying">Direct Querying</option>
                     </select>
                 </div>
+            </div>
+            
+            <div class="session-input">
+                <div class="session-label">Session ID:</div>
+                <input type="text" id="session-id" class="session-input-field" placeholder="Enter session ID (optional)" maxlength="50">
             </div>
             
             <div class="video-container">
@@ -563,11 +621,62 @@
         let isProcessing = false;
         let hasActiveQuestion = false;
         let currentLanguage = 'en';
+        
+        // Timer variables
+        let timerStartTime = null;
+        let timerInterval = null;
+        let isTimerRunning = false;
+        
+
+        
+
+        // Timer functions
+        function startTimer() {
+            if (!isTimerRunning) {
+                timerStartTime = Date.now();
+                isTimerRunning = true;
+                timerInterval = setInterval(updateTimerDisplay, 1000);
+                console.log('Timer started');
+            }
+        }
+        
+        function resetTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+            timerStartTime = null;
+            isTimerRunning = false;
+            timerInterval = null;
+            updateTimerDisplay();
+            console.log('Timer reset');
+        }
+        
+        function updateTimerDisplay() {
+            const timerElement = document.getElementById('timer-bar');
+            if (!timerStartTime || !isTimerRunning) {
+                const defaultText = currentLanguage === 'zh' ? '⏱️ 00:00:00' : '⏱️ 00:00:00';
+                timerElement.textContent = defaultText;
+                return;
+            }
+            
+            const elapsed = Date.now() - timerStartTime;
+            const hours = Math.floor(elapsed / (1000 * 60 * 60));
+            const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+            
+            const formattedTime = 
+                String(hours).padStart(2, '0') + ':' +
+                String(minutes).padStart(2, '0') + ':' +
+                String(seconds).padStart(2, '0');
+            
+            timerElement.textContent = '⏱️ ' + formattedTime;
+        }
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
             loadStatus();
             loadConversation();
+            
             
             // Handle Enter key in response input
             document.getElementById('user-response').addEventListener('keypress', function(e) {
@@ -588,6 +697,10 @@
             conversation.innerHTML = '<div class="empty-conversation">Conversation restarted. Click "Ask Question" to begin...</div>';
             hasActiveQuestion = false;
             updateButtonStates();
+            
+            // Reset timer when conversation is restarted
+            resetTimer();
+            
             console.log(data.message);
         });
 
@@ -640,24 +753,36 @@
         function captureAndAsk() {
             if (isProcessing) return;
             
+            // Start timer on first question click
+            if (!isTimerRunning) {
+                startTimer();
+            }
+            
             isProcessing = true;
             updateButtonStates();
             
-            // Get selected strategy
+            
+            // Get selected strategy and session ID
             const selectedStrategy = document.getElementById('question-strategy').value;
+            const sessionId = document.getElementById('session-id').value.trim();
+            
             
             fetch('/capture_and_ask', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({strategy: selectedStrategy})
+                body: JSON.stringify({
+                    strategy: selectedStrategy,
+                    session_id: sessionId || null
+                })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     addRobotMessage(data.reasoning, data.question);
                     hasActiveQuestion = true;
+                    
                 } else {
                     alert('Error: ' + (data.error || 'Unknown error'));
                 }
@@ -678,6 +803,7 @@
             const responseText = responseInput.value.trim();
             
             if (!responseText || isProcessing) return;
+            
             
             // 立即显示用户消息
             addUserMessage(responseText);
@@ -701,7 +827,9 @@
             .then(data => {
                 if (data.success) {
                     addRobotResponse(data);
-                    hasActiveQuestion = false;
+                    // Keep hasActiveQuestion = true to allow continued conversation
+                    hasActiveQuestion = true;
+                    
                 } else {
                     alert('Error: ' + (data.error || 'Unknown error'));
                 }
@@ -797,6 +925,7 @@
                 return;
             }
             
+            
             fetch('/restart', {
                 method: 'POST',
                 headers: {
@@ -858,6 +987,11 @@
             const sendBtn = document.getElementById('send-btn');
             const strategyLabel = document.querySelector('.strategy-label');
             const strategyDropdown = document.getElementById('question-strategy');
+            const sessionLabel = document.querySelector('.session-label');
+            const sessionInput = document.getElementById('session-id');
+            
+            // Save the currently selected strategy
+            const currentSelectedStrategy = strategyDropdown.value;
             
             if (currentLanguage === 'zh') {
                 captureBtn.innerHTML = '📸 提问';
@@ -867,6 +1001,8 @@
                 responseInput.placeholder = '在此输入您的回应...';
                 sendBtn.textContent = '发送';
                 strategyLabel.textContent = '提问策略:';
+                sessionLabel.textContent = '会话ID:';
+                sessionInput.placeholder = '输入会话ID（可选）';
                 
                 // Update strategy dropdown options
                 strategyDropdown.innerHTML = `
@@ -882,6 +1018,8 @@
                 responseInput.placeholder = 'Type your response here...';
                 sendBtn.textContent = 'Send';
                 strategyLabel.textContent = 'Question Strategy:';
+                sessionLabel.textContent = 'Session ID:';
+                sessionInput.placeholder = 'Enter session ID (optional)';
                 
                 // Update strategy dropdown options
                 strategyDropdown.innerHTML = `

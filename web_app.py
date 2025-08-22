@@ -50,6 +50,12 @@ class WebVideoSystem:
             self.start_zmq_receiver()
         else:
             self.start_camera()
+        
+        # Start initial logging session
+        task_desc = self.current_task_zh if self.language == "zh" else self.current_task_en
+        session_id = self.robot_service.start_logging_session(task_desc)
+        self.robot_service.logger.current_custom_session_id = None
+        print(f"Started initial logging session: {session_id}")
     
     def set_language(self, language):
         """设置系统语言"""
@@ -153,7 +159,7 @@ class WebVideoSystem:
                 
             return frame
     
-    def capture_and_analyze(self, strategy="user-preference-first"):
+    def capture_and_analyze(self, strategy="user-preference-first", session_id=None):
         """Capture frame and generate question"""
         try:
             # Update status
@@ -172,6 +178,28 @@ class WebVideoSystem:
             # Update status
             self.current_status = "Thinking..." if self.language == "en" else "思考中..."
             socketio.emit('status_update', {'status': self.current_status})
+            
+            # Handle session_id changes
+            current_session = self.robot_service.logger.current_session
+            if session_id:
+                # Check if we need to start a new session with custom ID
+                current_custom_id = getattr(self.robot_service.logger, 'current_custom_session_id', None) if current_session else None
+                if not current_session or current_custom_id != session_id:
+                    # End current session and start new one
+                    if current_session:
+                        ended_session = self.robot_service.end_logging_session()
+                        print(f"Ended session due to session_id change: {ended_session}")
+                    
+                    task_desc = self.current_task_zh if self.language == "zh" else self.current_task_en
+                    new_session = self.robot_service.start_logging_session(task_desc, session_id)
+                    self.robot_service.logger.current_custom_session_id = session_id
+                    print(f"Started new session with custom ID: {new_session}")
+            elif not current_session:
+                # Start auto session if no session exists
+                task_desc = self.current_task_zh if self.language == "zh" else self.current_task_en
+                new_session = self.robot_service.start_logging_session(task_desc)
+                self.robot_service.logger.current_custom_session_id = None
+                print(f"Started auto session: {new_session}")
             
             print(f"Debug - Generating question for task: {self.current_task}")
             
@@ -281,6 +309,17 @@ class WebVideoSystem:
     
     def restart_conversation(self):
         """Clear conversation history and restart"""
+        # End current logging session if exists
+        if hasattr(self.robot_service, 'logger') and self.robot_service.logger.current_session:
+            session_id = self.robot_service.end_logging_session()
+            print(f"Ended logging session: {session_id}")
+        
+        # Start new logging session (auto session on restart)
+        task_desc = self.current_task_zh if self.language == "zh" else self.current_task_en
+        session_id = self.robot_service.start_logging_session(task_desc)
+        self.robot_service.logger.current_custom_session_id = None
+        print(f"Started new logging session: {session_id}")
+        
         self.conversation_history = []
         self.current_status = "Ready"
         print("Conversation history cleared")
@@ -316,7 +355,8 @@ def capture_and_ask():
     """Capture frame and generate question"""
     data = request.get_json() or {}
     strategy = data.get('strategy', 'user-preference-first')
-    result = video_system.capture_and_analyze(strategy=strategy)
+    session_id = data.get('session_id')
+    result = video_system.capture_and_analyze(strategy=strategy, session_id=session_id)
     return jsonify(result)
 
 @app.route('/respond', methods=['POST'])
@@ -341,6 +381,24 @@ def get_status():
         "status": video_system.current_status,
         "task": current_task_display
     })
+
+@app.route('/logging_status', methods=['GET'])
+def get_logging_status():
+    """Get current logging session status"""
+    summary = video_system.robot_service.get_session_summary()
+    return jsonify({'logging_session': summary})
+
+@app.route('/log_timing', methods=['POST'])
+def log_timing():
+    """Log timing data from frontend"""
+    data = request.get_json() or {}
+    timing_data = data.get('timing_data', {})
+    
+    try:
+        video_system.robot_service.log_timing_data(timing_data)
+        return jsonify({'success': True})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
 
 @app.route('/restart', methods=['POST'])
 def restart_conversation():
@@ -407,4 +465,4 @@ if __name__ == '__main__':
     print(f"Current task: {video_system.current_task}")
     print(f"Video source: {'ZMQ from ' + args.zmq_server + ':' + str(args.zmq_port) if args.use_zmq else 'Camera ' + str(args.camera_id)}")
     
-    socketio.run(app, host='0.0.0.0', port=5050, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5050, debug=False, allow_unsafe_werkzeug=True)
