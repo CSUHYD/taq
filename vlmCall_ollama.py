@@ -24,24 +24,21 @@ def get_project_root():
     return os.path.dirname(data_engine_path)
 
 
-def load_prompt_config(language="en"):
-    """Load prompt configuration from language-specific JSON file"""
-    config_path = f"config/prompt_config_{language}.json"
+def load_prompt_config():
+    """Load English prompt configuration only."""
+    config_path = "config/prompt_config_en.json"
     fallback_path = "config/prompt_config.json"  # Legacy fallback
-    
-    # Make paths absolute
+
     if not os.path.isabs(config_path):
         config_path = os.path.join(get_data_engine_path(), config_path)
     if not os.path.isabs(fallback_path):
         fallback_path = os.path.join(get_data_engine_path(), fallback_path)
-    
+
     try:
-        # Try language-specific config first
         with open(config_path, 'r', encoding='utf-8') as f:
             return json.load(f)
     except FileNotFoundError:
         try:
-            # Fallback to legacy config
             with open(fallback_path, 'r', encoding='utf-8') as f:
                 config = json.load(f)
                 print(f"Warning: Using legacy config {fallback_path}, consider migrating to {config_path}")

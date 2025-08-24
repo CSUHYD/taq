@@ -532,11 +532,7 @@
 <body>
     <div class="header">
         <h1>🤖 Home Service Robot - Video Question System</h1>
-        <div class="language-toggle">
-            <button class="btn btn-language-small" id="language-btn" onclick="toggleLanguage()">
-                中文/EN
-            </button>
-        </div>
+        <!-- Language toggle removed for English-only build -->
     </div>
 
     <div class="status-bar" id="status-bar">Ready</div>
@@ -620,7 +616,7 @@
         
         let isProcessing = false;
         let hasActiveQuestion = false;
-        let currentLanguage = 'en';
+        // English-only UI
         
         // Timer variables
         let timerStartTime = null;
@@ -654,8 +650,7 @@
         function updateTimerDisplay() {
             const timerElement = document.getElementById('timer-bar');
             if (!timerStartTime || !isTimerRunning) {
-                const defaultText = currentLanguage === 'zh' ? '⏱️ 00:00:00' : '⏱️ 00:00:00';
-                timerElement.textContent = defaultText;
+                timerElement.textContent = '⏱️ 00:00:00';
                 return;
             }
             
@@ -813,8 +808,8 @@
             isProcessing = true;
             updateButtonStates();
             
-            // 显示thinking状态
-            updateStatus(currentLanguage === 'zh' ? '分析回应中...' : 'Analyzing response...');
+            // Show thinking status
+            updateStatus('Analyzing response...');
             
             fetch('/respond', {
                 method: 'POST',
@@ -946,89 +941,7 @@
             });
         }
 
-        // Toggle language between English and Chinese
-        function toggleLanguage() {
-            const newLanguage = currentLanguage === 'en' ? 'zh' : 'en';
-            
-            fetch('/set_language', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({language: newLanguage})
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    currentLanguage = newLanguage;
-                    console.log(`Language changed to: ${newLanguage}`);
-                    
-                    // Update UI text based on language
-                    updateUILanguage();
-                    
-                    // Reload conversation to reflect language change in future interactions
-                    loadConversation();
-                } else {
-                    alert('Error changing language: ' + (data.error || 'Unknown error'));
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error changing language');
-            });
-        }
-
-        function updateUILanguage() {
-            const captureBtn = document.getElementById('capture-btn');
-            const historyBtn = document.getElementById('history-btn');
-            const restartBtn = document.getElementById('restart-btn');
-            const chatTitle = document.querySelector('.chat-title');
-            const responseInput = document.getElementById('user-response');
-            const sendBtn = document.getElementById('send-btn');
-            const strategyLabel = document.querySelector('.strategy-label');
-            const strategyDropdown = document.getElementById('question-strategy');
-            const sessionLabel = document.querySelector('.session-label');
-            const sessionInput = document.getElementById('session-id');
-            
-            // Save the currently selected strategy
-            const currentSelectedStrategy = strategyDropdown.value;
-            
-            if (currentLanguage === 'zh') {
-                captureBtn.innerHTML = '📸 提问';
-                historyBtn.innerHTML = '📋 历史';
-                restartBtn.innerHTML = '🔄 重启';
-                chatTitle.textContent = '💬 对话';
-                responseInput.placeholder = '在此输入您的回应...';
-                sendBtn.textContent = '发送';
-                strategyLabel.textContent = '提问策略:';
-                sessionLabel.textContent = '会话ID:';
-                sessionInput.placeholder = '输入会话ID（可选）';
-                
-                // Update strategy dropdown options
-                strategyDropdown.innerHTML = `
-                    <option value="user-preference-first">用户偏好优先</option>
-                    <option value="parallel-exploration">并行探索</option>
-                    <option value="direct-querying">直接查询</option>
-                `;
-            } else {
-                captureBtn.innerHTML = '📸 Ask Question';
-                historyBtn.innerHTML = '📋 History';
-                restartBtn.innerHTML = '🔄 Restart';
-                chatTitle.textContent = '💬 Conversation';
-                responseInput.placeholder = 'Type your response here...';
-                sendBtn.textContent = 'Send';
-                strategyLabel.textContent = 'Question Strategy:';
-                sessionLabel.textContent = 'Session ID:';
-                sessionInput.placeholder = 'Enter session ID (optional)';
-                
-                // Update strategy dropdown options
-                strategyDropdown.innerHTML = `
-                    <option value="user-preference-first">User Preference First</option>
-                    <option value="parallel-exploration">Parallel Exploration</option>
-                    <option value="direct-querying">Direct Querying</option>
-                `;
-            }
-        }
+        // Language toggle removed
 
         function loadConversation() {
             fetch('/conversation')

@@ -2,7 +2,7 @@
 
 An intelligent home service robot system that generates contextually relevant questions based on current tasks and visual scene analysis. The robot adapts its questioning strategy to specific household tasks while collaborating with human operators to execute physical actions.
 
-English | [中文](README_zh.md)
+English
 
 ## Core Concept
 

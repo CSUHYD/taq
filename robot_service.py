@@ -18,6 +18,17 @@ class ResponseAnalysis(BaseModel):
     robot_reply: str   # 机器人的回复
 
 
+class DesktopItem(BaseModel):
+    name: str
+    count: int | None = None
+    attributes: str | None = None
+
+
+class DesktopScan(BaseModel):
+    items: list[DesktopItem]
+    summary: str | None = None
+
+
 class ExperimentLogger:
     """实验日志记录器"""
     
@@ -179,21 +190,12 @@ class ExperimentLogger:
 
 
 class RobotService:
-    """机器人业务逻辑服务"""
-    
-    def __init__(self, model="qwen2.5vl:32b", language="en"):
+    """机器人业务逻辑服务（English only）"""
+
+    def __init__(self, model="qwen2.5vl:32b"):
         self.vlm_api = VLMAPI(model)
-        self.language = language  # 默认英文，可选 "en" 或 "zh"
-        self.config = load_prompt_config(language)
+        self.config = load_prompt_config()
         self.logger = ExperimentLogger()
-    
-    def set_language(self, language):
-        """设置对话语言"""
-        if language not in ["en", "zh"]:
-            raise ValueError("Language must be 'en' or 'zh'")
-        self.language = language
-        # Reload config for new language
-        self.config = load_prompt_config(language)
     
     def _build_conversation_context(self, messages_history):
         """构建对话历史上下文"""
@@ -228,22 +230,21 @@ class RobotService:
         Returns:
             VLMResponse: 包含推理和问题的响应
         """
-        # 使用当前语言的配置和指定策略
+        # Use config and specified strategy (English only)
         question_config = self.config.get("question_generation", {})
         if not question_config:
             raise ValueError("question_generation configuration not found")
         
-        # 获取指定策略的配置
-        lang_config = question_config.get(strategy, {})
-        if not lang_config:
-            # 如果指定策略不存在，使用默认策略
-            lang_config = question_config.get("user-preference-first", {})
-            if not lang_config:
+        # Get strategy config
+        strat_config = question_config.get(strategy, {})
+        if not strat_config:
+            strat_config = question_config.get("user-preference-first", {})
+            if not strat_config:
                 raise ValueError(f"Strategy '{strategy}' not found and no default strategy available")
-        
-        systext = lang_config.get("systext", "")
-        usertext_template = lang_config.get("usertext", "")
-        payload_options = lang_config.get("payload_options", {})
+
+        systext = strat_config.get("systext", "")
+        usertext_template = strat_config.get("usertext", "")
+        payload_options = strat_config.get("payload_options", {})
         
         # 构建对话历史上下文
         conversation_context = self._build_conversation_context(messages_history)
@@ -255,7 +256,7 @@ class RobotService:
         )
         
         # 调用基础API
-        raw_response = self.vlm_api.vlm_request_with_format(
+        raw_question = self.vlm_api.vlm_request_with_format(
             systext=systext,
             usertext=usertext,
             format_schema=VLMResponse.model_json_schema(),
@@ -265,7 +266,7 @@ class RobotService:
         
         # 解析响应
         try:
-            parsed_response = VLMResponse.model_validate_json(raw_response)
+            parsed_response = VLMResponse.model_validate_json(raw_question)
             print(f"Question generation successful")
             
             # 记录问题生成日志
@@ -279,8 +280,8 @@ class RobotService:
             return parsed_response
         except Exception as parse_error:
             print(f"Failed to parse question response: {parse_error}")
-            print(f"Raw response: {raw_response}")
-            fallback_response = VLMResponse(reasoning="", question=raw_response)
+            print(f"Raw response: {raw_question}")
+            fallback_response = VLMResponse(reasoning="", question=raw_question)
             
             # 记录问题生成日志（即使解析失败）
             self.logger.log_question_generation(
@@ -311,14 +312,14 @@ class RobotService:
         Returns:
             ResponseAnalysis: 包含理解、动作和回复的分析结果
         """
-        # 使用当前语言的配置
-        lang_config = self.config.get("response_analysis", {})
-        if not lang_config:
+        # English config
+        ra_config = self.config.get("response_analysis", {})
+        if not ra_config:
             raise ValueError("response_analysis configuration not found")
-        
-        systext = lang_config.get("systext", "")
-        usertext_template = lang_config.get("usertext", "")
-        payload_options = lang_config.get("payload_options", {})
+
+        systext = ra_config.get("systext", "")
+        usertext_template = ra_config.get("usertext", "")
+        payload_options = ra_config.get("payload_options", {})
         
         # 构建对话历史上下文
         conversation_context = self._build_conversation_context(messages_history)
@@ -353,19 +354,12 @@ class RobotService:
             print(f"Failed to parse response analysis: {parse_error}")
             print(f"Raw response: {raw_response}")
             
-            # 根据语言提供错误回复
-            if self.language == "zh":
-                fallback_response = ResponseAnalysis(
-                    understanding=f"用户说: {user_response}",
-                    operation="",
-                    robot_reply="我理解您的回应。让我继续完成任务。"
-                )
-            else:
-                fallback_response = ResponseAnalysis(
-                    understanding=f"User said: {user_response}",
-                    operation="",
-                    robot_reply="I understand your response. Let me continue with the task."
-                )
+            # English-only fallback
+            fallback_response = ResponseAnalysis(
+                understanding=f"User said: {user_response}",
+                operation="",
+                robot_reply="I understand your response. Let me continue with the task."
+            )
             
             # 记录用户回应日志（即使解析失败）
             self.logger.log_user_response(user_response, fallback_response)
@@ -396,10 +390,40 @@ class RobotService:
             current_task=current_task,
             messages_history=conversation_history
         )
+
+    def enumerate_desktop_items(self, image_path):
+        """Enumerate visible desktop items (English only)."""
+        if not image_path:
+            return None
+
+        systext = (
+            "You are a vision assistant. Identify only items visible on a desk/table surface."
+            " Return concise object names and optional counts. Do not hallucinate."
+        )
+        usertext = (
+            "Analyze the image and list distinct desktop items."
+            " Group similar items and provide counts when clear; omit if unsure."
+            " Use short nouns."
+        )
+
+        try:
+            raw = self.vlm_api.vlm_request_with_format(
+                systext=systext,
+                usertext=usertext,
+                format_schema=DesktopScan.model_json_schema(),
+                image_path1=image_path,
+                options={"temperature": 0.2, "num_predict": 300}
+            )
+            parsed = DesktopScan.model_validate_json(raw)
+            return parsed
+        except Exception as e:
+            print(f"Desktop item enumeration parse failed: {e}")
+            print(f"Raw response: {raw if 'raw' in locals() else ''}")
+            return None
     
     def start_logging_session(self, task_description, custom_session_id=None):
-        """开始日志记录会话"""
-        return self.logger.start_session(task_description, self.language, custom_session_id)
+        """开始日志记录会话（English only）"""
+        return self.logger.start_session(task_description, "en", custom_session_id)
     
     def end_logging_session(self):
         """结束日志记录会话"""

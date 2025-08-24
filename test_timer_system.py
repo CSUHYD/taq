@@ -14,7 +14,7 @@ def test_timer_logging_system():
     print("=" * 50)
     
     # Initialize robot service
-    robot_service = RobotService(language="en")
+    robot_service = RobotService()
     
     # Test 1: Start logging session with custom ID
     print("Test 1: Starting session with custom ID...")

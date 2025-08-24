@@ -15,28 +15,18 @@ app.config['SECRET_KEY'] = 'your-secret-key'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 class WebVideoSystem:
-    def __init__(self, model="qwen2.5vl:32b", camera_id=0, use_zmq_source=False, zmq_server_address="192.168.123.164", zmq_port=5555, language="en"):
-        # Initialize language first
-        self.language = language
-        # Load prompt configuration for the specified language
-        self.prompt_config = load_prompt_config(self.language)
+    def __init__(self, model="qwen2.5vl:32b", camera_id=0, use_zmq_source=False, zmq_server_address="192.168.123.164", zmq_port=5555):
+        # Load prompt configuration (English only)
+        self.prompt_config = load_prompt_config()
         
-        self.robot_service = RobotService(model, language=self.language)
+        self.robot_service = RobotService(model)
         self.camera_id = camera_id
         self.cap = None
         self.is_running = False
-        self.current_status = "Ready" if self.language == "en" else "就绪"
+        self.current_status = "Ready"
         self.conversation_history = []
         
         self.current_task = self.prompt_config.get("task_description", "general home assistance")
-        # Initialize both language versions
-        self.current_task_en = "general home assistance"
-        self.current_task_zh = "通用家庭助理"
-        # Load the correct version based on current language
-        if self.language == "en":
-            self.current_task_en = self.current_task
-        else:
-            self.current_task_zh = self.current_task
         
         # Video source configuration
         self.use_zmq_source = use_zmq_source
@@ -52,27 +42,9 @@ class WebVideoSystem:
             self.start_camera()
         
         # Start initial logging session
-        task_desc = self.current_task_zh if self.language == "zh" else self.current_task_en
-        session_id = self.robot_service.start_logging_session(task_desc)
+        session_id = self.robot_service.start_logging_session(self.current_task)
         self.robot_service.logger.current_custom_session_id = None
         print(f"Started initial logging session: {session_id}")
-    
-    def set_language(self, language):
-        """设置系统语言"""
-        if language not in ["en", "zh"]:
-            raise ValueError("Language must be 'en' or 'zh'")
-        self.language = language
-        self.robot_service.set_language(language)
-        # Reload prompt config for new language
-        self.prompt_config = load_prompt_config(language)
-        # Update task descriptions
-        self.current_task = self.prompt_config.get("task_description", "general home assistance")
-        self.current_task_en = self.prompt_config.get("task_description", "general home assistance") if language == "en" else self.current_task_en
-        self.current_task_zh = self.prompt_config.get("task_description", "通用家庭助理") if language == "zh" else self.current_task_zh
-        # 更新当前状态的语言
-        if self.current_status == "Ready" or self.current_status == "就绪":
-            self.current_status = "Ready" if language == "en" else "就绪"
-            socketio.emit('status_update', {'status': self.current_status})
         
     def start_camera(self):
         """Start camera"""
@@ -163,7 +135,7 @@ class WebVideoSystem:
         """Capture frame and generate question"""
         try:
             # Update status
-            self.current_status = "Capturing image..." if self.language == "en" else "正在捕获图像..."
+            self.current_status = "Capturing image..."
             socketio.emit('status_update', {'status': self.current_status})
             
             frame = self.get_frame()
@@ -174,9 +146,22 @@ class WebVideoSystem:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"captured_frames/web_frame_{timestamp}.jpg"
             cv2.imwrite(filename, frame)
-            
+
+            # Step 1: Enumerate desktop items and print formatted result to console (English only)
+            scan = self.robot_service.enumerate_desktop_items(filename)
+            print("=== Desktop Items ===")
+            if scan and getattr(scan, 'items', None):
+                for it in scan.items:
+                    count_str = f" x{it.count}" if it.count else ""
+                    attrs = f" | attrs: {it.attributes}" if it.attributes else ""
+                    print(f"- item: {it.name}{count_str}{attrs}")
+                if getattr(scan, 'summary', None):
+                    print(f"summary: {scan.summary}")
+            else:
+                print("(No structured item list available)")
+
             # Update status
-            self.current_status = "Thinking..." if self.language == "en" else "思考中..."
+            self.current_status = "Thinking..."
             socketio.emit('status_update', {'status': self.current_status})
             
             # Handle session_id changes
@@ -189,15 +174,12 @@ class WebVideoSystem:
                     if current_session:
                         ended_session = self.robot_service.end_logging_session()
                         print(f"Ended session due to session_id change: {ended_session}")
-                    
-                    task_desc = self.current_task_zh if self.language == "zh" else self.current_task_en
-                    new_session = self.robot_service.start_logging_session(task_desc, session_id)
+                    new_session = self.robot_service.start_logging_session(self.current_task, session_id)
                     self.robot_service.logger.current_custom_session_id = session_id
                     print(f"Started new session with custom ID: {new_session}")
             elif not current_session:
                 # Start auto session if no session exists
-                task_desc = self.current_task_zh if self.language == "zh" else self.current_task_en
-                new_session = self.robot_service.start_logging_session(task_desc)
+                new_session = self.robot_service.start_logging_session(self.current_task)
                 self.robot_service.logger.current_custom_session_id = None
                 print(f"Started auto session: {new_session}")
             
@@ -229,7 +211,7 @@ class WebVideoSystem:
             self.conversation_history.append(robot_message)
             
             # Update status
-            self.current_status = "Ready" if self.language == "en" else "就绪"
+            self.current_status = "Ready"
             socketio.emit('status_update', {'status': self.current_status})
             
             return {
@@ -239,7 +221,7 @@ class WebVideoSystem:
             }
             
         except Exception as e:
-            self.current_status = "Error occurred" if self.language == "en" else "发生错误"
+            self.current_status = "Error occurred"
             socketio.emit('status_update', {'status': self.current_status})
             return {"error": str(e)}
     
@@ -265,7 +247,7 @@ class WebVideoSystem:
                 return {"error": "No previous robot question found"}
             
             # Update status
-            self.current_status = "Analyzing response..." if self.language == "en" else "分析回应中..."
+            self.current_status = "Analyzing response..."
             socketio.emit('status_update', {'status': self.current_status})
             
             # Analyze user response and generate robot reply
@@ -287,7 +269,7 @@ class WebVideoSystem:
             self.conversation_history.append(robot_response)
             
             # Update status
-            self.current_status = "Ready" if self.language == "en" else "就绪"
+            self.current_status = "Ready"
             socketio.emit('status_update', {'status': self.current_status})
             
             print(f"Debug - User response analysis:")
@@ -303,7 +285,7 @@ class WebVideoSystem:
             }
             
         except Exception as e:
-            self.current_status = "Error occurred" if self.language == "en" else "发生错误"
+            self.current_status = "Error occurred"
             socketio.emit('status_update', {'status': self.current_status})
             return {"error": str(e)}
     
@@ -315,8 +297,7 @@ class WebVideoSystem:
             print(f"Ended logging session: {session_id}")
         
         # Start new logging session (auto session on restart)
-        task_desc = self.current_task_zh if self.language == "zh" else self.current_task_en
-        session_id = self.robot_service.start_logging_session(task_desc)
+        session_id = self.robot_service.start_logging_session(self.current_task)
         self.robot_service.logger.current_custom_session_id = None
         print(f"Started new logging session: {session_id}")
         
@@ -376,10 +357,9 @@ def get_conversation():
 @app.route('/status', methods=['GET'])
 def get_status():
     """Get current status"""
-    current_task_display = video_system.current_task_zh if video_system.language == "zh" else video_system.current_task_en
     return jsonify({
         "status": video_system.current_status,
-        "task": current_task_display
+        "task": video_system.current_task
     })
 
 @app.route('/logging_status', methods=['GET'])
@@ -407,17 +387,7 @@ def restart_conversation():
     socketio.emit('conversation_restarted', {'message': 'Conversation restarted'})
     return jsonify(result)
 
-@app.route('/set_language', methods=['POST'])
-def set_language():
-    """Set system language"""
-    data = request.get_json()
-    language = data.get('language', 'en')
-    
-    try:
-        video_system.set_language(language)
-        return jsonify({'success': True, 'language': language})
-    except ValueError as e:
-        return jsonify({'success': False, 'error': str(e)})
+## Removed language switching endpoint (English-only build)
 
 @socketio.on('connect')
 def handle_connect():
@@ -441,24 +411,12 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
     
-    # Determine default language from existing config or use English
-    try:
-        default_config = load_prompt_config("en")  # Try English first
-        default_language = "en"
-    except:
-        try:
-            default_config = load_prompt_config("zh")  # Fall back to Chinese
-            default_language = "zh"
-        except:
-            default_language = "en"  # Final fallback
-    
     # Create video system with specified configuration
     video_system = WebVideoSystem(
         camera_id=args.camera_id,
         use_zmq_source=args.use_zmq,
         zmq_server_address=args.zmq_server,
-        zmq_port=args.zmq_port,
-        language=default_language
+        zmq_port=args.zmq_port
     )
     
     print("Starting web application...")

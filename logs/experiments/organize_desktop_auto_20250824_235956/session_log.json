@@ -1,0 +1,26 @@
+{
+  "session_id": "organize_desktop_auto_20250824_235956",
+  "custom_session_id": null,
+  "start_time": "2025-08-24T23:59:56.564432",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-25T00:01:42.537102",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": "question_0_000142_524.jpg",
+      "original_image_path": "captured_frames/web_frame_20250825_000118.jpg",
+      "conversation_history": [],
+      "robot_reasoning": "In order to organize the desktop, I need to know where each item should be placed or if there are specific organizational guidelines. Since the scene shows various items like a keyboard, mouse, monitor, books, and miscellaneous objects, asking where these items should be placed will help me proceed with the organization task effectively.",
+      "robot_question": "Where should each item on the desktop be placed to achieve the desired organization?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}
