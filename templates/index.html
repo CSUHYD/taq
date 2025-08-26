@@ -168,6 +168,89 @@
             transform: none;
         }
 
+        /* Distinct Ask Question button */
+        .btn-ask {
+            background: #1abc9c; /* teal */
+            color: #fff;
+            box-shadow: 0 2px 6px rgba(26, 188, 156, 0.35);
+        }
+        .btn-ask:hover {
+            background: #16a085;
+            transform: translateY(-2px);
+        }
+        .btn-ask:disabled {
+            background: #7fcdc0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Items modal styles */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        .item-card {
+            background: #ffffff;
+            border: 1px solid #ecf0f1;
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .item-title {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .item-id {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #95a5a6;
+        }
+        .item-badges {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .badge {
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid transparent;
+        }
+        .badge-operated {
+            background: #eafaf1;
+            color: #27ae60;
+            border-color: #cdebd8;
+        }
+        .badge-pending {
+            background: #fff4e5;
+            color: #e67e22;
+            border-color: #ffe3c2;
+        }
+        .item-attrs {
+            margin-top: 6px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .attr-chip {
+            background: #f4f6f7;
+            color: #566573;
+            border: 1px solid #e5e8ea;
+            border-radius: 999px;
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
         .chat-section {
             flex: 1;
             background: white;
@@ -568,8 +651,14 @@
             </div>
             
             <div class="controls">
-                <button class="btn btn-primary" id="capture-btn" onclick="captureAndAsk()">
+                <button class="btn btn-primary" id="init-btn" onclick="initScan()">
+                    🧭 Init
+                </button>
+                <button class="btn btn-ask" id="capture-btn" onclick="captureAndAsk()">
                     📸 Ask Question
+                </button>
+                <button class="btn btn-history" id="items-btn" onclick="toggleItemsModal()">
+                    🧾 Items
                 </button>
                 <button class="btn btn-history" id="history-btn" onclick="toggleHistoryModal()">
                     📋 History
@@ -606,6 +695,19 @@
             </div>
             <div id="historyContent">
                 <div class="empty-conversation">Loading conversation history...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Items Modal -->
+    <div id="itemsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">🧾 Desktop Items</div>
+                <button class="close" onclick="closeItemsModal()">&times;</button>
+            </div>
+            <div id="itemsContent">
+                <div class="empty-conversation">No items yet. Click "Init" to scan.</div>
             </div>
         </div>
     </div>
@@ -736,12 +838,39 @@
         // Update button states
         function updateButtonStates() {
             const captureBtn = document.getElementById('capture-btn');
+            const initBtn = document.getElementById('init-btn');
             const responseInput = document.getElementById('user-response');
             const sendBtn = document.getElementById('send-btn');
             
             captureBtn.disabled = isProcessing;
+            initBtn.disabled = isProcessing;
             responseInput.disabled = !hasActiveQuestion || isProcessing;
             sendBtn.disabled = !hasActiveQuestion || isProcessing;
+        }
+
+        // Initialize desktop scan
+        function initScan() {
+            if (isProcessing) return;
+            isProcessing = true;
+            updateButtonStates();
+            updateStatus('Capturing image...');
+
+            fetch('/init_scan', { method: 'POST' })
+                .then(resp => resp.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Init scan items:', data.items);
+                        if (data.summary) console.log('Init scan summary:', data.summary);
+                    } else {
+                        console.error('Init scan failed:', data.error || 'Unknown error');
+                    }
+                })
+                .catch(err => console.error('Init scan error:', err))
+                .finally(() => {
+                    isProcessing = false;
+                    updateButtonStates();
+                    updateStatus('Ready');
+                });
         }
 
         // Capture frame and ask question
@@ -1060,6 +1189,118 @@
             if (event.target === modal) {
                 closeHistoryModal();
             }
+            const itemsModal = document.getElementById('itemsModal');
+            if (event.target === itemsModal) {
+                closeItemsModal();
+            }
+        }
+
+        // Items modal helpers
+        function toggleItemsModal() { 
+            const modal = document.getElementById('itemsModal');
+            if (modal.style.display === 'block') { 
+                closeItemsModal(); 
+            } else { 
+                openItemsModal(); 
+            }
+        }
+
+        function openItemsModal() {
+            const modal = document.getElementById('itemsModal');
+            modal.style.display = 'block';
+            loadItems();
+        }
+
+        function closeItemsModal() {
+            const modal = document.getElementById('itemsModal');
+            modal.style.display = 'none';
+        }
+
+        function loadItems() {
+            const itemsContent = document.getElementById('itemsContent');
+            itemsContent.innerHTML = '<div class="empty-conversation">Loading items...</div>';
+
+            fetch('/desktop_items')
+                .then(resp => resp.json())
+                .then(data => {
+                    if (!data.success) {
+                        itemsContent.innerHTML = '<div class="empty-conversation">Failed to load items.</div>';
+                        return;
+                    }
+                    const items = data.items || [];
+                    const summary = data.summary;
+                    if (!items.length) {
+                        itemsContent.innerHTML = '<div class="empty-conversation">No items available. Try "Init".</div>';
+                        return;
+                    }
+                    const container = document.createElement('div');
+                    if (summary) {
+                        const sumDiv = document.createElement('div');
+                        sumDiv.style.margin = '0 0 10px 0';
+                        sumDiv.innerHTML = '<strong>Summary:</strong> ' + summary;
+                        container.appendChild(sumDiv);
+                    }
+                    const grid = document.createElement('div');
+                    grid.className = 'items-grid';
+                    items.forEach((it, idx) => {
+                        const card = document.createElement('div');
+                        card.className = 'item-card';
+
+                        const header = document.createElement('div');
+                        header.className = 'item-header';
+
+                        const titleWrap = document.createElement('div');
+                        const title = document.createElement('div');
+                        title.className = 'item-title';
+                        title.textContent = `${idx + 1}. ${it.name}`;
+                        const idTag = document.createElement('div');
+                        idTag.className = 'item-id';
+                        idTag.textContent = `#${it.id || 'n/a'}`;
+                        titleWrap.appendChild(title);
+                        titleWrap.appendChild(idTag);
+
+                        const badges = document.createElement('div');
+                        badges.className = 'item-badges';
+                        const opBadge = document.createElement('span');
+                        opBadge.className = 'badge ' + (it.operated ? 'badge-operated' : 'badge-pending');
+                        opBadge.textContent = it.operated ? 'Operated' : 'Pending';
+                        badges.appendChild(opBadge);
+
+                        header.appendChild(titleWrap);
+                        header.appendChild(badges);
+                        card.appendChild(header);
+
+                        const attrsWrap = document.createElement('div');
+                        attrsWrap.className = 'item-attrs';
+                        const raw = (it.attributes || '').trim();
+                        if (raw) {
+                            const parts = raw.split(/[,;|]/).map(s => s.trim()).filter(Boolean);
+                            if (parts.length === 0) parts.push(raw);
+                            parts.forEach(p => {
+                                const chip = document.createElement('span');
+                                chip.className = 'attr-chip';
+                                chip.textContent = p;
+                                attrsWrap.appendChild(chip);
+                            });
+                        } else {
+                            const chip = document.createElement('span');
+                            chip.className = 'attr-chip';
+                            chip.style.opacity = '0.7';
+                            chip.textContent = '(no attributes)';
+                            attrsWrap.appendChild(chip);
+                        }
+                        card.appendChild(attrsWrap);
+
+                        grid.appendChild(card);
+                    });
+                    itemsContent.innerHTML = '';
+                    if (summary) itemsContent.appendChild(container);
+                    itemsContent.appendChild(grid);
+                })
+                .catch(err => {
+                    console.error('Load items error:', err);
+                    itemsContent.innerHTML = '<div class="empty-conversation">Error loading items.</div>';
+                });
         }
     </script>
 </body>

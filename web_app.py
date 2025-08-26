@@ -147,18 +147,7 @@ class WebVideoSystem:
             filename = f"captured_frames/web_frame_{timestamp}.jpg"
             cv2.imwrite(filename, frame)
 
-            # Step 1: Enumerate desktop items and print formatted result to console (English only)
-            scan = self.robot_service.enumerate_desktop_items(filename)
-            print("=== Desktop Items ===")
-            if scan and getattr(scan, 'items', None):
-                for it in scan.items:
-                    count_str = f" x{it.count}" if it.count else ""
-                    attrs = f" | attrs: {it.attributes}" if it.attributes else ""
-                    print(f"- item: {it.name}{count_str}{attrs}")
-                if getattr(scan, 'summary', None):
-                    print(f"summary: {scan.summary}")
-            else:
-                print("(No structured item list available)")
+            # Using initialized items; no re-scan here
 
             # Update status
             self.current_status = "Thinking..."
@@ -224,6 +213,38 @@ class WebVideoSystem:
             self.current_status = "Error occurred"
             socketio.emit('status_update', {'status': self.current_status})
             return {"error": str(e)}
+
+    def init_desktop_scan(self):
+        """Capture frame and initialize desktop state in RobotService"""
+        try:
+            self.current_status = "Capturing image..."
+            socketio.emit('status_update', {'status': self.current_status})
+
+            frame = self.get_frame()
+            if frame is None:
+                return {"success": False, "error": "Failed to capture frame"}
+
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"captured_frames/init_frame_{timestamp}.jpg"
+            cv2.imwrite(filename, frame)
+
+            self.current_status = "Thinking..."
+            socketio.emit('status_update', {'status': self.current_status})
+
+            scan = self.robot_service.initialize_desktop_state(filename)
+            self.current_status = "Ready"
+            socketio.emit('status_update', {'status': self.current_status})
+
+            if not scan:
+                return {"success": False, "error": "Scan failed"}
+
+            # Return a light summary to frontend from RobotService state
+            snapshot = self.robot_service.get_desktop_items_snapshot()
+            return {"success": True, "items": snapshot.get('items', []), "summary": snapshot.get('summary')}
+        except Exception as e:
+            self.current_status = "Error occurred"
+            socketio.emit('status_update', {'status': self.current_status})
+            return {"success": False, "error": str(e)}
     
     def add_user_response(self, response_text):
         """Add user response to conversation and generate robot reply"""
@@ -340,6 +361,12 @@ def capture_and_ask():
     result = video_system.capture_and_analyze(strategy=strategy, session_id=session_id)
     return jsonify(result)
 
+@app.route('/init_scan', methods=['POST'])
+def init_scan():
+    """Initialize desktop items state"""
+    result = video_system.init_desktop_scan()
+    return jsonify(result)
+
 @app.route('/respond', methods=['POST'])
 def respond():
     """Handle user response"""
@@ -367,6 +394,15 @@ def get_logging_status():
     """Get current logging session status"""
     summary = video_system.robot_service.get_session_summary()
     return jsonify({'logging_session': summary})
+
+@app.route('/desktop_items', methods=['GET'])
+def get_desktop_items():
+    """Get current desktop items snapshot"""
+    try:
+        data = video_system.robot_service.get_desktop_items_snapshot()
+        return jsonify({"success": True, **data})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e), "items": [], "summary": None})
 
 @app.route('/log_timing', methods=['POST'])
 def log_timing():
@@ -423,4 +459,4 @@ if __name__ == '__main__':
     print(f"Current task: {video_system.current_task}")
     print(f"Video source: {'ZMQ from ' + args.zmq_server + ':' + str(args.zmq_port) if args.use_zmq else 'Camera ' + str(args.camera_id)}")
     
-    socketio.run(app, host='0.0.0.0', port=5050, debug=False, allow_unsafe_werkzeug=True)
+    socketio.run(app, host='0.0.0.0', port=5050, debug=True, allow_unsafe_werkzeug=True)
