@@ -1,0 +1,97 @@
+{
+  "session_id": "organize_desktop_auto_20250826_192453",
+  "custom_session_id": null,
+  "start_time": "2025-08-26T19:24:53.897644",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-26T19:46:33.307184",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_194633_301.jpg",
+      "original_image_path": "captured_frames/init_frame_20250826_194615.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "white, black, purple keys",
+            "operated": false
+          },
+          {
+            "id": "itm-2-notepad",
+            "name": "notepad",
+            "attributes": "white, handwritten notes",
+            "operated": false
+          },
+          {
+            "id": "itm-3-smartphone",
+            "name": "smartphone",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "itm-4-water-bottle",
+            "name": "water bottle",
+            "attributes": "black, red cap",
+            "operated": false
+          },
+          {
+            "id": "itm-5-mouse",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "itm-6-pen",
+            "name": "pen",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "itm-7-desk",
+            "name": "desk",
+            "attributes": "white",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-26T19:46:55.326403",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": "question_1_194655_323.jpg",
+      "original_image_path": "captured_frames/web_frame_20250826_194652.jpg",
+      "robot_reasoning": "The keyboard is present on the desktop and appears to be a standard component that could benefit from being repositioned or cleaned as part of organizing the desktop. Asking about its current state or position will help determine the next action needed for organizing.",
+      "robot_question": "Is the keyboard in the correct position on the desk?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-26T19:47:06.664298",
+      "type": "item_status_change",
+      "operation_text": "move(#itm-1-keyboard, desired_position)",
+      "updated_items": [
+        {
+          "id": "itm-1-keyboard",
+          "name": "keyboard",
+          "operated": true
+        }
+      ],
+      "user_response": "no",
+      "user_response_timestamp": "2025-08-26T19:47:06.665289",
+      "robot_understanding": "The user indicates that the keyboard is not in the correct position on the desk, suggesting that repositioning it is necessary for organizing the desktop.",
+      "robot_operation": "move(#itm-1-keyboard, desired_position)",
+      "robot_reply": "Understood. I will reposition the keyboard to the desired location on the desk."
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

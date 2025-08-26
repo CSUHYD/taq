@@ -4,6 +4,11 @@ import shutil
 from datetime import datetime
 from pydantic import BaseModel
 from vlmCall_ollama import VLMAPI, load_prompt_config
+from dialogue.ask import AskModule
+from dialogue.think import ThinkModule
+from dialogue.act import ActModule, ActPlan
+from dialogue.follow_up import FollowUpModule
+from dialogue.utils import build_conversation_context
 import re
 
 
@@ -19,6 +24,13 @@ class ResponseAnalysis(BaseModel):
     robot_reply: str   # 机器人的回复
     operated_item_ids: list[str] | None = None  # 需要标记为已操作的物体ID列表
     operated_item_names: list[str] | None = None  # 可选: 名称列表（当没有ID时）
+    # Think module extensions
+    need_follow_up: bool | None = None
+    follow_up_reason: str | None = None
+    follow_up_suggestion: str | None = None
+    user_preferences: dict[str, str] | None = None
+    # Act module extension
+    act_plan: ActPlan | None = None
 
 
 class OperationSelection(BaseModel):
@@ -253,6 +265,13 @@ class RobotService:
         self.logger = ExperimentLogger()
         self.items: list[DesktopItem] = []
         self.current_target_item_id: str | None = None
+        # New dialogue modules
+        self.ask = AskModule(self.vlm_api, self.config)
+        self.think = ThinkModule(self.vlm_api, self.config)
+        self.act = ActModule()
+        self.follow_up = FollowUpModule()
+        # Persisted user preferences across turns (simple key-value)
+        self.user_preferences: dict[str, str] = {}
 
     def _strip_ids_from_text(self, text: str) -> str:
         if not text:
@@ -263,25 +282,13 @@ class RobotService:
     
     def _build_conversation_context(self, messages_history):
         """构建对话历史上下文"""
-        conversation_context = ""
-        if messages_history:
-            for msg in messages_history:
-                if msg.get("type") == "robot":
-                    if msg.get("reasoning"):
-                        conversation_context += f"Robot reasoning: {msg['reasoning']}\n"
-                    if msg.get("question"):
-                        conversation_context += f"Robot question: {msg['question']}\n"
-                elif msg.get("type") == "user":
-                    if msg.get("response"):
-                        conversation_context += f"User response: {msg['response']}\n"
-            conversation_context += "\n"
-        return conversation_context
+        return build_conversation_context(messages_history)
     
-    def generate_question(self, 
-                         task_description, 
-                         image_path=None, 
-                         messages_history=None,
-                         strategy="user-preference-first"):
+    def generate_question(self,
+                          task_description,
+                          image_path=None,
+                          messages_history=None,
+                          strategy="user-preference-first"):
         """
         生成基于任务和图像的问题
         
@@ -294,19 +301,7 @@ class RobotService:
         Returns:
             VLMResponse: 包含推理和问题的响应
         """
-        # Always use a simple, item-focused prompt (direct-querying template)
-        question_config = self.config.get("question_generation", {})
-        if not question_config:
-            raise ValueError("question_generation configuration not found")
-        strat_config = question_config.get("direct-querying", {}) or {}
-        systext = strat_config.get("systext", "")
-        usertext_template = strat_config.get("usertext", "")
-        payload_options = strat_config.get("payload_options", {})
-        
-        # 构建对话历史上下文
-        conversation_context = self._build_conversation_context(messages_history)
-        
-        # Select a single unoperated item to ask about
+        # Select a single unoperated item to ask about (for direct strategies)
         if not self.items:
             raise ValueError("No desktop items. Please click Init to scan first.")
         target = None
@@ -320,47 +315,24 @@ class RobotService:
         self.current_target_item_id = getattr(target, 'id', None)
         attr = f" | attrs: {getattr(target, 'attributes', None)}" if getattr(target, 'attributes', None) else ""
         items_block = f"- {target.name}{attr}"
-        usertext = usertext_template.format(
+        # Delegate to Ask module with selected strategy
+        self.ask.set_strategy(strategy)
+        ask_out = self.ask.ask(
             task_description=task_description,
-            conversation_context=conversation_context,
-            items_block=items_block
+            items_block=items_block,
+            messages_history=messages_history,
+            image_path=image_path,
         )
-        
-        # 调用基础API
-        raw_question = self.vlm_api.vlm_request_with_format(
-            systext=systext,
-            usertext=usertext,
-            format_schema=VLMResponse.model_json_schema(),
-            image_path1=image_path,
-            options=payload_options
+
+        parsed_response = VLMResponse(reasoning=ask_out.reasoning, question=ask_out.question)
+        print("Question generation successful")
+        # Log question generation
+        self.logger.log_question_generation(
+            strategy=strategy,
+            image_path=image_path,
+            vlm_response=parsed_response,
         )
-        
-        # 解析响应
-        try:
-            parsed_response = VLMResponse.model_validate_json(raw_question)
-            print(f"Question generation successful")
-            
-            # 记录问题生成日志
-            self.logger.log_question_generation(
-                strategy=strategy,
-                image_path=image_path,
-                vlm_response=parsed_response
-            )
-            
-            return parsed_response
-        except Exception as parse_error:
-            print(f"Failed to parse question response: {parse_error}")
-            print(f"Raw response: {raw_question}")
-            fallback_response = VLMResponse(reasoning="", question=raw_question)
-            
-            # 记录问题生成日志（即使解析失败）
-            self.logger.log_question_generation(
-                strategy=strategy,
-                image_path=image_path,
-                vlm_response=fallback_response
-            )
-            
-            return fallback_response
+        return parsed_response
     
     def analyze_user_response(self,
                             user_response,
@@ -381,95 +353,94 @@ class RobotService:
         Returns:
             ResponseAnalysis: 包含理解、动作和回复的分析结果
         """
-        # Base config
-        ra_config = self.config.get("response_analysis", {})
-        if not ra_config:
-            raise ValueError("response_analysis configuration not found")
-
-        payload_options = ra_config.get("payload_options", {})
-        
-        # 构建对话历史上下文
-        conversation_context = self._build_conversation_context(messages_history)
-        
-        # Simple prompt: we don't need to list items here
-        items_block = ""
-
-        # Build prompt from config
-        systext = ra_config.get("systext", "")
-        usertext_template = ra_config.get("usertext", "")
-        usertext = usertext_template.format(
-            current_task=current_task,
-            conversation_context=conversation_context,
-            items_block=items_block,
-            robot_question=robot_question,
-            robot_reasoning=robot_reasoning,
-            user_response=user_response
-        )
-        
-        # 调用基础API
-        raw_response = self.vlm_api.vlm_request_with_format(
-            systext=systext,
-            usertext=usertext,
-            format_schema=ResponseAnalysis.model_json_schema(),
-            options=payload_options
-        )
-        
-        # 解析响应
+        # Extract preferences, run ambiguity check, and craft minimal reply (no operation generation)
         try:
-            parsed_response = ResponseAnalysis.model_validate_json(raw_response)
-            print(f"Response analysis successful")
+            hist = list(messages_history or [])
+            hist.append({"type": "user", "response": user_response})
 
-            # Use VLM to select which items in unoperated list are operated by this operation
-            updated = []
+            # Preference extraction (Think)
             try:
-                selection = self.select_items_for_operation(parsed_response.operation, conversation_context, current_task)
-                ids = selection.selected_item_ids if selection else []
-                if ids and self.items:
-                    norm_ids = set()
-                    for i in ids:
-                        if not isinstance(i, str):
-                            continue
-                        s = i.strip()
-                        if s.startswith('#'):
-                            s = s[1:]
-                        norm_ids.add(s.lower())
-                    for it in self.items:
-                        if getattr(it, 'id', None) and it.id.lower() in norm_ids and not getattr(it, 'operated', False):
-                            it.operated = True
-                            updated.append({"id": it.id, "name": it.name, "operated": True})
-                # If VLM says it's ambiguous, replace reply with clarifying question and clear operation
-                if (not ids or len(ids) == 0) and selection and getattr(selection, 'clarification_question', None):
-                    parsed_response.operation = ""
-                    cq = selection.clarification_question.strip()
-                    if cq:
-                        parsed_response.robot_reply = self._strip_ids_from_text(cq)
-                if updated:
-                    self.logger.log_item_status_change(parsed_response.operation, updated)
-            except Exception as e:
-                print(f"Operation item selection failed: {e}")
-
-            # 记录用户回应日志（包含追加字段）
-            self.logger.log_user_response(user_response, parsed_response)
-
-            # Ensure robot_reply is user-facing and non-empty (VLM should provide it)
-            rr = (parsed_response.robot_reply or "").strip()
-            if not rr:
-                parsed_response.robot_reply = (
-                    "Could you clarify which item or location you mean?"
+                pref = self.think.extract_user_preferences(
+                    user_response=user_response,
+                    current_task=current_task,
+                    messages_history=hist,
                 )
-            # Remove any accidental IDs from reply
+                if getattr(pref, 'user_preferences', None):
+                    self.user_preferences.update(pref.user_preferences)
+            except Exception as e:
+                print(f"Preference extraction failed: {e}")
+
+            # Initialize minimal analysis result
+            parsed_response = ResponseAnalysis(
+                understanding=(user_response or "").strip() or "(no user response)",
+                operation="",
+                robot_reply="",
+                operated_item_ids=[],
+            )
+
+            # Ambiguity check via VLM (separate function). Use raw user response as candidate op.
+            amb = self.think.ambiguous(
+                user_response=user_response,
+                robot_question=robot_question,
+                robot_reasoning=robot_reasoning,
+                current_task=current_task,
+                candidate_operation=(user_response or ""),
+                messages_history=hist,
+            )
+            parsed_response.need_follow_up = amb.ambiguous
+            parsed_response.follow_up_reason = amb.reason if amb.ambiguous else None
+
+            # Craft reply and (if clear) derive action plan
+            if parsed_response.need_follow_up:
+                conversation_context = self._build_conversation_context(hist)
+                suggestion = self.follow_up.suggest(
+                    parsed_response.follow_up_reason,
+                    robot_question,
+                    conversation_context,
+                )
+                parsed_response.follow_up_suggestion = suggestion
+                parsed_response.robot_reply = suggestion
+            else:
+                # No ambiguity: attempt to parse direct action plan from user's response
+                try:
+                    plan = self.act.plan_from_operation(user_response)
+                except Exception:
+                    plan = None
+                parsed_response.act_plan = plan
+                # Build predicate-style operation text when possible
+                if plan:
+                    src = plan.sources[0] if plan.sources else ""
+                    op_text = plan.action
+                    if plan.target and src:
+                        parsed_response.operation = f"{op_text}({src}, {plan.target})"
+                    elif src:
+                        parsed_response.operation = f"{op_text}({src})"
+                    else:
+                        parsed_response.operation = op_text
+                    # User-facing confirmation reply
+                    to_clause = f" to {plan.target}" if plan.target else ""
+                    src_clause = ", ".join(plan.sources) if plan.sources else ""
+                    parsed_response.robot_reply = f"Okay — {plan.action} {src_clause}{to_clause}. Shall I proceed?"
+                else:
+                    parsed_response.robot_reply = (
+                        "Preferences noted. Please specify the item and the target action."
+                    )
+
             parsed_response.robot_reply = self._strip_ids_from_text(parsed_response.robot_reply)
 
+            # Log response
+            self.logger.log_user_response(user_response, parsed_response)
+
             return parsed_response
+        
         except Exception as parse_error:
-            print(f"Failed to parse response analysis: {parse_error}")
-            print(f"Raw response: {raw_response}")
+            print(f"Failed to process user response: {parse_error}")
             
             # English-only fallback
             fallback_response = ResponseAnalysis(
                 understanding=f"User said: {user_response}",
                 operation="",
-                robot_reply="I understand your response. Let me continue with the task."
+                robot_reply="Preferences noted. Please specify the item and the target action."
             )
             
             # 记录用户回应日志（即使解析失败）
