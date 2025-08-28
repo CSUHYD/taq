@@ -1,0 +1,79 @@
+{
+  "session_id": "organize_desktop_auto_20250828_180924",
+  "custom_session_id": null,
+  "start_time": "2025-08-28T18:09:24.843505",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-28T18:10:00.038831",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_181000_029.jpg",
+      "original_image_path": "captured_frames/init_frame_20250828_180954.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "white, black keys",
+            "operated": false
+          },
+          {
+            "id": "itm-2-hands",
+            "name": "hands",
+            "attributes": "typing",
+            "operated": false
+          },
+          {
+            "id": "itm-3-mouse",
+            "name": "mouse",
+            "attributes": "white, black buttons",
+            "operated": false
+          },
+          {
+            "id": "itm-4-phone",
+            "name": "phone",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "itm-5-book",
+            "name": "book",
+            "attributes": "yellow cover",
+            "operated": false
+          },
+          {
+            "id": "itm-6-pens",
+            "name": "pens",
+            "attributes": "blue, red, black",
+            "operated": false
+          },
+          {
+            "id": "itm-7-water-bottle",
+            "name": "water bottle",
+            "attributes": "black, red cap",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-28T18:15:25.654922",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To effectively organize the desktop, it's crucial to understand the user's preferences regarding the placement of items. This will ensure that the organization aligns with their workflow, convenience, and aesthetic preferences. Asking about their desired organization principle will provide guidance on how to prioritize items (e.g., by functionality, color, or usage frequency).",
+      "robot_question": "How would you like the items on your desktop to be organized? (e.g., by function, color, or frequency of use)"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

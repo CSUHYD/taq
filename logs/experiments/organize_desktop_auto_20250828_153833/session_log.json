@@ -1,0 +1,91 @@
+{
+  "session_id": "organize_desktop_auto_20250828_153833",
+  "custom_session_id": null,
+  "start_time": "2025-08-28T15:38:33.624017",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-28T15:39:00.296933",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_153900_289.jpg",
+      "original_image_path": "captured_frames/init_frame_20250828_153837.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "white and gray",
+            "operated": false
+          },
+          {
+            "id": "itm-2-hands",
+            "name": "hands",
+            "attributes": "typing",
+            "operated": false
+          },
+          {
+            "id": "itm-3-can",
+            "name": "can",
+            "attributes": "silver and red",
+            "operated": false
+          },
+          {
+            "id": "itm-4-pen",
+            "name": "pen",
+            "attributes": "blue",
+            "operated": false
+          },
+          {
+            "id": "itm-5-pen",
+            "name": "pen",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "itm-6-mouse",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "itm-7-earbuds-case",
+            "name": "earbuds case",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "itm-8-book",
+            "name": "book",
+            "attributes": "yellow and black text",
+            "operated": false
+          },
+          {
+            "id": "itm-9-tape-measure",
+            "name": "tape measure",
+            "attributes": "black and red",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-28T15:39:39.072923",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "Before organizing the desktop, it's essential to understand the user's preferences regarding item placement and organization principles. This ensures the arrangement meets their specific needs and expectations, such as prioritizing frequently used items or grouping similar objects together.",
+      "robot_question": "How would you like the items on your desktop organized? For example, do you prefer frequently used items like the keyboard and mouse close by, or would you like to group similar items together?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

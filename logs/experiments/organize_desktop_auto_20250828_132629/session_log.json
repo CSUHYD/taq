@@ -1,0 +1,129 @@
+{
+  "session_id": "organize_desktop_auto_20250828_132629",
+  "custom_session_id": null,
+  "start_time": "2025-08-28T13:26:29.173646",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-28T13:26:39.297997",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_132639_293.jpg",
+      "original_image_path": "captured_frames/init_frame_20250828_132633.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "white and gray, compact",
+            "operated": false
+          },
+          {
+            "id": "itm-2-mouse",
+            "name": "mouse",
+            "attributes": "white, ergonomic",
+            "operated": false
+          },
+          {
+            "id": "itm-3-book",
+            "name": "book",
+            "attributes": "yellow and white cover, text visible",
+            "operated": false
+          },
+          {
+            "id": "itm-4-brushes",
+            "name": "brushes",
+            "attributes": "black handles, various sizes",
+            "operated": false
+          },
+          {
+            "id": "itm-5-tape-measure",
+            "name": "tape measure",
+            "attributes": "black and red, compact",
+            "operated": false
+          },
+          {
+            "id": "itm-6-hand",
+            "name": "hand",
+            "attributes": "partially visible, interacting with keyboard",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-28T13:26:52.790552",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_1_132652_788.jpg",
+      "original_image_path": "captured_frames/init_frame_20250828_132647.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "white and gray",
+            "operated": false
+          },
+          {
+            "id": "itm-2-mouse",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "itm-3-pen",
+            "name": "pen",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "itm-4-pen",
+            "name": "pen",
+            "attributes": "blue",
+            "operated": false
+          },
+          {
+            "id": "itm-5-pen",
+            "name": "pen",
+            "attributes": "red",
+            "operated": false
+          },
+          {
+            "id": "itm-6-tape-measure",
+            "name": "tape measure",
+            "attributes": "black and red",
+            "operated": false
+          },
+          {
+            "id": "itm-7-book",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-28T13:27:07.041136",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To effectively organize the desktop, it's essential to understand the user's preferences for item placement, organization principles, and any specific requirements they might have. This will ensure that the organization aligns with their needs and habits. Asking about their preferences in terms of grouping similar items or prioritizing certain tools can provide clarity on how to proceed.",
+      "robot_question": "How would you like your desktop organized? Would you prefer grouping similar items together, such as pens and tools, or placing certain items in specific areas based on frequency of use?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-08-28T14:54:40.678223",
+  "total_interactions": 3
+}

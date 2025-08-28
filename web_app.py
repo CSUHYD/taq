@@ -256,10 +256,11 @@ class WebVideoSystem:
             # Keep response shape compatible with existing frontend renderer
             return {
                 "success": True,
-                "understanding": "",
-                "operation": "",
+                "ambiguity": result.get("ambiguity", False),
+                "operation": result.get("operation", ""),
                 "robot_reply": result.get("robot_reply", ""),
-                "relevant_items": result.get("relevant_items", []),
+                "relevant_objects": result.get("relevant_objects", []),
+                "preferences": result.get("preferences", None),
             }
         except Exception as e:
             self.current_status = "Error occurred"
@@ -359,6 +360,38 @@ def get_desktop_items():
         return jsonify({"success": True, **data})
     except Exception as e:
         return jsonify({"success": False, "error": str(e), "items": [], "summary": None})
+
+@app.route('/user_preferences', methods=['GET'])
+def get_user_preferences():
+    """Get parsed user preferences.
+
+    Returns both the latest preference object and the full history list when available.
+    { success, preferences, preferences_list }
+    """
+    try:
+        prefs_attr = getattr(video_system.robot_service, 'user_preferences', None)
+        prefs_list = []
+        if isinstance(prefs_attr, list) and len(prefs_attr) > 0:
+            for p in prefs_attr:
+                if hasattr(p, 'model_dump'):
+                    prefs_list.append(p.model_dump())
+                elif isinstance(p, dict):
+                    prefs_list.append(p)
+        else:
+            # Fallback: gather all persisted preferences from conversation history
+            conv = video_system.robot_service.get_conversation()
+            for msg in conv:
+                if msg.get('type') == 'preferences' and isinstance(msg.get('preferences'), (dict, list)):
+                    val = msg.get('preferences')
+                    if isinstance(val, dict):
+                        prefs_list.append(val)
+                    else:
+                        prefs_list.extend([v for v in val if isinstance(v, dict)])
+
+        latest = prefs_list[-1] if prefs_list else None
+        return jsonify({"success": True, "preferences": latest, "preferences_list": prefs_list})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e), "preferences": None, "preferences_list": []})
 
 @app.route('/log_timing', methods=['POST'])
 def log_timing():

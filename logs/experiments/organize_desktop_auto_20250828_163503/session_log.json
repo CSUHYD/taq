@@ -1,0 +1,85 @@
+{
+  "session_id": "organize_desktop_auto_20250828_163503",
+  "custom_session_id": null,
+  "start_time": "2025-08-28T16:35:03.202129",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-28T16:35:31.406165",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_163531_400.jpg",
+      "original_image_path": "captured_frames/init_frame_20250828_163510.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "white and gray, ergonomic design",
+            "operated": false
+          },
+          {
+            "id": "itm-2-hands",
+            "name": "hands",
+            "attributes": "typing on keyboard",
+            "operated": false
+          },
+          {
+            "id": "itm-3-book",
+            "name": "book",
+            "attributes": "yellow cover, text visible",
+            "operated": false
+          },
+          {
+            "id": "itm-4-hamburger-shaped-object",
+            "name": "hamburger-shaped object",
+            "attributes": "yellow and green, decorative",
+            "operated": false
+          },
+          {
+            "id": "itm-5-mouse",
+            "name": "mouse",
+            "attributes": "white, ergonomic",
+            "operated": false
+          },
+          {
+            "id": "itm-6-tape-measure",
+            "name": "tape measure",
+            "attributes": "black and gray, red button",
+            "operated": false
+          },
+          {
+            "id": "itm-7-pens",
+            "name": "pens",
+            "attributes": "multiple, various colors",
+            "operated": false
+          },
+          {
+            "id": "itm-8-desk-surface",
+            "name": "desk surface",
+            "attributes": "white, clean",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-28T16:35:46.769951",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To effectively organize the desktop, it's important to understand the user's preferences regarding item placement, prioritization, and any specific organization principles they might have. For example, they might want frequently used items like the keyboard and mouse to be in easy reach, or they might prefer a neat, minimalist setup with decorative objects placed in specific areas. Asking about their organizational priorities will help guide the action plan.",
+      "robot_question": "How would you like your desktop organized? Do you prefer items to be grouped by type, function, or aesthetic, or do you have a specific layout in mind?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "session_id": "organize_desktop_auto_20250828_182428",
+  "custom_session_id": null,
+  "start_time": "2025-08-28T18:24:28.653974",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-28T18:24:50.087640",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_182450_081.jpg",
+      "original_image_path": "captured_frames/init_frame_20250828_182430.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "gray and white",
+            "operated": false
+          },
+          {
+            "id": "itm-2-mouse",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "itm-3-phone",
+            "name": "phone",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "itm-4-earbuds",
+            "name": "earbuds",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "itm-5-book",
+            "name": "book",
+            "attributes": "white cover",
+            "operated": false
+          },
+          {
+            "id": "itm-6-pen",
+            "name": "pen",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "itm-7-pen",
+            "name": "pen",
+            "attributes": "red",
+            "operated": false
+          },
+          {
+            "id": "itm-8-pen",
+            "name": "pen",
+            "attributes": "blue",
+            "operated": false
+          },
+          {
+            "id": "itm-9-red-object",
+            "name": "red object",
+            "attributes": "partially visible",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-28T18:25:32.565451",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To effectively organize the desktop, it's important to understand the user's preferences regarding the placement of items, such as whether they prefer a specific layout, grouping similar items together, or prioritizing frequently used items. Asking about their preferred organization method will help tailor the action to their needs.",
+      "robot_question": "How would you like the items on your desktop to be organized? For example, by type, frequency of use, or any specific layout?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

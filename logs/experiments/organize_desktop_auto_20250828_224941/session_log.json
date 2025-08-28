@@ -1,0 +1,86 @@
+{
+  "session_id": "organize_desktop_auto_20250828_224941",
+  "custom_session_id": null,
+  "start_time": "2025-08-28T22:49:41.436908",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-28T22:50:05.722394",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_225005_716.jpg",
+      "original_image_path": "captured_frames/init_frame_20250828_224948.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "white and gray",
+            "operated": false
+          },
+          {
+            "id": "itm-2-mouse",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "itm-3-book",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "itm-4-pens",
+            "name": "pens",
+            "attributes": "multiple colors",
+            "operated": false
+          },
+          {
+            "id": "itm-5-phone",
+            "name": "phone",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "itm-6-cans",
+            "name": "cans",
+            "attributes": "red",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-28T22:50:18.452532",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To organize the desktop effectively, it's essential to start with the largest or most prominent items. The keyboard is a significant and fixed item that serves as the foundation of the workspace. Ensuring it is in its correct position is crucial before arranging smaller items like the mouse, book, pens, phone, and cans.",
+      "robot_question": "Is the keyboard positioned correctly on the desk?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-28T22:50:45.527852",
+      "type": "item_status_change",
+      "operation_text": "place(itm-1-keyboard, table_center)",
+      "updated_items": [
+        {
+          "id": "itm-1-keyboard",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "session_id": "organize_desktop_auto_20250828_154027",
+  "custom_session_id": null,
+  "start_time": "2025-08-28T15:40:27.852826",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-28T15:40:46.481497",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_154046_473.jpg",
+      "original_image_path": "captured_frames/init_frame_20250828_154036.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "gray and white, compact",
+            "operated": false
+          },
+          {
+            "id": "itm-2-mouse",
+            "name": "mouse",
+            "attributes": "white, wireless",
+            "operated": false
+          },
+          {
+            "id": "itm-3-canned-drink",
+            "name": "canned drink",
+            "attributes": "silver top, red label",
+            "operated": false
+          },
+          {
+            "id": "itm-4-book",
+            "name": "book",
+            "attributes": "yellow cover, black text",
+            "operated": false
+          },
+          {
+            "id": "itm-5-pen",
+            "name": "pen",
+            "attributes": "blue, standard size",
+            "operated": false
+          },
+          {
+            "id": "itm-6-marker",
+            "name": "marker",
+            "attributes": "black, standard size",
+            "operated": false
+          },
+          {
+            "id": "itm-7-tape-measure",
+            "name": "tape measure",
+            "attributes": "black, standard size",
+            "operated": false
+          },
+          {
+            "id": "itm-8-airpods-case",
+            "name": "airpods case",
+            "attributes": "white, compact",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-28T15:42:10.723402",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To effectively organize the desktop, it's important to understand the user's preferences regarding the arrangement of items. Knowing whether they prioritize functionality, aesthetics, or a combination of both will help determine the best approach. Additionally, asking about the desired grouping of items (e.g., by type, color, or frequency of use) can ensure the organization aligns with their needs.",
+      "robot_question": "Would you like the items organized based on functionality, aesthetics, or a combination of both, and do you have any specific grouping preferences (e.g., by type, color, or usage frequency)?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

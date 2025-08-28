@@ -1,0 +1,91 @@
+{
+  "session_id": "organize_desktop_auto_20250828_213607",
+  "custom_session_id": null,
+  "start_time": "2025-08-28T21:36:07.630687",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-28T21:39:05.406238",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_213905_399.jpg",
+      "original_image_path": "captured_frames/init_frame_20250828_213845.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "gray, black, purple keys",
+            "operated": false
+          },
+          {
+            "id": "itm-2-mouse",
+            "name": "mouse",
+            "attributes": "white, gray",
+            "operated": false
+          },
+          {
+            "id": "itm-3-hamburger-shaped-object",
+            "name": "hamburger-shaped object",
+            "attributes": "yellow, red, green",
+            "operated": false
+          },
+          {
+            "id": "itm-4-pen",
+            "name": "pen",
+            "attributes": "blue",
+            "operated": false
+          },
+          {
+            "id": "itm-5-pen",
+            "name": "pen",
+            "attributes": "red",
+            "operated": false
+          },
+          {
+            "id": "itm-6-pen",
+            "name": "pen",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "itm-7-can",
+            "name": "can",
+            "attributes": "red, silver",
+            "operated": false
+          },
+          {
+            "id": "itm-8-book-magazine",
+            "name": "book/magazine",
+            "attributes": "yellow, black text",
+            "operated": false
+          },
+          {
+            "id": "itm-9-headphones",
+            "name": "headphones",
+            "attributes": "black",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-28T21:39:25.012977",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The task is to organize the desktop. Among the items listed, the keyboard is a fundamental component of the desktop setup and should be placed in a position that allows for comfortable use. Since it hasn't been operated yet, it might still be out of place or in an awkward position. Asking about the keyboard's position will help ensure it is correctly placed for optimal workflow and organization.",
+      "robot_question": "Where is the gray, black, and purple keyboard located on the desktop?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

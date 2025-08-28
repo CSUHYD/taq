@@ -1,0 +1,95 @@
+{
+  "session_id": "organize_desktop_auto_20250828_173539",
+  "custom_session_id": null,
+  "start_time": "2025-08-28T17:35:39.835787",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-28T17:35:50.819671",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_173550_816.jpg",
+      "original_image_path": "captured_frames/init_frame_20250828_173544.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "gray, standard layout",
+            "operated": false
+          },
+          {
+            "id": "itm-2-mouse",
+            "name": "mouse",
+            "attributes": "white, optical",
+            "operated": false
+          },
+          {
+            "id": "itm-3-book",
+            "name": "book",
+            "attributes": "yellow cover, text visible",
+            "operated": false
+          },
+          {
+            "id": "itm-4-pen",
+            "name": "pen",
+            "attributes": "black, standard size",
+            "operated": false
+          },
+          {
+            "id": "itm-5-pen",
+            "name": "pen",
+            "attributes": "blue, standard size",
+            "operated": false
+          },
+          {
+            "id": "itm-6-pen",
+            "name": "pen",
+            "attributes": "red, standard size",
+            "operated": false
+          },
+          {
+            "id": "itm-7-tape-measure",
+            "name": "tape measure",
+            "attributes": "black, red button",
+            "operated": false
+          },
+          {
+            "id": "itm-8-hand",
+            "name": "hand",
+            "attributes": "typing on keyboard",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-28T17:35:55.189025",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The user's preferences or desired organization principles are not specified, and understanding their organizational goals is crucial before proceeding with the task. Asking about their preferences will help tailor the organization to their needs, ensuring satisfaction and efficiency.",
+      "robot_question": "How would you like the desktop items organized? (e.g., by color, by type, or in a specific layout?)"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-28T17:36:04.400893",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To effectively organize the desktop, it's crucial to understand the user's preferences for item placement and any specific organization principles they might have. This ensures the organization meets their needs and maintains a functional and aesthetically pleasing setup.",
+      "robot_question": "How would you like the items on your desktop to be organized? (e.g., by color, function, or personal preference)"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

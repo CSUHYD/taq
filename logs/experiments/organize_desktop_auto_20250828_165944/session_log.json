@@ -1,0 +1,81 @@
+{
+  "session_id": "organize_desktop_auto_20250828_165944",
+  "custom_session_id": null,
+  "start_time": "2025-08-28T16:59:44.365596",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-28T17:00:20.350700",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_170020_343.jpg",
+      "original_image_path": "captured_frames/init_frame_20250828_165958.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "white and gray",
+            "operated": false
+          },
+          {
+            "id": "itm-2-mouse",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "itm-3-mouse-pad",
+            "name": "mouse pad",
+            "attributes": "gray with smiley face",
+            "operated": false
+          },
+          {
+            "id": "itm-4-hamburger-shaped-object",
+            "name": "hamburger-shaped object",
+            "attributes": "yellow and green",
+            "operated": false
+          },
+          {
+            "id": "itm-5-book",
+            "name": "book",
+            "attributes": "yellow cover with text",
+            "operated": false
+          },
+          {
+            "id": "itm-6-markers",
+            "name": "markers",
+            "attributes": "black, red, and blue",
+            "operated": false
+          },
+          {
+            "id": "itm-7-tape-measure",
+            "name": "tape measure",
+            "attributes": "black and red",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-28T17:00:31.672782",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To effectively organize the desktop, it's essential to understand the user's preferences regarding item placement, such as their priority or frequency of use, and any specific organizational principles they might have. This ensures the organization meets their needs and improves workflow. Asking about item prioritization or usage frequency will guide the robot in placing frequently used items within easy reach, enhancing efficiency and satisfaction.",
+      "robot_question": "Could you please tell me which items you use most frequently, or do you have any specific organizational preferences for how you'd like your desktop arranged?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-08-28T17:32:58.117376",
+  "total_interactions": 2
+}

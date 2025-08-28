@@ -663,6 +663,9 @@
                 <button class="btn btn-history" id="history-btn" onclick="toggleHistoryModal()">
                     📋 History
                 </button>
+                <button class="btn btn-history" id="prefs-btn" onclick="togglePrefsModal()">
+                    ⭐ Preferences
+                </button>
                 <button class="btn btn-restart" id="restart-btn" onclick="restartConversation()">
                     🔄 Restart
                 </button>
@@ -708,6 +711,19 @@
             </div>
             <div id="itemsContent">
                 <div class="empty-conversation">No items yet. Click "Init" to scan.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preferences Modal -->
+    <div id="prefsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">⭐ User Preferences</div>
+                <button class="close" onclick="closePrefsModal()">&times;</button>
+            </div>
+            <div id="prefsContent">
+                <div class="empty-conversation">No preferences parsed yet.</div>
             </div>
         </div>
     </div>
@@ -1016,12 +1032,10 @@
         // Add robot response to conversation
         function addRobotResponse(data) {
             const conversation = document.getElementById('conversation');
-            
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message robot-response';
-            
             const now = new Date().toLocaleString();
-            
+
             let operationHtml = '';
             if (data.operation && data.operation.trim()) {
                 operationHtml = `
@@ -1030,15 +1044,44 @@
                     </div>
                 `;
             }
-            
+
+            let ambiguityHtml = '';
+            if (data.ambiguity && typeof data.ambiguity === 'string') {
+                ambiguityHtml = `
+                    <div class="action-needed">
+                        <strong>Ambiguity:</strong> ${data.ambiguity}
+                    </div>
+                `;
+            }
+
+            let relevantHtml = '';
+            const rel = Array.isArray(data.relevant_objects) ? data.relevant_objects : [];
+            if (rel.length > 0) {
+                const rows = rel.map(it => {
+                    const name = (it && it.name) ? it.name : (it && it['name']) || '';
+                    const attrs = (it && it.attributes) ? it.attributes : (it && it['attributes']) || '';
+                    const operated = (it && (it.operated !== undefined)) ? it.operated : (it && it['operated']);
+                    const badge = operated ? '<span class="ri-badge">operated</span>' : '<span class="ri-badge">pending</span>';
+                    const attrsSpan = attrs ? `<span class="ri-attrs">${attrs}</span>` : '';
+                    return `<div class="relevant-item-row"><span class="ri-name">${name}</span>${attrsSpan}${badge}</div>`;
+                }).join('');
+                relevantHtml = `
+                    <div class="relevant-items">
+                        <div class="relevant-items-title">Relevant Objects</div>
+                        ${rows}
+                    </div>
+                `;
+            }
+
             messageDiv.innerHTML = `
                 <div class="message-header">🤖 Robot Response</div>
-                <div><strong>Understanding:</strong> ${data.understanding}</div>
                 ${operationHtml}
-                <div><strong>Reply:</strong> ${data.robot_reply}</div>
+                ${data.robot_reply ? `<div><strong>Reply:</strong> ${data.robot_reply}</div>` : ``}
+                ${ambiguityHtml}
+                ${relevantHtml}
                 <div class="timestamp">${now}</div>
             `;
-            
+
             conversation.appendChild(messageDiv);
             conversation.scrollTop = conversation.scrollHeight;
         }
@@ -1091,9 +1134,10 @@
                             addUserMessage(message.response);
                         } else if (message.type === 'robot_response') {
                             addRobotResponse({
-                                understanding: message.understanding,
-                                operation: message.operation,
-                                robot_reply: message.robot_reply
+                                operation: message.operation || '',
+                                robot_reply: message.robot_reply || '',
+                                ambiguity: message.ambiguity || false,
+                                relevant_objects: message.relevant_objects || []
                             });
                         }
                     });
@@ -1193,6 +1237,10 @@
             if (event.target === itemsModal) {
                 closeItemsModal();
             }
+            const prefsModal = document.getElementById('prefsModal');
+            if (event.target === prefsModal) {
+                closePrefsModal();
+            }
         }
 
         // Items modal helpers
@@ -1214,6 +1262,62 @@
         function closeItemsModal() {
             const modal = document.getElementById('itemsModal');
             modal.style.display = 'none';
+        }
+
+        // Preferences modal helpers
+        function togglePrefsModal() {
+            const modal = document.getElementById('prefsModal');
+            if (modal.style.display === 'block') {
+                closePrefsModal();
+            } else {
+                openPrefsModal();
+            }
+        }
+        function openPrefsModal() {
+            const modal = document.getElementById('prefsModal');
+            modal.style.display = 'block';
+            loadPrefsContent();
+        }
+        function closePrefsModal() {
+            const modal = document.getElementById('prefsModal');
+            modal.style.display = 'none';
+        }
+        function loadPrefsContent() {
+            const prefsContent = document.getElementById('prefsContent');
+            prefsContent.innerHTML = '<div class="empty-conversation">Loading preferences...</div>';
+            fetch('/user_preferences')
+                .then(resp => resp.json())
+                .then(data => {
+                    const list = Array.isArray(data.preferences_list) ? data.preferences_list : (data.preferences ? [data.preferences] : []);
+                    if (!data.success || list.length === 0) {
+                        prefsContent.innerHTML = '<div class="empty-conversation">No preferences available yet.</div>';
+                        return;
+                    }
+                    const mkList = (title, arr) => {
+                        if (!arr || !arr.length) return '';
+                        return `<div style=\"margin:8px 0\"><strong>${title}:</strong><ul>` + arr.map(x=>`<li>${x}</li>`).join('') + '</ul></div>';
+                    };
+                    const wrap = document.createElement('div');
+                    wrap.innerHTML = '';
+                    list.forEach((p, idx) => {
+                        const block = document.createElement('div');
+                        block.style.borderBottom = '1px solid #eee';
+                        block.style.padding = '8px 0';
+                        const header = `<div style=\"font-weight:600;color:#2c3e50;margin-bottom:6px\">Entry ${idx+1}</div>`;
+                        block.innerHTML = header +
+                            mkList('Organization Principles', p.organization_principles) +
+                            mkList('Object Placement Preferences', p.object_placement_preferences) +
+                            mkList('Constraints/Forbidden', p.constraints_forbidden);
+        
+                        wrap.appendChild(block);
+                    });
+                    prefsContent.innerHTML = '';
+                    prefsContent.appendChild(wrap);
+                })
+                .catch(err => {
+                    console.error('Load preferences error:', err);
+                    prefsContent.innerHTML = '<div class="empty-conversation">Error loading preferences.</div>';
+                });
         }
 
         function loadItems() {

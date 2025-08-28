@@ -1,0 +1,89 @@
+{
+  "session_id": "organize_desktop_auto_20250828_161403",
+  "custom_session_id": null,
+  "start_time": "2025-08-28T16:14:03.614192",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-28T16:14:48.281348",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_161448_273.jpg",
+      "original_image_path": "captured_frames/init_frame_20250828_161439.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "white and gray, ergonomic design",
+            "operated": false
+          },
+          {
+            "id": "itm-2-mouse",
+            "name": "mouse",
+            "attributes": "white, ergonomic",
+            "operated": false
+          },
+          {
+            "id": "itm-3-book",
+            "name": "book",
+            "attributes": "yellow and white cover, text visible",
+            "operated": false
+          },
+          {
+            "id": "itm-4-pens",
+            "name": "pens",
+            "attributes": "multiple colors, standard size",
+            "operated": false
+          },
+          {
+            "id": "itm-5-tape-measure",
+            "name": "tape measure",
+            "attributes": "black and red, standard size",
+            "operated": false
+          },
+          {
+            "id": "itm-6-water-bottle",
+            "name": "water bottle",
+            "attributes": "black, standard size",
+            "operated": false
+          },
+          {
+            "id": "itm-7-hand",
+            "name": "hand",
+            "attributes": "partially visible, interacting with keyboard",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-28T16:15:47.800876",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To effectively organize the desktop, it's important to understand the user's preferences for item placement, visibility, and accessibility. Asking about their specific needs will help tailor the organization to their workflow and priorities.",
+      "robot_question": "Would you like to prioritize items based on frequency of use, keep frequently used items within easy reach, or organize them by type or color?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-28T16:17:11.785719",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To organize the desktop, I should first focus on the keyboard since it is a central item and is currently being interacted with by a hand. Ensuring the keyboard is properly placed and not obstructed is essential for maintaining a clean and functional workspace.",
+      "robot_question": "Where should the keyboard be positioned for optimal organization?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}
