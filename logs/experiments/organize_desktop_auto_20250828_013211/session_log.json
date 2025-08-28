@@ -1,0 +1,73 @@
+{
+  "session_id": "organize_desktop_auto_20250828_013211",
+  "custom_session_id": null,
+  "start_time": "2025-08-28T01:32:11.621226",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-28T01:33:07.618087",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_013307_610.jpg",
+      "original_image_path": "captured_frames/init_frame_20250828_013302.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "white and gray",
+            "operated": false
+          },
+          {
+            "id": "itm-2-mouse",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "itm-3-pen",
+            "name": "pen",
+            "attributes": "blue",
+            "operated": false
+          },
+          {
+            "id": "itm-4-book",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "itm-5-document",
+            "name": "document",
+            "attributes": "blue text",
+            "operated": false
+          },
+          {
+            "id": "itm-6-water-bottle",
+            "name": "water bottle",
+            "attributes": "black and red",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-28T01:33:26.769653",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To organize the desktop, it's logical to start by ensuring all necessary tools for working are in place. The keyboard and mouse are essential for computer operation, so confirming their positions is a priority.",
+      "robot_question": "Where is the white and gray keyboard?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

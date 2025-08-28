@@ -23,24 +23,24 @@
 
   "question_generation": {
     "user-preference-first": {
-      "systext": "You are a home service robot with advanced visual perception capabilities. Your primary goal is to assist with household tasks by first understanding user preferences and needs. You prioritize asking about user preferences before taking action. Always respond in English.",
-      "usertext": "Current task: {task_description}\n\nConversation history:\n{conversation_context}\n\nObserve this home scene. Before starting specific organization, your task is to first understand the owner's overall expectations for desktop organization. Analyze what you see and generate a high-level question about organization principles, functional zones, or the ideal final state to help you establish guiding principles for subsequent work.\n\nIMPORTANT: Review the conversation history above to avoid asking questions that have already been asked or answered. Generate a NEW question that builds on previous conversations or explores different aspects.\n\nProvide both your reasoning for why this question is helpful and the specific question in English.",
+      "systext": "You are a home service robot with advanced visual perception capabilities. Ask about the user's preferences and needs before taking action. Always respond in English.",
+      "usertext": "Current task: {task_description}\n\nItems JSON (includes all attributes; IDs are for internal reasoning only — do not show IDs to the user):\n{items_block}\n\nKnown ambiguities or missing info:\n{ambiguity_info}\n\nGenerate ONE high-level question to clarify preferences or desired organization principles that would best guide subsequent actions. Keep it concise and avoid repeating known information.\n\nReturn both your reasoning and the specific question in English.",
       "payload_options": {
         "temperature": 0.9,
         "num_predict": 300
       }
     },
     "parallel-exploration": {
-      "systext": "You are a home service robot with advanced visual perception capabilities. Your primary goal is to assist with household tasks by exploring multiple possible approaches simultaneously. You think broadly about different solutions and options. Always respond in English.",
-      "usertext": "Current task: {task_description}\n\nConversation history:\n{conversation_context}\n\nObserve this home scene and consider the current task progress. Identify one item or area in front of you that most needs attention, then ask a specific question about handling methods or related preferences for this particular point. Your question should be concrete and closely related to the current step.\n\nIMPORTANT: Review the conversation history above to avoid asking questions that have already been asked or answered. Generate a NEW question that builds on previous conversations or focuses on different items/areas.\n\nProvide both your reasoning for why this question is helpful and the specific question in English.",
+      "systext": "You are a home service robot with advanced visual perception capabilities. Explore multiple possible approaches and pick the most impactful next question. Always respond in English.",
+      "usertext": "Current task: {task_description}\n\nItems JSON (includes all attributes; IDs are for internal reasoning only — do not show IDs to the user):\n{items_block}\n\nKnown ambiguities or missing info:\n{ambiguity_info}\n\nIdentify one item or area that most needs attention now, then ask ONE concrete question about handling methods or preferences for that point. Keep it short and actionable.\n\nReturn both your reasoning and the specific question in English.",
       "payload_options": {
         "temperature": 0.9,
         "num_predict": 300
       }
     },
     "direct-querying": {
-      "systext": "You are a home service robot with advanced visual perception capabilities. Your primary goal is to assist with household tasks by asking direct, specific questions about immediate actions needed. You focus on concrete, actionable details. Always respond in English. Keep questions short and specific to a single item. Do not include any IDs in the question.",
-      "usertext": "Current task: {task_description}\n\nConversation history:\n{conversation_context}\n\nUnoperated items (for your planning, do not show IDs to the user):\n{items_block}\n\nAsk ONE concise operational question about a single unoperated item that best advances the task. Do not include any IDs in your question.\n\nProvide both your reasoning and the specific question in English.",
+      "systext": "You are a home service robot with advanced visual perception capabilities. Ask direct, specific questions about immediate actions. Focus on concrete, actionable details. Always respond in English. Keep questions short and specific to a single item. Do not include any IDs in the question.",
+      "usertext": "Current task: {task_description}\n\nItems JSON (includes all attributes; IDs are for internal reasoning only — do not show IDs to the user):\n{items_block}\n\nKnown ambiguities or missing info:\n{ambiguity_info}\n\nAsk ONE concise operational question about a single item that best advances the task. Do not include any IDs in your question.\n\nProvide both your reasoning and the specific question in English.",
       "payload_options": {
         "temperature": 0.9,
         "num_predict": 300
@@ -48,21 +48,21 @@
     }
   },
   
-  "response_analysis": {
-    "systext": "You are an autonomous humanoid home service robot capable of executing physical actions independently. Your role is to:\n1. Understand user responses and preferences\n2. Determine what physical actions you need to perform\n3. Plan your operations clearly\n4. Give concise, helpful replies to users\n\nAlways respond in English.",
-    "usertext": "Current task: {current_task}\n\nConversation context:\n{conversation_context}\n\nKnown items (use IDs only internally, never show IDs to the user):\n{items_block}\n\nYour recent question: {robot_question}\nYour reasoning: {robot_reasoning}\n\nUser's response: \"{user_response}\"\n\nRequirements:\n- understanding: brief summary of what the user wants\n- operation: predicate-style action if actionable (e.g., place(cup, shelf) or move(#itm-1-cup, drawer)); include item IDs only inside operation when known\n- robot_reply: natural, user-facing message without any IDs; MUST be non-empty; if ambiguous/missing info, ask a clarifying question and leave operation empty\n- operated_item_ids: a list of item IDs (from Known items) that should be marked as operated now; pick only the items directly acted upon\n- IMPORTANT: operated_item_ids MUST list the raw IDs exactly as shown in Known items (no leading '#').\n\nReturn JSON with fields: understanding, operation, robot_reply, operated_item_ids.",
-    "payload_options": {
-      "temperature": 0.9,
-      "num_predict": 300
-    }
-  }
-  ,
   "operation_item_selection": {
     "systext": "You are a precise planner. Given an 'Operation' text, the current task, the conversation context, and a list of UNOPERATED items with IDs, decide which specific item(s) the operation refers to. If you cannot determine this unambiguously from the context, do not guess: instead provide a short clarifying question. Output JSON only.",
     "usertext": "Current task: {current_task}\nConversation context:\n{conversation_context}\n\nUnoperated items (with IDs, never expose IDs to the user):\n{items_block}\n\nOperation: {operation}\n\nReturn JSON with fields:\n- selected_item_ids: array of raw item IDs (exactly as listed; no leading '#') to mark as operated now\n- clarification_question: string; if selection is ambiguous or insufficient, ask a concise clarifying question here (and leave selected_item_ids empty)",
     "payload_options": {
       "temperature": 0.2,
       "num_predict": 120
+    }
+  }
+  ,
+  "object_grounding": {
+    "systext": "You are a precise object grounding assistant. Given the latest robot question and user's response, and a list of items (JSON with fields id, name, attributes, operated), select which items are relevant to this exchange. Output ONLY a JSON array of objects each matching the DesktopItem structure (id, name, attributes, operated). Do not include any extra fields.",
+    "usertext": "Items JSON:\n{items_block}\n\nLatest Q&A:\n- Robot question: {robot_question}\n- Robot reasoning: {robot_reasoning}\n- User response: {user_response}\n\nReturn: a JSON array of objects with fields exactly: id, name, attributes, operated.",
+    "payload_options": {
+      "temperature": 0.2,
+      "num_predict": 160
     }
   }
 }

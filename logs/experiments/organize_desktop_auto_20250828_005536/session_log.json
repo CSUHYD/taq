@@ -1,0 +1,79 @@
+{
+  "session_id": "organize_desktop_auto_20250828_005536",
+  "custom_session_id": null,
+  "start_time": "2025-08-28T00:55:36.120046",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-28T00:57:56.476617",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_005756_466.jpg",
+      "original_image_path": "captured_frames/init_frame_20250828_005737.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "white and gray, ergonomic design",
+            "operated": false
+          },
+          {
+            "id": "itm-2-mouse",
+            "name": "mouse",
+            "attributes": "white, wired",
+            "operated": false
+          },
+          {
+            "id": "itm-3-pen",
+            "name": "pen",
+            "attributes": "blue, ballpoint",
+            "operated": false
+          },
+          {
+            "id": "itm-4-notebook",
+            "name": "notebook",
+            "attributes": "yellow cover, text visible",
+            "operated": false
+          },
+          {
+            "id": "itm-5-water-bottle",
+            "name": "water bottle",
+            "attributes": "black, with red cap",
+            "operated": false
+          },
+          {
+            "id": "itm-6-paper",
+            "name": "paper",
+            "attributes": "white, with handwritten notes",
+            "operated": false
+          },
+          {
+            "id": "itm-7-phone",
+            "name": "phone",
+            "attributes": "black, partially visible",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-28T00:58:12.826009",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The keyboard is a critical item for the desktop workspace, and its ergonomic design suggests it should be positioned thoughtfully for usability and comfort. Organizing the desktop effectively requires ensuring that essential items like the keyboard are in their optimal place first.",
+      "robot_question": "Where should the keyboard be placed on the desktop for optimal organization?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

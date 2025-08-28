@@ -1,17 +1,16 @@
 import json
 import os
+import re
 import shutil
 from datetime import datetime
 from pydantic import BaseModel
 from vlmCall_ollama import VLMAPI, load_prompt_config
-import re
 
 
 # Pydantic models for business logic
 class VLMResponse(BaseModel):
     reasoning: str
     question: str
-
 
 class ResponseAnalysis(BaseModel):
     understanding: str  # 对用户回答的理解
@@ -25,17 +24,16 @@ class OperationSelection(BaseModel):
     selected_item_ids: list[str]
     clarification_question: str | None = None
 
-
 class DesktopItem(BaseModel):
-    id: str | None = None  # 唯一标识符
+    id: str | None = None
     name: str
     attributes: str | None = None
-    operated: bool = False  # 是否被操作
-
+    operated: bool | None = False
 
 class DesktopScanResult(BaseModel):
     items: list[DesktopItem]
     summary: str | None = None
+
 
 
 class ExperimentLogger:
@@ -252,78 +250,56 @@ class RobotService:
         self.config = load_prompt_config()
         self.logger = ExperimentLogger()
         self.items: list[DesktopItem] = []
-        self.current_target_item_id: str | None = None
+        self.relevant_items: list[dict] = []
+        self.conversation_history: list[dict] = []
 
-    def _strip_ids_from_text(self, text: str) -> str:
-        if not text:
-            return text
-        # remove tokens like #itm-1-cup or #anything
-        return re.sub(r"#\S+", "", text).strip()
 
-    
-    def _build_conversation_context(self, messages_history):
-        """构建对话历史上下文"""
-        conversation_context = ""
-        if messages_history:
-            for msg in messages_history:
-                if msg.get("type") == "robot":
-                    if msg.get("reasoning"):
-                        conversation_context += f"Robot reasoning: {msg['reasoning']}\n"
-                    if msg.get("question"):
-                        conversation_context += f"Robot question: {msg['question']}\n"
-                elif msg.get("type") == "user":
-                    if msg.get("response"):
-                        conversation_context += f"User response: {msg['response']}\n"
-            conversation_context += "\n"
-        return conversation_context
-    
     def generate_question(self, 
-                         task_description, 
-                         image_path=None, 
-                         messages_history=None,
-                         strategy="user-preference-first"):
+                          items,
+                          task_description,
+                          ambiguity_info: str = "",
+                          strategy: str = "direct-querying"):
         """
-        生成基于任务和图像的问题
+        基于任务、物体列表和已知歧义信息生成问题
         
         Args:
+            items: 物体列表（dict 或 DesktopItem），仅用于规划，不向用户展示ID
             task_description: 当前任务描述
-            image_path: 图像路径
-            messages_history: 对话历史
+            ambiguity_info: 已知歧义/不确定信息（初始化为空字符串）
             strategy: 提问策略 ("user-preference-first", "parallel-exploration", "direct-querying")
             
         Returns:
             VLMResponse: 包含推理和问题的响应
         """
-        # Always use a simple, item-focused prompt (direct-querying template)
         question_config = self.config.get("question_generation", {})
         if not question_config:
             raise ValueError("question_generation configuration not found")
-        strat_config = question_config.get("direct-querying", {}) or {}
+        strat_key = strategy if strategy in question_config else "direct-querying"
+        strat_config = question_config.get(strat_key, {}) or {}
         systext = strat_config.get("systext", "")
         usertext_template = strat_config.get("usertext", "")
         payload_options = strat_config.get("payload_options", {})
         
-        # 构建对话历史上下文
-        conversation_context = self._build_conversation_context(messages_history)
-        
-        # Select a single unoperated item to ask about
-        if not self.items:
-            raise ValueError("No desktop items. Please click Init to scan first.")
-        target = None
-        for it in self.items:
-            if not getattr(it, 'operated', False):
-                target = it
-                break
-        if not target:
-            return VLMResponse(reasoning="All items handled", question="All items are already operated. Do you want to re-scan?")
-        # Remember target for update after Operation
-        self.current_target_item_id = getattr(target, 'id', None)
-        attr = f" | attrs: {getattr(target, 'attributes', None)}" if getattr(target, 'attributes', None) else ""
-        items_block = f"- {target.name}{attr}"
+        # Build items block by embedding full items JSON (includes all attributes)
+        if not items:
+            raise ValueError("No items provided. Please initialize desktop scan first.")
+        def _to_dict(it):
+            if hasattr(it, 'model_dump'):
+                return it.model_dump()
+            if isinstance(it, dict):
+                return it
+            # Fallback minimal mapping
+            return {
+                'id': getattr(it, 'id', None),
+                'name': getattr(it, 'name', None),
+                'attributes': getattr(it, 'attributes', None),
+                'operated': getattr(it, 'operated', None),
+            }
+        items_block = json.dumps([_to_dict(it) for it in items], ensure_ascii=False)
         usertext = usertext_template.format(
             task_description=task_description,
-            conversation_context=conversation_context,
-            items_block=items_block
+            items_block=items_block,
+            ambiguity_info=ambiguity_info or "(none)"
         )
         
         # 调用基础API
@@ -331,195 +307,212 @@ class RobotService:
             systext=systext,
             usertext=usertext,
             format_schema=VLMResponse.model_json_schema(),
-            image_path1=image_path,
             options=payload_options
         )
         
         # 解析响应
-        try:
-            parsed_response = VLMResponse.model_validate_json(raw_question)
-            print(f"Question generation successful")
-            
-            # 记录问题生成日志
-            self.logger.log_question_generation(
-                strategy=strategy,
-                image_path=image_path,
-                vlm_response=parsed_response
-            )
-            
-            return parsed_response
-        except Exception as parse_error:
-            print(f"Failed to parse question response: {parse_error}")
-            print(f"Raw response: {raw_question}")
-            fallback_response = VLMResponse(reasoning="", question=raw_question)
-            
-            # 记录问题生成日志（即使解析失败）
-            self.logger.log_question_generation(
-                strategy=strategy,
-                image_path=image_path,
-                vlm_response=fallback_response
-            )
-            
-            return fallback_response
-    
-    def analyze_user_response(self,
-                            user_response,
-                            robot_question,
-                            robot_reasoning,
-                            current_task,
-                            messages_history=None):
-        """
-        分析用户回答并生成机器人响应
+        parsed_response = VLMResponse.model_validate_json(raw_question)
+        print(f"Question generation successful")
         
+        # 记录问题生成日志
+        self.logger.log_question_generation(
+            strategy=strategy,
+            image_path=None,
+            vlm_response=parsed_response
+        )
+        # Also persist to backend conversation
+        self.append_robot_question(
+            reasoning=parsed_response.reasoning,
+            question=parsed_response.question,
+            image_path=None,
+        )
+        
+        return parsed_response
+
+    def ground_objects(self, latest_qa: dict, items):
+        """Ground conversation to items using VLM and update self.relevant_items.
+
         Args:
-            user_response: 用户回答
-            robot_question: 机器人之前的问题
-            robot_reasoning: 机器人之前的推理
-            current_task: 当前任务
-            messages_history: 对话历史
-            
+            latest_qa: dict with keys 'robot' and 'user' (from get_latest_qa())
+            items: list of DesktopItem or item dicts
+
         Returns:
-            ResponseAnalysis: 包含理解、动作和回复的分析结果
+            list[DesktopItem] on success, or None on parse failure.
         """
-        # Base config
-        ra_config = self.config.get("response_analysis", {})
-        if not ra_config:
-            raise ValueError("response_analysis configuration not found")
+        if not items:
+            return []
 
-        payload_options = ra_config.get("payload_options", {})
-        
-        # 构建对话历史上下文
-        conversation_context = self._build_conversation_context(messages_history)
-        
-        # Simple prompt: we don't need to list items here
-        items_block = ""
+        og_cfg = self.config.get("object_grounding", {})
+        systext = og_cfg.get(
+            "systext",
+            (
+                "You are an object grounding assistant. Given the latest robot question and user's"
+                " response plus a list of items (JSON with id, name, attributes, operated), select"
+                " the items most relevant to this exchange. Output JSON only."
+            ),
+        )
 
-        # Build prompt from config
-        systext = ra_config.get("systext", "")
-        usertext_template = ra_config.get("usertext", "")
+        robot = (latest_qa or {}).get("robot") or {}
+        user = (latest_qa or {}).get("user") or {}
+        robot_question = robot.get("question") or ""
+        robot_reasoning = robot.get("reasoning") or ""
+        user_response = user.get("response") or ""
+
+        def _to_dict(it):
+            if hasattr(it, 'model_dump'):
+                return it.model_dump()
+            if isinstance(it, dict):
+                return it
+            return {
+                'id': getattr(it, 'id', None),
+                'name': getattr(it, 'name', None),
+                'attributes': getattr(it, 'attributes', None),
+                'operated': getattr(it, 'operated', None),
+            }
+
+        items_block = json.dumps([_to_dict(it) for it in items], ensure_ascii=False)
+        usertext_template = og_cfg.get(
+            "usertext",
+            (
+                "Items JSON:\n{items_block}\n\nLatest Q&A:\n- Robot question: {robot_question}\n- Robot reasoning: {robot_reasoning}\n- User response: {user_response}\n\nReturn JSON with fields: selected_item_ids (raw IDs as in Items JSON), selected_item_names (optional), rationale."
+            ),
+        )
         usertext = usertext_template.format(
-            current_task=current_task,
-            conversation_context=conversation_context,
             items_block=items_block,
             robot_question=robot_question,
             robot_reasoning=robot_reasoning,
-            user_response=user_response
+            user_response=user_response,
         )
-        
-        # 调用基础API
-        raw_response = self.vlm_api.vlm_request_with_format(
+
+        options = og_cfg.get("payload_options", {"temperature": 0.2, "num_predict": 160})
+        # Expect an array of DesktopItem objects
+        array_schema = {"type": "array", "items": DesktopItem.model_json_schema()}
+        raw = self.vlm_api.vlm_request_with_format(
             systext=systext,
             usertext=usertext,
-            format_schema=ResponseAnalysis.model_json_schema(),
-            options=payload_options
+            format_schema=array_schema,
+            options=options,
         )
-        
-        # 解析响应
         try:
-            parsed_response = ResponseAnalysis.model_validate_json(raw_response)
-            print(f"Response analysis successful")
+            data = json.loads(raw)
+            grounded_items: list[DesktopItem] = []
+            if isinstance(data, list):
+                for obj in data:
+                    try:
+                        grounded_items.append(DesktopItem.model_validate(obj))
+                    except Exception:
+                        continue
+            else:
+                grounded_items = []
+        except Exception as e:
+            print(f"Failed to parse object grounding result: {e}")
+            print(f"Raw grounding response: {raw}")
+            return None
 
-            # Use VLM to select which items in unoperated list are operated by this operation
-            updated = []
+        # Merge into relevant_items without duplicates
+        existing_ids = {d.get('id') for d in self.relevant_items if d.get('id')}
+        existing_names = {d.get('name') for d in self.relevant_items}
+        for it in grounded_items:
+            d = it.model_dump()
+            iid = (d.get('id') or '').strip() if d.get('id') else None
+            nm = (d.get('name') or '').strip() if d.get('name') else None
+            if (iid and iid in existing_ids) or (not iid and nm in existing_names):
+                continue
+            self.relevant_items.append(d)
+
+        return grounded_items
+
+    def robot_response(self, user_response: str) -> dict:
+        """Generate a simple robot reply to user's response.
+
+        Current behavior:
+        - Append the user response to backend conversation.
+        - Run object grounding against current items using the latest Q&A.
+        - Return a concise reply plus the current session's focused (relevant) items.
+
+        Returns a dict: { 'robot_reply': str, 'relevant_items': list[dict] }
+        """
+        # Record user response
+        self.append_user_response(user_response)
+
+        # Build latest Q&A and ground relevant objects
+        latest = self.get_latest_qa()
+        grounded = self.ground_objects(latest, self.items or [])
+
+        # Compose a minimal reply using grounded item names
+        names = []
+        if grounded:
             try:
-                selection = self.select_items_for_operation(parsed_response.operation, conversation_context, current_task)
-                ids = selection.selected_item_ids if selection else []
-                if ids and self.items:
-                    norm_ids = set()
-                    for i in ids:
-                        if not isinstance(i, str):
-                            continue
-                        s = i.strip()
-                        if s.startswith('#'):
-                            s = s[1:]
-                        norm_ids.add(s.lower())
-                    for it in self.items:
-                        if getattr(it, 'id', None) and it.id.lower() in norm_ids and not getattr(it, 'operated', False):
-                            it.operated = True
-                            updated.append({"id": it.id, "name": it.name, "operated": True})
-                # If VLM says it's ambiguous, replace reply with clarifying question and clear operation
-                if (not ids or len(ids) == 0) and selection and getattr(selection, 'clarification_question', None):
-                    parsed_response.operation = ""
-                    cq = selection.clarification_question.strip()
-                    if cq:
-                        parsed_response.robot_reply = self._strip_ids_from_text(cq)
-                if updated:
-                    self.logger.log_item_status_change(parsed_response.operation, updated)
-            except Exception as e:
-                print(f"Operation item selection failed: {e}")
+                names = [gi.name for gi in grounded if getattr(gi, 'name', None)]
+            except Exception:
+                names = []
+        if names:
+            reply = f"I'll focus on: {', '.join(names)}."
+        else:
+            reply = "Not sure which items you mean. Could you clarify?"
 
-            # 记录用户回应日志（包含追加字段）
-            self.logger.log_user_response(user_response, parsed_response)
+        return {"robot_reply": reply, "relevant_items": self.get_relevant_items()}
 
-            # Ensure robot_reply is user-facing and non-empty (VLM should provide it)
-            rr = (parsed_response.robot_reply or "").strip()
-            if not rr:
-                parsed_response.robot_reply = (
-                    "Could you clarify which item or location you mean?"
-                )
-            # Remove any accidental IDs from reply
-            parsed_response.robot_reply = self._strip_ids_from_text(parsed_response.robot_reply)
+    # Conversation management (backend)
+    def append_robot_question(self, reasoning: str, question: str, image_path: str | None = None):
+        self.conversation_history.append({
+            "type": "robot",
+            "reasoning": reasoning,
+            "question": question,
+            "timestamp": datetime.now().isoformat(),
+            "image_path": image_path,
+        })
 
-            return parsed_response
-        except Exception as parse_error:
-            print(f"Failed to parse response analysis: {parse_error}")
-            print(f"Raw response: {raw_response}")
-            
-            # English-only fallback
-            fallback_response = ResponseAnalysis(
-                understanding=f"User said: {user_response}",
-                operation="",
-                robot_reply="I understand your response. Let me continue with the task."
-            )
-            
-            # 记录用户回应日志（即使解析失败）
-            self.logger.log_user_response(user_response, fallback_response)
-            
-            return fallback_response
-    
-    def process_conversation_turn(self,
-                                user_response,
-                                last_robot_message,
-                                current_task,
-                                conversation_history):
-        """
-        处理一轮完整的对话交互
-        
-        Args:
-            user_response: 用户回答
-            last_robot_message: 上一个机器人消息
-            current_task: 当前任务
-            conversation_history: 完整对话历史
-            
-        Returns:
-            ResponseAnalysis: 分析结果
-        """
-        analysis = self.analyze_user_response(
-            user_response=user_response,
-            robot_question=last_robot_message.get("question", ""),
-            robot_reasoning=last_robot_message.get("reasoning", ""),
-            current_task=current_task,
-            messages_history=conversation_history
-        )
-        return analysis
+    def append_user_response(self, response_text: str):
+        self.conversation_history.append({
+            "type": "user",
+            "response": response_text,
+            "timestamp": datetime.now().isoformat(),
+        })
+
+    def get_latest_qa(self) -> dict:
+        """Return latest robot question and the next user response if available."""
+        last_robot = None
+        last_user_after = None
+        for msg in reversed(self.conversation_history):
+            if last_robot is None:
+                if msg.get("type") == "user":
+                    last_user_after = msg if last_user_after is None else last_user_after
+                elif msg.get("type") == "robot":
+                    last_robot = msg
+                    break
+        return {"robot": last_robot, "user": last_user_after}
+
+    def get_conversation(self) -> list[dict]:
+        return list(self.conversation_history)
+
+    def clear_conversation(self):
+        self.conversation_history = []
+
+    def get_relevant_items(self) -> list[dict]:
+        return list(self.relevant_items)
 
     def enumerate_desktop_items(self, image_path):
-        """Enumerate visible desktop items and return {items, summary}."""
+        """Enumerate visible desktop items and return DesktopScanResult."""
         if not image_path:
             return None
 
-        # Pull prompt from config; fallback to defaults if missing
         ds_cfg = self.config.get("desktop_scan", {})
-        systext = ds_cfg.get("systext", (
-            "You are a vision assistant. Identify only items visible on a desk/table surface."
-            " Return concise object names with brief attributes for each item (e.g., color, size)."
-            " Do not hallucinate."
-        ))
-        usertext = ds_cfg.get("usertext", (
-            "Analyze the image and list distinct desktop items."
-            " For each item, include a short attributes string when helpful."
-            " Do not include counts. Use short nouns."
-        ))
+        systext = ds_cfg.get(
+            "systext",
+            (
+                "You are a vision assistant. Identify only items visible on a desk/table surface. "
+                "Return concise object names with brief attributes for each item (e.g., color, size). "
+                "Do not hallucinate."
+            ),
+        )
+        usertext = ds_cfg.get(
+            "usertext",
+            (
+                "Analyze the image and list distinct desktop items. For each item, include a short attributes "
+                "string when helpful. Do not include counts. Use short nouns."
+            ),
+        )
         options = ds_cfg.get("payload_options", {"temperature": 0.2, "num_predict": 300})
 
         try:
@@ -528,7 +521,7 @@ class RobotService:
                 usertext=usertext,
                 format_schema=DesktopScanResult.model_json_schema(),
                 image_path1=image_path,
-                options=options
+                options=options,
             )
             parsed = DesktopScanResult.model_validate_json(raw)
             return parsed
@@ -541,12 +534,10 @@ class RobotService:
         """Run desktop enumeration, store to member, and log the result."""
         scan = self.enumerate_desktop_items(image_path)
         if scan is not None:
-            # Ensure operated flag exists for items (defaults to False)
             new_items: list[DesktopItem] = []
             for idx, item in enumerate(scan.items, start=1):
                 if not hasattr(item, 'operated') or item.operated is None:
                     item.operated = False
-                # Assign deterministic ID if missing
                 if not getattr(item, 'id', None):
                     base = re.sub(r'[^a-zA-Z0-9]+', '-', (item.name or '').strip().lower()).strip('-')
                     if not base:
@@ -555,7 +546,6 @@ class RobotService:
                 new_items.append(item)
             self.items = new_items
             try:
-                # Log using the summary returned in the scan result directly
                 self.logger.log_desktop_scan(image_path, self.items, getattr(scan, 'summary', None))
             except Exception as e:
                 print(f"Failed to log desktop scan: {e}")
@@ -579,7 +569,6 @@ class RobotService:
         return self.logger.log_timing_data(timing_data)
 
     def get_desktop_items_snapshot(self):
-        """Return a snapshot of current desktop items and summary for web UI."""
         if not self.items:
             return {"items": [], "summary": None}
         items = [
@@ -587,52 +576,8 @@ class RobotService:
                 "id": getattr(it, 'id', None),
                 "name": it.name,
                 "attributes": getattr(it, 'attributes', None),
-                "operated": getattr(it, 'operated', False)
+                "operated": getattr(it, 'operated', False),
             }
             for it in self.items
         ]
-        # No persistent summary stored; return None for compatibility
         return {"items": items, "summary": None}
-
-    def select_items_for_operation(self, operation_text: str, conversation_context: str, current_task: str | None = None):
-        """Use VLM to select which unoperated items are referred by the operation.
-
-        Inputs: current list of items (internal), operation text, conversation context.
-        Output: OperationSelection with selected_item_ids.
-        """
-        if not operation_text:
-            return OperationSelection(selected_item_ids=[])
-        if not self.items:
-            return OperationSelection(selected_item_ids=[])
-
-        # Build unoperated items block with IDs
-        lines = []
-        for it in self.items:
-            if not getattr(it, 'operated', False):
-                tag = f"#{getattr(it, 'id', '')} " if getattr(it, 'id', None) else ""
-                attrs = f" | attrs: {getattr(it, 'attributes', None)}" if getattr(it, 'attributes', None) else ""
-                lines.append(f"- {tag}{it.name}{attrs}")
-        items_block = "\n".join(lines) if lines else "(no unoperated items)"
-
-        sel_cfg = self.config.get("operation_item_selection", {})
-        systext = sel_cfg.get("systext", (
-            "You are to select which items are referred to by the given operation. "
-            "Use the provided unoperated items list with IDs. Return JSON with selected_item_ids."
-        ))
-        usertext = sel_cfg.get("usertext", (
-            "Current task: {current_task}\nConversation context:\n{conversation_context}\n\nUnoperated items (use IDs internally):\n{items_block}\n\nOperation: {operation}\n\nSelect the item IDs that the operation explicitly refers to."
-        )).format(current_task=current_task or "", conversation_context=conversation_context or "", items_block=items_block, operation=operation_text)
-        options = sel_cfg.get("payload_options", {"temperature": 0.2, "num_predict": 100})
-
-        raw = self.vlm_api.vlm_request_with_format(
-            systext=systext,
-            usertext=usertext,
-            format_schema=OperationSelection.model_json_schema(),
-            options=options
-        )
-        try:
-            return OperationSelection.model_validate_json(raw)
-        except Exception as e:
-            print(f"Failed to parse operation selection: {e}")
-            print(f"Raw selection response: {raw}")
-            return OperationSelection(selected_item_ids=[])

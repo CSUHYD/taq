@@ -1,0 +1,73 @@
+{
+  "session_id": "organize_desktop_auto_20250828_004307",
+  "custom_session_id": null,
+  "start_time": "2025-08-28T00:43:07.720867",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-28T00:43:47.991737",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_004347_984.jpg",
+      "original_image_path": "captured_frames/init_frame_20250828_004330.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "white and gray",
+            "operated": false
+          },
+          {
+            "id": "itm-2-mouse",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "itm-3-pen",
+            "name": "pen",
+            "attributes": "blue",
+            "operated": false
+          },
+          {
+            "id": "itm-4-notebook",
+            "name": "notebook",
+            "attributes": "white pages",
+            "operated": false
+          },
+          {
+            "id": "itm-5-book",
+            "name": "book",
+            "attributes": "yellow cover",
+            "operated": false
+          },
+          {
+            "id": "itm-6-water-bottle",
+            "name": "water bottle",
+            "attributes": "black and gray",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-28T00:43:56.897178",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To effectively organize the desktop, it's important to understand the user's preferences for the layout or categorization of items. This ensures the organization aligns with their workflow or aesthetic preferences. Asking about their desired arrangement helps tailor the actions to meet their needs without assumptions.",
+      "robot_question": "How would you like the items organized on your desktop? For example, by category, by color, or in a specific order?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

@@ -24,7 +24,6 @@ class WebVideoSystem:
         self.cap = None
         self.is_running = False
         self.current_status = "Ready"
-        self.conversation_history = []
         
         self.current_task = self.prompt_config.get("task_description", "general home assistance")
         
@@ -174,11 +173,14 @@ class WebVideoSystem:
             
             print(f"Debug - Generating question for task: {self.current_task}")
             
-            # Use robot service to generate question
+            # Use robot service to generate question with items + ambiguity info
+            snapshot = self.robot_service.get_desktop_items_snapshot()
+            items = snapshot.get('items', [])
+            ambiguity_info = ""  # initialize empty; can be filled from past turns later
             vlm_response = self.robot_service.generate_question(
+                items=items,
                 task_description=self.current_task,
-                image_path=filename,
-                messages_history=self.conversation_history,
+                ambiguity_info=ambiguity_info,
                 strategy=strategy
             )
             
@@ -189,15 +191,7 @@ class WebVideoSystem:
             print(f"Debug - parsed reasoning: {reasoning}")
             print(f"Debug - parsed question: {question}")
             
-            # Add to conversation history
-            robot_message = {
-                "type": "robot",
-                "reasoning": reasoning,
-                "question": question,
-                "timestamp": datetime.now().isoformat(),
-                "image_path": filename
-            }
-            self.conversation_history.append(robot_message)
+            # Backend now records conversation; frontend only displays
             
             # Update status
             self.current_status = "Ready"
@@ -247,68 +241,30 @@ class WebVideoSystem:
             return {"success": False, "error": str(e)}
     
     def add_user_response(self, response_text):
-        """Add user response to conversation and generate robot reply"""
+        """Handle user response by invoking backend robot_response and returning reply."""
         try:
-            # Add user response to history
-            user_message = {
-                "type": "user",
-                "response": response_text,
-                "timestamp": datetime.now().isoformat()
-            }
-            self.conversation_history.append(user_message)
-            
-            # Get the last robot message for context
-            last_robot_message = None
-            for msg in reversed(self.conversation_history):
-                if msg.get("type") == "robot":
-                    last_robot_message = msg
-                    break
-            
-            if not last_robot_message:
-                return {"error": "No previous robot question found"}
-            
-            # Update status
+            # Update status while processing
             self.current_status = "Analyzing response..."
             socketio.emit('status_update', {'status': self.current_status})
-            
-            # Analyze user response and generate robot reply
-            analysis = self.robot_service.process_conversation_turn(
-                user_response=response_text,
-                last_robot_message=last_robot_message,
-                current_task=self.current_task,
-                conversation_history=self.conversation_history[:-1]  # Exclude current user message
-            )
-            
-            # Add robot response to conversation
-            robot_response = {
-                "type": "robot_response",
-                "understanding": analysis.understanding,
-                "operation": analysis.operation,
-                "robot_reply": analysis.robot_reply,
-                "timestamp": datetime.now().isoformat()
-            }
-            self.conversation_history.append(robot_response)
-            
-            # Update status
+
+            result = self.robot_service.robot_response(response_text)
+
+            # Back to ready
             self.current_status = "Ready"
             socketio.emit('status_update', {'status': self.current_status})
-            
-            print(f"Debug - User response analysis:")
-            print(f"Understanding: {analysis.understanding}")
-            print(f"Operation: {analysis.operation}")
-            print(f"Robot reply: {analysis.robot_reply}")
-            
+
+            # Keep response shape compatible with existing frontend renderer
             return {
                 "success": True,
-                "understanding": analysis.understanding,
-                "operation": analysis.operation,
-                "robot_reply": analysis.robot_reply
+                "understanding": "",
+                "operation": "",
+                "robot_reply": result.get("robot_reply", ""),
+                "relevant_items": result.get("relevant_items", []),
             }
-            
         except Exception as e:
             self.current_status = "Error occurred"
             socketio.emit('status_update', {'status': self.current_status})
-            return {"error": str(e)}
+            return {"success": False, "error": str(e)}
     
     def restart_conversation(self):
         """Clear conversation history and restart"""
@@ -322,7 +278,7 @@ class WebVideoSystem:
         self.robot_service.logger.current_custom_session_id = None
         print(f"Started new logging session: {session_id}")
         
-        self.conversation_history = []
+        self.robot_service.clear_conversation()
         self.current_status = "Ready"
         print("Conversation history cleared")
         return {"success": True, "message": "Conversation restarted"}
@@ -379,7 +335,7 @@ def respond():
 @app.route('/conversation', methods=['GET'])
 def get_conversation():
     """Get conversation history"""
-    return jsonify(video_system.conversation_history)
+    return jsonify(video_system.robot_service.get_conversation())
 
 @app.route('/status', methods=['GET'])
 def get_status():

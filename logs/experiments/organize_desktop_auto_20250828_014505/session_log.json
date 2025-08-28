@@ -1,0 +1,83 @@
+{
+  "session_id": "organize_desktop_auto_20250828_014505",
+  "custom_session_id": null,
+  "start_time": "2025-08-28T01:45:05.008020",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-28T01:45:33.622099",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_014533_611.jpg",
+      "original_image_path": "captured_frames/init_frame_20250828_014515.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "white and gray, compact",
+            "operated": false
+          },
+          {
+            "id": "itm-2-mouse",
+            "name": "mouse",
+            "attributes": "white, wired",
+            "operated": false
+          },
+          {
+            "id": "itm-3-pen",
+            "name": "pen",
+            "attributes": "blue",
+            "operated": false
+          },
+          {
+            "id": "itm-4-water-bottle",
+            "name": "water bottle",
+            "attributes": "gray, with red cap",
+            "operated": false
+          },
+          {
+            "id": "itm-5-book",
+            "name": "book",
+            "attributes": "yellow cover, text visible",
+            "operated": false
+          },
+          {
+            "id": "itm-6-paper",
+            "name": "paper",
+            "attributes": "white, with blue text",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-28T01:45:39.434512",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The keyboard is the primary device for interacting with the computer, and its position can greatly affect the usability of the desktop. By starting with the keyboard, I can establish a clear foundation for organizing the other items around it.",
+      "robot_question": "Should the keyboard be placed in the center of the desk for optimal reach?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-28T01:46:54.425033",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To effectively organize the desktop, it's important to understand the user's preferences for item placement, proximity to the keyboard, and any specific organizational principles they may have (e.g., grouping similar items, prioritizing frequently used items, etc.). Asking about their preferred arrangement will help tailor the organization to their needs.",
+      "robot_question": "How would you like the items on your desktop organized? For example, do you prefer frequently used items closer to the keyboard, or would you like similar items grouped together?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

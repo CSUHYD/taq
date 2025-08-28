@@ -1,0 +1,83 @@
+{
+  "session_id": "organize_desktop_auto_20250828_003551",
+  "custom_session_id": null,
+  "start_time": "2025-08-28T00:35:51.931945",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-28T00:35:58.085145",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_003558_079.jpg",
+      "original_image_path": "captured_frames/init_frame_20250828_003552.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "itm-1-keyboard",
+            "name": "keyboard",
+            "attributes": "white and gray, ergonomic design",
+            "operated": false
+          },
+          {
+            "id": "itm-2-mouse",
+            "name": "mouse",
+            "attributes": "white, wired",
+            "operated": false
+          },
+          {
+            "id": "itm-3-pen",
+            "name": "pen",
+            "attributes": "blue",
+            "operated": false
+          },
+          {
+            "id": "itm-4-notebook",
+            "name": "notebook",
+            "attributes": "white, open",
+            "operated": false
+          },
+          {
+            "id": "itm-5-book",
+            "name": "book",
+            "attributes": "yellow and white cover, text visible",
+            "operated": false
+          },
+          {
+            "id": "itm-6-mug",
+            "name": "mug",
+            "attributes": "dark, with red button",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-28T00:36:12.350633",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The notebook is open, which suggests it might be in use or needs to be organized. Moving or adjusting its position could help declutter the desk and make the space more organized.",
+      "robot_question": "Should the open notebook be closed and moved to the side?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-28T00:37:07.609188",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "Before organizing the desktop, it's important to understand the user's preferences for item placement and any specific organization principles they might have, such as grouping items by color, function, or usage frequency. This will ensure the organization aligns with the user's habits and needs.",
+      "robot_question": "How would you like the items on your desktop organized? For example, by color, function, or another principle?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}
