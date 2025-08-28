@@ -337,7 +337,7 @@ class RobotService:
             items: list of DesktopItem or item dicts
 
         Returns:
-            list[DesktopItem] on success, or None on parse failure.
+            list[dict]: the updated self.relevant_items (DesktopItem-shaped dicts). None on parse failure.
         """
         if not items:
             return []
@@ -395,32 +395,33 @@ class RobotService:
         )
         try:
             data = json.loads(raw)
-            grounded_items: list[DesktopItem] = []
-            if isinstance(data, list):
-                for obj in data:
-                    try:
-                        grounded_items.append(DesktopItem.model_validate(obj))
-                    except Exception:
-                        continue
-            else:
-                grounded_items = []
+            if not isinstance(data, list):
+                data = []
         except Exception as e:
             print(f"Failed to parse object grounding result: {e}")
             print(f"Raw grounding response: {raw}")
             return None
 
-        # Merge into relevant_items without duplicates
+        # Merge parsed items directly into self.relevant_items (de-dup by id/name)
         existing_ids = {d.get('id') for d in self.relevant_items if d.get('id')}
         existing_names = {d.get('name') for d in self.relevant_items}
-        for it in grounded_items:
-            d = it.model_dump()
-            iid = (d.get('id') or '').strip() if d.get('id') else None
-            nm = (d.get('name') or '').strip() if d.get('name') else None
-            if (iid and iid in existing_ids) or (not iid and nm in existing_names):
+        for obj in data:
+            try:
+                item = DesktopItem.model_validate(obj)
+                d = item.model_dump()
+                iid = (d.get('id') or '').strip() if d.get('id') else None
+                nm = (d.get('name') or '').strip() if d.get('name') else None
+                if (iid and iid in existing_ids) or (not iid and nm in existing_names):
+                    continue
+                self.relevant_items.append(d)
+                if iid:
+                    existing_ids.add(iid)
+                if nm:
+                    existing_names.add(nm)
+            except Exception:
                 continue
-            self.relevant_items.append(d)
 
-        return grounded_items
+        return list(self.relevant_items)
 
     def robot_response(self, user_response: str) -> dict:
         """Generate a simple robot reply to user's response.
@@ -440,14 +441,14 @@ class RobotService:
         grounded = self.ground_objects(latest, self.items or [])
 
         # Compose a minimal reply using grounded item names
-        names = []
+        id = []
         if grounded:
             try:
-                names = [gi.name for gi in grounded if getattr(gi, 'name', None)]
+                id = [it.get('id') for it in grounded if isinstance(it, dict) and it.get('id')]
             except Exception:
-                names = []
-        if names:
-            reply = f"I'll focus on: {', '.join(names)}."
+                id = []
+        if id:
+            reply = f"I'll focus on: {', '.join(id)}."
         else:
             reply = "Not sure which items you mean. Could you clarify?"
 
