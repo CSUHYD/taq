@@ -1,0 +1,190 @@
+{
+  "session_id": "organize_desktop_auto_20250829_152655",
+  "custom_session_id": null,
+  "start_time": "2025-08-29T15:26:55.257826",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-29T15:27:02.048224",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_152702_045.jpg",
+      "original_image_path": "captured_frames/init_frame_20250829_152658.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "white and gray",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "markers-1",
+            "name": "markers",
+            "attributes": "black, blue, red",
+            "operated": false
+          },
+          {
+            "id": "plastic-1",
+            "name": "plastic bag",
+            "attributes": "transparent with red contents",
+            "operated": false
+          },
+          {
+            "id": "cable-1",
+            "name": "cable",
+            "attributes": "black",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-29T15:28:23.448225",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_1_152823_444.jpg",
+      "original_image_path": "captured_frames/init_frame_20250829_152819.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "white, black keys",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white, black scroll wheel",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow cover, white text",
+            "operated": false
+          },
+          {
+            "id": "pens-1",
+            "name": "pens",
+            "attributes": "black, red, blue, white",
+            "operated": false
+          },
+          {
+            "id": "plastic-1",
+            "name": "plastic bag",
+            "attributes": "clear, red contents",
+            "operated": false
+          },
+          {
+            "id": "cable-1",
+            "name": "cable",
+            "attributes": "black",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-29T15:29:29.401092",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To organize the desktop, we should start by addressing the most prominent or central item, which is the keyboard. It's unoperated and serves as a critical component of the workspace. Clarifying its current position or desired placement will help initiate the organization process.",
+      "robot_question": "Where is the keyboard currently located on the desktop?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-08-29T15:29:40.323862",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, table_center)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-08-29T15:29:50.292410",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "Since all items are unoperated, I will choose the 'mouse' as it is a common item to prioritize organizing on a desktop. The question will focus on its current placement to determine where it should be moved or arranged.",
+      "robot_question": "Where is the white mouse located on the desktop?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-08-29T15:30:12.404220",
+      "type": "item_status_change",
+      "operation_text": "place(mouse-1, keyboard-1_right_side)",
+      "updated_items": [
+        {
+          "id": "mouse-1",
+          "name": "mouse",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-08-29T15:30:21.224013",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "Since all items are unoperated, I will start with the first item in the list, which is the book. To organize the desktop, I need to know the exact placement or location of the book to determine how to move or group it effectively.",
+      "robot_question": "Where is the book located on the desktop?"
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-08-29T15:31:38.362366",
+      "type": "item_status_change",
+      "operation_text": "store(book-1, bookshelf)",
+      "updated_items": [
+        {
+          "id": "book-1",
+          "name": "book",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 8,
+      "timestamp": "2025-08-29T15:32:04.544516",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "I will choose an unoperated item to clarify its specific location or grouping, as this directly contributes to organizing the desktop.",
+      "robot_question": "Where is the plastic bag located on the desktop?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

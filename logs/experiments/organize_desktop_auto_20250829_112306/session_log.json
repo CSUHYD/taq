@@ -1,0 +1,69 @@
+{
+  "session_id": "organize_desktop_auto_20250829_112306",
+  "custom_session_id": null,
+  "start_time": "2025-08-29T11:23:06.473955",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-29T11:24:49.520504",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_112449_513.jpg",
+      "original_image_path": "captured_frames/init_frame_20250829_112445.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "white and gray, mechanical",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white and black, optical",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "blue, ink",
+            "operated": false
+          },
+          {
+            "id": "pen-2",
+            "name": "pen",
+            "attributes": "black, ink",
+            "operated": false
+          },
+          {
+            "id": "pen-3",
+            "name": "pen",
+            "attributes": "black, ink",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white, text visible",
+            "operated": false
+          },
+          {
+            "id": "plastic-1",
+            "name": "plastic bag",
+            "attributes": "clear, small object inside",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

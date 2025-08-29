@@ -75,6 +75,26 @@
           "operated": true
         }
       ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-08-29T10:16:11.419791",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The user has various items on their desktop, each with distinct attributes and operational status. Before organizing, it's crucial to understand their preferences regarding how these items should be arranged. For instance, they might prioritize frequently used items, want similar items grouped together, or have specific aesthetic preferences. Asking about their organizational principles will ensure the desktop is arranged in a way that aligns with their needs and preferences.",
+      "robot_question": "How would you like your desktop organized? For example, do you prefer frequently used items closer to you, or do you have specific groupings in mind (e.g., electronic devices together, writing tools together, etc.)?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-08-29T10:30:55.985547",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To effectively organize the desktop, it's crucial to understand the user's preferences regarding the arrangement of items. This ensures the organization aligns with their workflow and aesthetic preferences. Asking about their priorities or preferred layout will provide a clear direction for organizing the space.",
+      "robot_question": "Could you please share your preferred arrangement for the items on your desktop? For example, do you prefer grouping items by type, size, or color, or do you have a specific layout in mind?"
     }
   ],
   "timing_data": {
@@ -82,5 +102,7 @@
     "task_end_time": null,
     "total_task_time_seconds": null,
     "interaction_timings": []
-  }
+  },
+  "end_time": "2025-08-29T10:31:51.263425",
+  "total_interactions": 5
 }

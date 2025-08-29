@@ -1,0 +1,106 @@
+{
+  "session_id": "organize_desktop_auto_20250829_153950",
+  "custom_session_id": null,
+  "start_time": "2025-08-29T15:39:50.569214",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-29T15:41:39.234366",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_154139_228.jpg",
+      "original_image_path": "captured_frames/init_frame_20250829_154122.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "white and gray, ergonomic design",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white and black, ergonomic design",
+            "operated": false
+          },
+          {
+            "id": "pens-1",
+            "name": "pens",
+            "attributes": "various colors, medium size",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover, text visible",
+            "operated": false
+          },
+          {
+            "id": "plastic-1",
+            "name": "plastic bag",
+            "attributes": "clear, partially visible",
+            "operated": false
+          },
+          {
+            "id": "cable-1",
+            "name": "cable",
+            "attributes": "black, connected to keyboard",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-29T15:42:02.270152",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The task is to organize the desktop. Since all items are unoperated, I'll choose the first item in the list for clarification. The keyboard is a central item and understanding its exact placement or orientation will help in organizing the desktop efficiently.",
+      "robot_question": "Where is the keyboard located on the desktop?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-29T15:45:07.994988",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, table_center)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-08-29T15:46:37.828256",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The goal is to organize the desktop. Among the unoperated items, the mouse is a common item that should be placed in a specific location for easy access. Asking about its current placement will help determine where it needs to be moved or positioned.",
+      "robot_question": "Where is the white and black ergonomic mouse located?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-08-29T15:53:06.424644",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The task is to organize the desktop, and the first step is to focus on an unoperated item. Among the available items, the 'plastic bag' appears to be the most unclear and could potentially be grouped with other items or discarded if not needed, making it a logical starting point for clarification.",
+      "robot_question": "Is the plastic bag meant to be kept on the desktop or should it be discarded or stored elsewhere?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

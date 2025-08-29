@@ -1,0 +1,59 @@
+{
+  "session_id": "organize_desktop_auto_20250829_111308",
+  "custom_session_id": null,
+  "start_time": "2025-08-29T11:13:08.203030",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-29T11:15:30.215398",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_111530_121.jpg",
+      "original_image_path": "captured_frames/init_frame_20250829_111512.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "gray and white, ergonomic design",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white, ergonomic",
+            "operated": false
+          },
+          {
+            "id": "plastic-1",
+            "name": "plastic bag",
+            "attributes": "clear, contains food",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover, text visible",
+            "operated": false
+          },
+          {
+            "id": "water-1",
+            "name": "water bottle",
+            "attributes": "clear, partially visible",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-08-29T11:17:03.231257",
+  "total_interactions": 1
+}

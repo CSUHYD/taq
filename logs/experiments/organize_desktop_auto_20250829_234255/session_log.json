@@ -1,0 +1,143 @@
+{
+  "session_id": "organize_desktop_auto_20250829_234255",
+  "custom_session_id": null,
+  "start_time": "2025-08-29T23:42:55.964121",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-29T23:43:09.559134",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_234309_549.jpg",
+      "original_image_path": "captured_frames/init_frame_20250829_234306.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "white and gray with purple keys",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white with black scroll wheel",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow cover with text",
+            "operated": false
+          },
+          {
+            "id": "plastic-1",
+            "name": "plastic bag",
+            "attributes": "white with red contents",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-29T23:43:28.762145",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The keyboard is a central item on a desktop and needs to be in the correct position for use. It's unoperated, making it a suitable target for the next action.",
+      "robot_question": "Where is the white and gray keyboard with purple keys located on the desktop?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-29T23:43:45.722829",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, table_center)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-08-29T23:43:58.894351",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "Since the task is to organize the desktop, and the goal is to focus on actionable details, I will choose the first unoperated item, which is the mouse. The question should clarify its exact placement to determine how to organize it properly.",
+      "robot_question": "Where is the mouse located on the desktop?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-08-29T23:44:14.255197",
+      "type": "item_status_change",
+      "operation_text": "place(mouse-1, keyboard_side)",
+      "updated_items": [
+        {
+          "id": "mouse-1",
+          "name": "mouse",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-08-29T23:44:23.573273",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The task is to organize the desktop, and the first unoperated item is the book with a yellow cover. To proceed, I need to know the exact location of the book on the desktop.",
+      "robot_question": "Where is the book with the yellow cover located on the desktop?"
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-08-29T23:45:31.974511",
+      "type": "item_status_change",
+      "operation_text": "store(book-1, shelf)",
+      "updated_items": [
+        {
+          "id": "book-1",
+          "name": "book",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-08-29T23:46:03.721244",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The plastic bag is the only unoperated item on the desktop, and it needs to be organized. To proceed, I need to determine its exact location on the desktop.",
+      "robot_question": "Where is the plastic bag located on the desktop?"
+    },
+    {
+      "interaction_id": 8,
+      "timestamp": "2025-08-29T23:48:25.119104",
+      "type": "item_status_change",
+      "operation_text": "dispose(plastic-1)",
+      "updated_items": [
+        {
+          "id": "plastic-1",
+          "name": "plastic bag",
+          "operated": true
+        }
+      ]
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

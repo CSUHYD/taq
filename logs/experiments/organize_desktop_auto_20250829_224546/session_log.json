@@ -1,0 +1,156 @@
+{
+  "session_id": "organize_desktop_auto_20250829_224546",
+  "custom_session_id": null,
+  "start_time": "2025-08-29T22:45:46.894241",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-29T22:46:08.270364",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_224608_258.jpg",
+      "original_image_path": "captured_frames/init_frame_20250829_224552.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "gray and white",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white and black",
+            "operated": false
+          },
+          {
+            "id": "phone-1",
+            "name": "phone",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "plastic-1",
+            "name": "plastic bag",
+            "attributes": "clear with food",
+            "operated": false
+          },
+          {
+            "id": "card-1",
+            "name": "card",
+            "attributes": "white with text",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-29T22:46:43.459151",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To organize the desktop, I should start by addressing items that can be immediately moved or cleared. The plastic bag, which contains food, is not typically associated with a clean and organized workspace. Therefore, it is a logical first item to address.",
+      "robot_question": "Where is the plastic bag located on the desktop?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-29T22:47:50.767420",
+      "type": "item_status_change",
+      "operation_text": "dispose(plastic-1, trash)",
+      "updated_items": [
+        {
+          "id": "plastic-1",
+          "name": "plastic bag",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-08-29T22:48:00.460377",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The task is to organize the desktop. To begin, I need to focus on one item at a time, starting with an unoperated item. Since all items are unoperated, I will choose the first one in the list, which is the keyboard, to ensure progress in organizing the desktop.",
+      "robot_question": "Where is the keyboard located on the desktop?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-08-29T22:48:15.655232",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, center_of_desktop)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-08-29T22:48:23.790942",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To organize the desktop, I need to focus on one item at a time. Since all items are currently unoperated, I can choose any of them to start. The mouse is a common item that often needs to be placed in a specific location for optimal workspace organization. Therefore, I will ask about the mouse's exact placement location.",
+      "robot_question": "Where should the mouse be placed?"
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-08-29T22:48:56.451072",
+      "type": "item_status_change",
+      "operation_text": "place(mouse-1, keyboard_right)",
+      "updated_items": [
+        {
+          "id": "mouse-1",
+          "name": "mouse",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-08-29T22:49:04.916111",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "Since both items are unoperated, I will choose one and ask for clarification on its placement to better understand how to organize it on the desktop.",
+      "robot_question": "Where is the black phone located on the desktop?"
+    },
+    {
+      "interaction_id": 8,
+      "timestamp": "2025-08-29T22:50:12.688282",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "Since both items are unoperated, I will choose the first item in the list, which is the 'phone', and ask a question that clarifies its exact placement on the desktop to help with organizing it.",
+      "robot_question": "Where is the black phone located on the desktop?"
+    },
+    {
+      "interaction_id": 9,
+      "timestamp": "2025-08-29T22:52:08.887219",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "Since both items are unoperated, we need to choose one to act on. Given the task is to organize the desktop, we should start with the phone, as it is a larger item and often a focal point for organization.",
+      "robot_question": "Where is the black phone located on the desktop?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

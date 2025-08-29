@@ -325,6 +325,48 @@
             font-weight: bold;
         }
 
+        /* Relevant objects styling (colored chips) */
+        .relevant-items { margin-top: 10px; }
+        .relevant-items-title { font-weight: 700; color: #34495e; margin-bottom: 8px; }
+        .relevant-item-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            background: #f9fbfd;
+            border: 1px solid #e6eff7;
+            margin-bottom: 6px;
+        }
+        .ri-name {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 999px;
+            background: #e8f1ff;
+            color: #1a73e8;
+            font-weight: 600;
+        }
+        .ri-attrs {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 999px;
+            background: #eef3f7;
+            color: #455a64;
+            font-size: 12px;
+        }
+        .ri-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            border: 1px solid transparent;
+        }
+        .ri-badge.operated { background: #eafaf1; color: #1e7d4f; border-color: #cdebd8; }
+        .ri-badge.pending { background: #fff4e5; color: #b25d13; border-color: #ffe3c2; }
+
         .message-header {
             font-weight: bold;
             margin-bottom: 8px;
@@ -1061,7 +1103,7 @@
                     const name = (it && it.name) ? it.name : (it && it['name']) || '';
                     const attrs = (it && it.attributes) ? it.attributes : (it && it['attributes']) || '';
                     const operated = (it && (it.operated !== undefined)) ? it.operated : (it && it['operated']);
-                    const badge = operated ? '<span class="ri-badge">operated</span>' : '<span class="ri-badge">pending</span>';
+                    const badge = operated ? '<span class="ri-badge operated">operated</span>' : '<span class="ri-badge pending">pending</span>';
                     const attrsSpan = attrs ? `<span class="ri-attrs">${attrs}</span>` : '';
                     return `<div class="relevant-item-row"><span class="ri-name">${name}</span>${attrsSpan}${badge}</div>`;
                 }).join('');

@@ -1,0 +1,113 @@
+{
+  "session_id": "organize_desktop_auto_20250829_220312",
+  "custom_session_id": null,
+  "start_time": "2025-08-29T22:03:12.528980",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-29T22:03:32.446176",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_220332_442.jpg",
+      "original_image_path": "captured_frames/init_frame_20250829_220315.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "white and gray, ergonomic design",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white and black, ergonomic design",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover, text visible",
+            "operated": false
+          },
+          {
+            "id": "pens-1",
+            "name": "pens",
+            "attributes": "black and silver, multiple colors",
+            "operated": false
+          },
+          {
+            "id": "plastic-1",
+            "name": "plastic bag",
+            "attributes": "red and white, partially visible",
+            "operated": false
+          },
+          {
+            "id": "desk-1",
+            "name": "desk",
+            "attributes": "white surface, clean",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-29T22:04:26.872203",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The goal is to organize the desktop, so we need to start by identifying the location and arrangement of each item. The 'keyboard' is a central item for desktop organization, and its placement can significantly impact the overall setup. Since it is unoperated and has specific attributes, it is a logical starting point.",
+      "robot_question": "Where is the keyboard located on the desk?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-29T22:04:51.080952",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, desk-1)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        },
+        {
+          "id": "desk-1",
+          "name": "desk",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-08-29T22:05:03.782203",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "Since the task is to organize the desktop, and I must choose an unoperated item, I'll start with the 'mouse' because it's a common item that typically needs to be placed in a specific location, like a mouse pad or a designated area. Asking about its current placement will help determine where it should be moved.",
+      "robot_question": "Where is the mouse located on the desktop?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-08-29T22:09:41.311455",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To effectively organize the desktop, it's important to understand the user's preferences regarding the placement and arrangement of items. This will ensure that the organization aligns with their workflow and aesthetic or functional priorities. Asking about their preferred layout can help determine how to prioritize items like the keyboard, mouse, and other objects.",
+      "robot_question": "Could you please describe your preferred layout for organizing the desktop? For example, do you prefer keeping frequently used items like the keyboard and mouse in specific locations, or do you have any particular arrangement in mind?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-08-29T22:09:43.744778",
+  "total_interactions": 5
+}

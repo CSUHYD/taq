@@ -3,7 +3,6 @@ from flask_socketio import SocketIO, emit
 import cv2
 import zmq
 import numpy as np
-import struct
 import time
 import threading
 from datetime import datetime
@@ -225,11 +224,12 @@ class WebVideoSystem:
             self.current_status = "Thinking..."
             socketio.emit('status_update', {'status': self.current_status})
 
-            scan = self.robot_service.initialize_desktop_state(filename)
+            # Parse desktop items and update backend state
+            _items = self.robot_service.parse_desktop_items(filename)
             self.current_status = "Ready"
             socketio.emit('status_update', {'status': self.current_status})
 
-            if not scan:
+            if not _items:
                 return {"success": False, "error": "Scan failed"}
 
             # Return a light summary to frontend from RobotService state

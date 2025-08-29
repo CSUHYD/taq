@@ -1,0 +1,75 @@
+{
+  "session_id": "organize_desktop_auto_20250829_175138",
+  "custom_session_id": null,
+  "start_time": "2025-08-29T17:51:38.373749",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-29T17:53:41.169818",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_175341_152.jpg",
+      "original_image_path": "captured_frames/init_frame_20250829_175325.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "gray and purple keys",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "pens-1",
+            "name": "pens",
+            "attributes": "black and blue",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "plastic-1",
+            "name": "plastic bag",
+            "attributes": "clear with red text",
+            "operated": false
+          },
+          {
+            "id": "charger-1",
+            "name": "charger",
+            "attributes": "white",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-29T17:53:57.845811",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To begin organizing the desktop, I should focus on a specific item that has not been operated yet. Among the unoperated items, I will choose the keyboard because it is a fundamental component of the desktop and is likely to be a priority for organization. Clarifying its exact placement or orientation will help determine how to proceed with organizing the surrounding items.",
+      "robot_question": "Where is the keyboard located on the desktop?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-08-29T22:03:12.519861",
+  "total_interactions": 2
+}

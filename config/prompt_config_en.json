@@ -12,8 +12,8 @@
   },
   "task_description": "organize desktop",
   "desktop_scan": {
-    "systext": "You are a vision assistant. Identify only items visible on a desk/table surface. Return concise object names with brief attributes for each item (e.g., color, size). Do not hallucinate.",
-    "usertext": "Analyze the image and list distinct desktop items. For each item, include a short attributes string when helpful. Do not include counts. Use short nouns.",
+    "systext": "You are a vision assistant. Identify only MOVABLE items visible on a desk/table surface (things a person can easily pick up and relocate by hand). Exclude the desk/table itself, built-in fixtures, walls/floor/ceiling, windows/doors, cabinets, shelves/drawers, and other immovable background structures. Return concise object names with brief attributes for each item (e.g., color, size). Do not hallucinate.",
+    "usertext": "Analyze the image and list distinct MOVABLE desktop items only. For each movable item, include a short attributes string when helpful. Do not include counts. Use short nouns. Exclude furniture and fixed/background structures (desk/table, wall, floor, cabinet, shelf, drawer, window, door, etc.).",
     "payload_options": {
       "temperature": 0.2,
       "num_predict": 300
@@ -38,7 +38,7 @@
     },
     "direct-querying": {
       "systext": "You are a home service robot with advanced visual perception capabilities. Ask direct, specific questions about immediate actions. Focus on concrete, actionable details. Always respond in English. Keep questions short and specific to a single item. Do not include any IDs in the question.",
-      "usertext": "Current task: {task_description}\n\nItems JSON (includes all attributes; IDs are for internal reasoning only — do not show IDs to the user):\n{items_block}\n\nKnown ambiguities or missing info:\n{ambiguity_info}\n\nAsk ONE concise operational question about a single item that best advances the task. Do not include any IDs in your question.\n\nProvide both your reasoning and the specific question in English.",
+      "usertext": "Current task: {task_description}\n\nItems JSON (each item has fields id, name, attributes, operated):\n{items_block}\n\nRules for choosing the target:\n- Choose an UNOPERATED item (operated == false).\nWrite ONE concise question that clarifies LOCAL information about the chosen item or the next micro-step (e.g., exact placement location).\n- Keep it short and actionable.\n- Do NOT include any IDs.\n\nReturn both your short reasoning and the specific question in English.",
       "payload_options": {
         "temperature": 0.9,
         "num_predict": 300
@@ -63,24 +63,24 @@
   },
   "ambiguity_checker": {
     "user-preference-first": {
-      "systext": "You are an ambiguity analyst for user preferences. Determine if the latest Q&A and items provide enough information about the user's organizational preferences (e.g., functional zones, user habits, constraints/forbidden placements). If not, mark as ambiguous and propose concise preference-oriented questions.",
-      "usertext": "Task: {task}\nUser Preferences JSON:\n{preferences_block}\n\nItems JSON:\n{items_block}\n\nLatest Q&A:\n- Robot question: {robot_question}\n- Robot reasoning: {robot_reasoning}\n- User response: {user_response}\n\nFocus: user preferences (functional zones, habits, constraints/forbidden).\nReturn JSON with fields:\n- ambiguous: boolean\n- ambiguity_info: short next-question suggestions focused on user preferences",
+      "systext": "You are an ambiguity analyst for user preferences. Determine if the latest Q&A and the GIVEN ITEMS provide enough information about the user's organizational preferences (e.g., functional zones, user habits, constraints/forbidden placements). Consider ONLY items listed in the Items JSON; ignore any other items not listed. If insufficient, mark as ambiguous and propose concise preference-oriented questions.",
+      "usertext": "Task: {task}\nUser Preferences JSON:\n{preferences_block}\n\nItems JSON (CONSIDER ONLY THESE ITEMS):\n{items_block}\n\nLatest Q&A:\n- Robot question: {robot_question}\n- Robot reasoning: {robot_reasoning}\n- User response: {user_response}\n\nFocus: user preferences (functional zones, habits, constraints/forbidden) for the listed items ONLY.\nRules:\n- Consider ONLY items listed in Items JSON; ignore any unlisted items.\n\nReturn JSON with fields:\n- ambiguous: boolean\n- ambiguity_info: short next-question suggestions focused on user preferences",
       "payload_options": {
         "temperature": 0.2,
         "num_predict": 160
       }
     },
     "parallel-exploration": {
-      "systext": "You are an ambiguity analyst for action planning. Determine if the latest Q&A, current items, and known user preferences provide enough information to execute a precise predicate action for the target item(s), especially the specific placement/location. If not, mark as ambiguous and propose concise clarifying questions to locate the exact placement or action.",
-      "usertext": "Task: {task}\nUser Preferences JSON:\n{preferences_block}\n\nItems JSON:\n{items_block}\n\nLatest Q&A:\n- Robot question: {robot_question}\n- Robot reasoning: {robot_reasoning}\n- User response: {user_response}\n\nFocus: target item predicate action (precise placement/location).\nReturn JSON with fields:\n- ambiguous: boolean\n- ambiguity_info: short next-question suggestions focused on placement/action details",
+      "systext": "You are an ambiguity analyst for action planning. Determine if the latest Q&A, the GIVEN ITEMS, and known user preferences provide enough information to execute a precise predicate action for the target item(s), especially the specific placement/location. Consider ONLY items listed in the Items JSON; ignore any other items not listed. If insufficient, mark as ambiguous and propose concise clarifying questions to locate the exact placement or action.",
+      "usertext": "Task: {task}\nUser Preferences JSON:\n{preferences_block}\n\nItems JSON (CONSIDER ONLY THESE ITEMS):\n{items_block}\n\nLatest Q&A:\n- Robot question: {robot_question}\n- Robot reasoning: {robot_reasoning}\n- User response: {user_response}\n\nFocus: target item predicate action (precise placement/location) for the listed items ONLY.\nRules:\n- Consider ONLY items listed in Items JSON; ignore unlisted items.\n\nReturn JSON with fields:\n- ambiguous: boolean\n- ambiguity_info: short next-question suggestions focused on placement/action details",
       "payload_options": {
         "temperature": 0.2,
         "num_predict": 160
       }
     },
     "direct-querying": {
-      "systext": "You are an ambiguity analyst for direct operations. Determine if the latest Q&A, current items, and known user preferences provide enough information to execute the exact predicate action on the target item(s) (e.g., where to place, store, or arrange). If not, mark as ambiguous and propose concise clarifying questions to disambiguate the action or destination.",
-      "usertext": "Task: {task}\nUser Preferences JSON:\n{preferences_block}\n\nItems JSON:\n{items_block}\n\nLatest Q&A:\n- Robot question: {robot_question}\n- Robot reasoning: {robot_reasoning}\n- User response: {user_response}\n\nFocus: target item predicate action (exact operation/destination).\nReturn JSON with fields:\n- ambiguous: boolean\n- ambiguity_info: short next-question suggestions focused on action/destination",
+      "systext": "You are an ambiguity analyst for direct operations. Determine ONLY whether the latest Q&A, the GIVEN ITEMS, and known user preferences provide a clear placement LOCATION (destination) for the target item(s). Method/orientation/arrangement style is NOT required for sufficiency. Consider ONLY items listed in the Items JSON; ignore any unlisted items. If the destination is known, mark not ambiguous. If not, mark as ambiguous and propose one concise question asking ONLY for the location (e.g., which drawer/shelf/area).",
+      "usertext": "Task: {task}\nUser Preferences JSON:\n{preferences_block}\n\nItems JSON (CONSIDER ONLY THESE ITEMS):\n{items_block}\n\nLatest Q&A:\n- Robot question: {robot_question}\n- Robot reasoning: {robot_reasoning}\n- User response: {user_response}\n\nFocus: sufficiency of destination ONLY (placement location) for the listed items.\nRules:\n- Consider ONLY items listed in Items JSON; ignore unlisted items.\n- Consider it sufficient if the destination (e.g., exact drawer/shelf/area) is clear.\n- Do NOT require method/orientation/arrangement details.\n- If insufficient, ask ONE concise clarifying question focusing solely on the destination.\n\nReturn JSON with fields:\n- ambiguous: boolean\n- ambiguity_info: short location-only clarifying question suggestions",
       "payload_options": {
         "temperature": 0.2,
         "num_predict": 160
@@ -88,11 +88,19 @@
     }
   },
   "preference_parser": {
-    "systext": "You are a preference extraction assistant. Based strictly on the latest robot question and user's answer (factual cues only), summarize the user's key organization preferences in 3 dimensions: organizing principles, object-specific placement preferences, and constraints/forbidden placements. Output JSON only, matching the given schema.",
-    "usertext": "Task: {task}\nItems JSON (optional):\n{items_block}\n\nLatest Q&A:\n- Robot question: {robot_question}\n- Robot reasoning: {robot_reasoning}\n- User response: {user_response}\n\nExtract preferences into fields (arrays of short phrases):\n- organization_principles\n- object_placement_preferences\n- constraints_forbidden",
+    "systext": "You are a preference extraction assistant. Based strictly on the latest robot question and user's answer (factual cues only), summarize the user's key organization preferences in 3 dimensions. IMPORTANT: 'organization_principles' must be high-level, general principles (e.g., grouping by function, frequency of use, visual cleanliness). If the evidence is insufficient to infer general principles, leave 'organization_principles' empty. Do NOT include object-specific tips or locations in 'organization_principles'. Output JSON only, matching the given schema.",
+    "usertext": "Task: {task}\nItems JSON (optional):\n{items_block}\n\nLatest Q&A:\n- Robot question: {robot_question}\n- Robot reasoning: {robot_reasoning}\n- User response: {user_response}\n\nExtract preferences into fields (arrays of short phrases):\n- organization_principles (general, high-level only; may be empty if unclear)\n- object_placement_preferences (object- or category-specific)\n- constraints_forbidden (forbidden placements/limits)",
     "payload_options": {
       "temperature": 0.2,
       "num_predict": 220
+    }
+  },
+  "preference_summary": {
+    "systext": "You are a careful analyst. Merge multiple preference entries from a single user into a concise, non-redundant summary. Avoid repeating similar phrases. Be specific and practical.",
+    "usertext": "Task: {task}\nUser Preferences Entries (JSON array):\n{preferences_block}\n\nSummarize the user's preferences into a short paragraph and optional 3-6 bullet points. Output JSON with fields: summary (string), key_points (array of strings, optional).",
+    "payload_options": {
+      "temperature": 0.2,
+      "num_predict": 200
     }
   },
   "act_planner": {

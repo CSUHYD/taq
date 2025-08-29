@@ -44,10 +44,10 @@ class DesktopItem(BaseModel):
     attributes: str | None = None
     operated: bool | None = False
 
-class DesktopScanResult(BaseModel):
-    items: list[DesktopItem]
-    summary: str | None = None
-
+# Preferences summarization
+class PreferenceSummary(BaseModel):
+    summary: str
+    key_points: list[str] | None = None
 
 
 class ExperimentLogger:
@@ -298,7 +298,7 @@ class RobotService:
         payload_options = strat_config.get("payload_options", {})
         self.current_strategy = strat_key
         
-        # Build items block by embedding full items JSON (includes all attributes)
+        # Build items block by embedding items JSON. For direct-querying, prefer unoperated items.
         if not items:
             raise ValueError("No items provided. Please initialize desktop scan first.")
         def _to_dict(it):
@@ -313,7 +313,20 @@ class RobotService:
                 'attributes': getattr(it, 'attributes', None),
                 'operated': getattr(it, 'operated', None),
             }
-        items_block = json.dumps([_to_dict(it) for it in items], ensure_ascii=False)
+        # If direct-querying, filter to unoperated items when available
+        filtered_items = items
+        if strat_key == 'direct-querying':
+            try:
+                tmp = []
+                for it in items:
+                    d = _to_dict(it)
+                    if not bool(d.get('operated')):
+                        tmp.append(d)
+                if tmp:
+                    filtered_items = tmp
+            except Exception:
+                filtered_items = items
+        items_block = json.dumps([_to_dict(it) for it in filtered_items], ensure_ascii=False)
         usertext = usertext_template.format(
             task_description=task_description,
             items_block=items_block,
@@ -508,6 +521,9 @@ class RobotService:
             print(f"Raw preferences response: {raw}")
             return None
 
+        # Note: No post-filtering on organization_principles here to avoid
+        # over-constraining model outputs. Prompt enforces high-level guidance.
+
         # Persist and log to conversation history
         self.conversation_history.append({
             "type": "preferences",
@@ -519,7 +535,7 @@ class RobotService:
     def ambiguity_checker(self,
                           task_description: str,
                           latest_qa: dict | None = None,
-                          items: list | None = None,
+                          relevant_items: list | None = None,
                           user_prefs: 'UserPreferences | dict | None' = None,
                           strategy: str = "direct-querying") -> str | bool:
         """Estimate if current target items have enough info to execute predicate actions.
@@ -536,10 +552,7 @@ class RobotService:
         """
         # Resolve context
         latest_qa = latest_qa or self.get_latest_qa()
-        items_source = items
-        if items_source is None or len(items_source) == 0:
-            items_source = self.relevant_items if self.relevant_items else self.get_desktop_items_snapshot().get('items', [])
-
+        
         # Normalize items to dicts
         def _to_dict(it):
             if hasattr(it, 'model_dump'):
@@ -552,7 +565,7 @@ class RobotService:
                 'attributes': getattr(it, 'attributes', None),
                 'operated': getattr(it, 'operated', None),
             }
-        items_block = json.dumps([_to_dict(it) for it in (items_source or [])], ensure_ascii=False)
+        items_block = json.dumps([_to_dict(it) for it in (relevant_items or [])], ensure_ascii=False)
         # Preferences block
         if user_prefs is None:
             # fall back to stored preferences or last persisted
@@ -608,24 +621,80 @@ class RobotService:
         return False
 
 
-    def robot_response(self, user_response: str) -> dict:
-        """Generate a simple robot reply to user's response.
+    def summarize_preferences(self) -> dict | None:
+        """Summarize accumulated user preferences via VLM.
 
-        Current behavior:
-        - Append the user response to backend conversation.
-        - Run object grounding against current items using the latest Q&A.
-        - Return a concise reply plus the current session's focused (relevant) items.
-
-        Returns a dict: { 'robot_reply': str, 'relevant_items': list[dict] }
+        Returns a dict { 'summary': str, 'key_points': list[str] | None } or None on failure.
         """
-        # Record user response
+        # Collect all preferences seen
+        prefs_list = []
+        try:
+            if isinstance(self.user_preferences, list) and self.user_preferences:
+                for p in self.user_preferences:
+                    if hasattr(p, 'model_dump'):
+                        prefs_list.append(p.model_dump())
+                    elif isinstance(p, dict):
+                        prefs_list.append(p)
+            else:
+                for msg in self.conversation_history:
+                    if msg.get('type') == 'preferences' and isinstance(msg.get('preferences'), (dict, list)):
+                        val = msg.get('preferences')
+                        if isinstance(val, dict):
+                            prefs_list.append(val)
+                        else:
+                            prefs_list.extend([v for v in val if isinstance(v, dict)])
+        except Exception:
+            prefs_list = []
+
+        if not prefs_list:
+            return { 'summary': 'No explicit user preferences were provided.', 'key_points': None }
+
+        cfg = self.config.get('preference_summary')
+        if not cfg or 'systext' not in cfg or 'usertext' not in cfg:
+            # Fallback: simple textual merge
+            flat_points = []
+            for p in prefs_list:
+                for key in ('organization_principles', 'object_placement_preferences', 'constraints_forbidden'):
+                    arr = p.get(key)
+                    if isinstance(arr, list):
+                        flat_points.extend([str(x) for x in arr if isinstance(x, (str, int, float))])
+            merged = "; ".join(dict.fromkeys([x.strip() for x in flat_points if str(x).strip()])) or 'None'
+            return { 'summary': f'User preferences summary: {merged}', 'key_points': None }
+
+        import json as _json
+        systext = cfg['systext']
+        usertext = cfg['usertext'].format(
+            task=self.config.get('task_description', ''),
+            preferences_block=_json.dumps(prefs_list, ensure_ascii=False)
+        )
+        options = cfg.get('payload_options', { 'temperature': 0.2, 'num_predict': 180 })
+
+        # Expect a structured result
+        schema = PreferenceSummary.model_json_schema()
+        raw = self.vlm_api.vlm_request_with_format(
+            systext=systext,
+            usertext=usertext,
+            format_schema=schema,
+            options=options,
+        )
+        try:
+            parsed = PreferenceSummary.model_validate_json(raw)
+            return { 'summary': parsed.summary, 'key_points': parsed.key_points }
+        except Exception as e:
+            print(f"Failed to parse preference summary: {e}")
+            print(f"Raw summary response: {raw}")
+            return None
+        
+        
+    def robot_response(self, user_response: str) -> dict:
+        """Generate robot reply from user's response with clean, readable flow."""
+        # 1) Record user response and get latest Q&A
         self.append_user_response(user_response)
-
-        # Build latest Q&A and ground relevant objects
         latest = self.get_latest_qa()
-        grounded = self.ground_objects(latest, self.items or [])
 
-        # Parse/update user preferences before ambiguity check
+        # 2) Ground relevant objects to current conversation
+        relevant_items = self.ground_objects(latest, self.items or [])
+        # 3) Update preferences and check ambiguity
         prefs = self.preference_parser(
             task_description=self.config.get('task_description', ''),
             latest_qa=latest,
@@ -633,16 +702,72 @@ class RobotService:
         )
         self.user_preferences.append(prefs)
 
-        # Run ambiguity check to guide next Ask if needed, with preferences context
         ambiguity_info = self.ambiguity_checker(
             task_description=self.config.get('task_description', ''),
             latest_qa=latest,
-            items=self.get_relevant_items() or self.items,
+            relevant_items=self.get_relevant_items() or self.items,
             user_prefs=prefs,
             strategy=getattr(self, 'current_strategy', 'direct-querying'),
         )
 
-        # Optionally plan action when unambiguous
+        # 4) Plan action when not ambiguous and mark operated items
+        planned_operation, act_user_reply = self._maybe_plan_action_if_unambiguous(
+            ambiguity_info=ambiguity_info,
+            latest=latest,
+            prefs=prefs,
+        )
+
+        # 5) Prepare response fields
+        pref_list = self._serialize_preferences_list()
+        all_operated = self._all_items_operated()
+
+        # Base reply from action/ambiguity context
+        reply_text = self._compose_base_reply(
+            act_user_reply=act_user_reply,
+            ambiguity_info=ambiguity_info,
+            planned_operation=planned_operation,
+        )
+
+        # Completion branch: summarize preferences and override reply
+        preferences_summary = None
+        if all_operated:
+            preferences_summary = self.summarize_preferences() or None
+            reply_text = self._compose_completion_reply(preferences_summary)
+
+        # 6) Build result and persist
+        result = {
+            "robot_reply": reply_text,
+            "operation": planned_operation,
+            "relevant_objects": self.get_relevant_items(),
+            "ambiguity": ambiguity_info,
+            "preferences": pref_list,
+            "completed": all_operated,
+            "preferences_summary": preferences_summary,
+        }
+        self.conversation_history.append({
+            "type": "robot_response",
+            "operation": result["operation"],
+            "robot_reply": result["robot_reply"],
+            "ambiguity": result["ambiguity"],
+            "relevant_objects": result["relevant_objects"],
+            "preferences": result.get("preferences"),
+            "completed": result.get("completed", False),
+            "preferences_summary": result.get("preferences_summary"),
+            "timestamp": datetime.now().isoformat(),
+        })
+        return result
+
+    # ---------- Internal helpers for robot_response ----------
+    def _serialize_preferences_list(self) -> list:
+        try:
+            return [p.model_dump() if hasattr(p, 'model_dump') else p for p in (self.user_preferences or [])]
+        except Exception:
+            return []
+
+    def _all_items_operated(self) -> bool:
+        return bool(self.items) and all(bool(getattr(it, 'operated', False)) for it in self.items)
+
+    def _maybe_plan_action_if_unambiguous(self, *, ambiguity_info, latest, prefs):
         planned_operation = ""
         act_user_reply = None
         if ambiguity_info is False:
@@ -656,65 +781,88 @@ class RobotService:
                 if act and getattr(act, 'operation', None):
                     planned_operation = act.operation
                     act_user_reply = getattr(act, "user_reply", None)
-                    # Mark operated items in self.items
-                    updated = []
-                    ids = set((act.operated_item_ids or []))
-                    norm = set()
-                    for iid in ids:
-                        if isinstance(iid, str):
-                            s = iid.strip()
-                            if s.startswith('#'):
-                                s = s[1:]
-                            norm.add(s.lower())
-                    if norm:
-                        for it in self.items:
-                            if getattr(it, 'id', None) and it.id.lower() in norm and not getattr(it, 'operated', False):
-                                it.operated = True
-                                updated.append({"id": it.id, "name": it.name, "operated": True})
-                        if updated:
-                            self.logger.log_item_status_change(planned_operation, updated)
+                    self._mark_operated_items_from_act(planned_operation, act.operated_item_ids or [])
             except Exception as e:
                 print(f"Act planning failed: {e}")
+        return planned_operation, act_user_reply
 
-        # Serialize full preferences history (list) for the response
+    def _mark_operated_items_from_act(self, operation_text: str, operated_item_ids: list[str]):
+        updated = []
+        # Normalize IDs coming from planner output
+        norm: set[str] = set()
+        for iid in set(operated_item_ids or []):
+            if isinstance(iid, str):
+                s = iid.strip()
+                if s.startswith('#'):
+                    s = s[1:]
+                if s:
+                    norm.add(s.lower())
+
+        # Also extract IDs directly from the operation text to cover multi-action plans
+        norm |= self._extract_ids_from_operation(operation_text)
+        if not norm:
+            return
+        for it in self.items:
+            if getattr(it, 'id', None) and it.id.lower() in norm and not getattr(it, 'operated', False):
+                it.operated = True
+                updated.append({"id": it.id, "name": it.name, "operated": True})
+        if updated:
+            self.logger.log_item_status_change(operation_text, updated)
+        # Also prune executed items from current relevant_items focus list
+        self._prune_relevant_items_by_ids(norm)
+
+    def _extract_ids_from_operation(self, text: str | None) -> set[str]:
+        """Extract item IDs from an operation text.
+
+        Supports patterns like #id and validates bare tokens like type-index
+        against existing item IDs to avoid false positives.
+        """
+        out: set[str] = set()
+        if not text:
+            return out
         try:
-            pref_list = [p.model_dump() if hasattr(p, 'model_dump') else p for p in (self.user_preferences or [])]
+            # Collect known IDs for validation
+            known = {getattr(it, 'id', '').strip().lower() for it in self.items if getattr(it, 'id', None)}
+            # Match '#id' occurrences
+            for m in re.findall(r"#([A-Za-z0-9][A-Za-z0-9_-]{0,63})", text):
+                out.add(m.strip().lower())
+            # Match bare tokens that look like 'type-123' and are known IDs
+            for m in re.findall(r"\b([A-Za-z][A-Za-z0-9_-]*-\d{1,4})\b", text):
+                ml = m.strip().lower()
+                if ml in known:
+                    out.add(ml)
         except Exception:
-            pref_list = []
+            return out
+        return out
 
-        # Ensure a user-visible reply string exists
-        # Priority:
-        # 1) Model-provided user reply from action planner
-        # 2) Clarification guidance when ambiguous
-        # 3) Short confirmation when an operation is planned
-        # 4) Generic acknowledgement fallback
+    def _prune_relevant_items_by_ids(self, id_set: set[str]):
+        if not isinstance(self.relevant_items, list) or not self.relevant_items:
+            return
+        kept = []
+        for d in self.relevant_items:
+            try:
+                did = (d.get('id') or '').strip().lower() if isinstance(d, dict) else ''
+            except Exception:
+                did = ''
+            if did and did in id_set:
+                continue
+            kept.append(d)
+        self.relevant_items = kept
+
+    def _compose_base_reply(self, *, act_user_reply, ambiguity_info, planned_operation) -> str:
         if act_user_reply and isinstance(act_user_reply, str) and act_user_reply.strip():
-            reply_text = act_user_reply.strip()
-        elif isinstance(ambiguity_info, str) and ambiguity_info.strip():
-            reply_text = f"I need a bit more information to proceed: {ambiguity_info.strip()}"
-        elif planned_operation and isinstance(planned_operation, str) and planned_operation.strip():
-            reply_text = f"Got it. I will proceed: {planned_operation.strip()}"
-        else:
-            reply_text = "Thanks, I noted your response."
+            return act_user_reply.strip()
+        if isinstance(ambiguity_info, str) and ambiguity_info.strip():
+            return f"I need a bit more information to proceed: {ambiguity_info.strip()}"
+        if planned_operation and isinstance(planned_operation, str) and planned_operation.strip():
+            return f"Got it. I will proceed: {planned_operation.strip()}"
+        return "Thanks, I noted your response."
 
-        result = {
-            "robot_reply": reply_text,
-            "operation": planned_operation,
-            "relevant_objects": self.get_relevant_items(),
-            "ambiguity": ambiguity_info,
-            "preferences": pref_list,
-        }
-        # Persist to conversation history so history modal can show it
-        self.conversation_history.append({
-            "type": "robot_response",
-            "operation": result["operation"],
-            "robot_reply": result["robot_reply"],
-            "ambiguity": result["ambiguity"],
-            "relevant_objects": result["relevant_objects"],
-            "preferences": result.get("preferences"),
-            "timestamp": datetime.now().isoformat(),
-        })
-        return result
+    def _compose_completion_reply(self, preferences_summary: dict | None) -> str:
+        closing = "Great — all items are completed."
+        if preferences_summary and preferences_summary.get('summary'):
+            return f"{closing} Preference summary: {preferences_summary['summary']}"
+        return closing
 
     def plan_action(self,
                     latest_qa: dict,
@@ -783,6 +931,7 @@ class RobotService:
             print(f"Raw act response: {raw}")
             return None
 
+
     # Conversation management (backend)
     def append_robot_question(self, reasoning: str, question: str, image_path: str | None = None):
         self.conversation_history.append({
@@ -822,10 +971,42 @@ class RobotService:
     def get_relevant_items(self) -> list[dict]:
         return list(self.relevant_items)
 
-    def enumerate_desktop_items(self, image_path):
-        """Enumerate visible desktop items and return DesktopScanResult."""
+    def _derive_item_type(self, name: str | None, attributes: str | None = None) -> str:
+        """Derive a type slug from item name/attributes for ID generation."""
+        text = (name or '').strip().lower()
+        if not text and attributes:
+            text = (attributes or '').strip().lower()
+        tokens = re.split(r"[^a-zA-Z0-9]+", text)
+        tokens = [t for t in tokens if len(t) > 1]
+        base = tokens[0] if tokens else 'item'
+        return re.sub(r'[^a-zA-Z0-9]+', '-', base)
+
+    def _normalize_and_assign_ids(self, raw_items: list[DesktopItem | dict]) -> list[DesktopItem]:
+        """Normalize items to DesktopItem, ensure flags, and assign IDs as {type}-{编号}."""
+        normalized: list[DesktopItem] = []
+        type_counts: dict[str, int] = {}
+        for obj in raw_items or []:
+            try:
+                item = obj if isinstance(obj, DesktopItem) else DesktopItem.model_validate(obj)
+            except Exception:
+                continue
+            if not hasattr(item, 'operated') or item.operated is None:
+                item.operated = False
+            typ = self._derive_item_type(getattr(item, 'name', None), getattr(item, 'attributes', None))
+            type_counts[typ] = type_counts.get(typ, 0) + 1
+            item.id = f"{typ}-{type_counts[typ]}"
+            normalized.append(item)
+        return normalized
+
+    def parse_desktop_items(self, image_path) -> list[DesktopItem]:
+        """Enumerate and return DesktopItem list with IDs using the rule: 物体类型-编号.
+
+        - Calls VLM desktop_scan
+        - Assigns IDs per type and stores result in self.items
+        - Logs the scan via ExperimentLogger
+        """
         if not image_path:
-            return None
+            return []
 
         ds_cfg = self.config.get("desktop_scan")
         if not ds_cfg or 'systext' not in ds_cfg or 'usertext' not in ds_cfg:
@@ -835,40 +1016,62 @@ class RobotService:
         options = ds_cfg.get("payload_options", {"temperature": 0.2, "num_predict": 300})
 
         try:
+            array_schema = {"type": "array", "items": DesktopItem.model_json_schema()}
             raw = self.vlm_api.vlm_request_with_format(
                 systext=systext,
                 usertext=usertext,
-                format_schema=DesktopScanResult.model_json_schema(),
+                format_schema=array_schema,
                 image_path1=image_path,
                 options=options,
             )
-            parsed = DesktopScanResult.model_validate_json(raw)
-            return parsed
+            import json as _json
+            data = _json.loads(raw)
+            if not isinstance(data, list):
+                data = []
+            parsed_items: list[DesktopItem] = []
+            for obj in data:
+                try:
+                    parsed_items.append(DesktopItem.model_validate(obj))
+                except Exception:
+                    continue
+            new_items = self._normalize_and_assign_ids(parsed_items)
         except Exception as e:
-            print(f"Desktop item enumeration parse failed: {e}")
+            print(f"Desktop item parsing failed: {e}")
             print(f"Raw response: {raw if 'raw' in locals() else ''}")
-            return None
+            new_items = []
 
-    def initialize_desktop_state(self, image_path):
-        """Run desktop enumeration, store to member, and log the result."""
-        scan = self.enumerate_desktop_items(image_path)
-        if scan is not None:
-            new_items: list[DesktopItem] = []
-            for idx, item in enumerate(scan.items, start=1):
-                if not hasattr(item, 'operated') or item.operated is None:
-                    item.operated = False
-                if not getattr(item, 'id', None):
-                    base = re.sub(r'[^a-zA-Z0-9]+', '-', (item.name or '').strip().lower()).strip('-')
-                    if not base:
-                        base = 'item'
-                    item.id = f"itm-{idx}-{base}"
-                new_items.append(item)
-            self.items = new_items
-            try:
-                self.logger.log_desktop_scan(image_path, self.items, getattr(scan, 'summary', None))
-            except Exception as e:
-                print(f"Failed to log desktop scan: {e}")
-        return scan
+        # Keep only movable items (defensive; primary filtering via prompt)
+        self.items = self._filter_movable_items(new_items)
+        # New scan represents fresh instance detection; clear stale grounded items
+        self.relevant_items = []
+        try:
+            self.logger.log_desktop_scan(image_path, self.items, None)
+        except Exception as e:
+            print(f"Failed to log desktop scan: {e}")
+        return list(self.items)
+
+    def _filter_movable_items(self, items: list[DesktopItem]) -> list[DesktopItem]:
+        """Heuristically filter out immovable/background structures from scan results.
+
+        Rules (approximate):
+        - Exclude furniture/fixtures and surfaces: desk, table, wall, floor, ceiling, window, door
+        - Exclude storage structures: cabinet, shelf/shelves, drawer/drawers, countertop
+        - Otherwise keep (keyboards, mice, bottles, books, phones, laptops, etc.)
+        """
+        if not items:
+            return []
+        blocked = {
+            "desk", "table", "wall", "floor", "ceiling", "window", "door",
+            "cabinet", "shelf", "shelves", "drawer", "drawers", "counter", "countertop",
+        }
+        kept: list[DesktopItem] = []
+        for it in items:
+            nm = (getattr(it, 'name', None) or '').strip().lower()
+            toks = re.split(r"[^a-z0-9]+", nm)
+            if any(tok in blocked for tok in toks if tok):
+                continue
+            kept.append(it)
+        return kept
 
     
     def start_logging_session(self, task_description, custom_session_id=None):
