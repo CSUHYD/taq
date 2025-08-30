@@ -1,0 +1,73 @@
+{
+  "session_id": "organize_desktop_auto_20250830_224305",
+  "custom_session_id": null,
+  "start_time": "2025-08-30T22:43:05.306659",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-30T22:43:09.961453",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_224309_960.jpg",
+      "original_image_path": "captured_frames/init_frame_20250830_224306.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "gray and white",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white with handwritten notes",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "blue and black",
+            "operated": false
+          },
+          {
+            "id": "cd-1",
+            "name": "cd",
+            "attributes": "green",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-30T22:43:18.867411",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To start organizing the desktop, I need to identify the location of the keyboard, as it is a large item that will influence the placement of other objects. The keyboard is unoperated and should be positioned first for proper workspace setup.",
+      "robot_question": "Where is the gray and white keyboard located on the desktop?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

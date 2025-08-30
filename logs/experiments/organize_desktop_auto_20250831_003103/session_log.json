@@ -1,0 +1,106 @@
+{
+  "session_id": "organize_desktop_auto_20250831_003103",
+  "custom_session_id": null,
+  "start_time": "2025-08-31T00:31:03.999553",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-31T00:31:32.357149",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_003132_349.jpg",
+      "original_image_path": "captured_frames/init_frame_20250831_003115.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "gray and white",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white with blue writing",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "blue and white",
+            "operated": false
+          },
+          {
+            "id": "pen-2",
+            "name": "pen",
+            "attributes": "black and white",
+            "operated": false
+          },
+          {
+            "id": "pen-3",
+            "name": "pen",
+            "attributes": "red and white",
+            "operated": false
+          },
+          {
+            "id": "cable-1",
+            "name": "cable",
+            "attributes": "black",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-31T00:31:35.066143",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the keyboard located on the desktop?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-31T00:31:46.041770",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, table_center)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-08-31T00:31:53.933474",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the mouse located?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

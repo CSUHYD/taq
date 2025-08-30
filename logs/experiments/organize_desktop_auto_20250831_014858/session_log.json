@@ -1,0 +1,118 @@
+{
+  "session_id": "organize_desktop_auto_20250831_014858",
+  "custom_session_id": null,
+  "start_time": "2025-08-31T01:48:58.341288",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-31T01:49:20.983093",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_014920_974.jpg",
+      "original_image_path": "captured_frames/init_frame_20250831_014903.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "white and gray with purple accents",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white with black scroll wheel",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "blue ink",
+            "operated": false
+          },
+          {
+            "id": "pen-2",
+            "name": "pen",
+            "attributes": "red ink",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white pages with writing",
+            "operated": false
+          },
+          {
+            "id": "paper-1",
+            "name": "paper",
+            "attributes": "white with writing",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-31T01:49:30.653792",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the keyboard be placed on the desktop?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-31T01:49:50.044094",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, desktop_center)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-08-31T01:49:58.833882",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the white mouse with the black scroll wheel located on the desktop?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-08-31T01:51:01.982473",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the white mouse with the black scroll wheel located?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-08-31T01:52:32.350273",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the mouse located?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

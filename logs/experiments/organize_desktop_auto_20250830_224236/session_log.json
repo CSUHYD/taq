@@ -1,0 +1,75 @@
+{
+  "session_id": "organize_desktop_auto_20250830_224236",
+  "custom_session_id": null,
+  "start_time": "2025-08-30T22:42:36.236684",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-30T22:42:53.924575",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_224253_907.jpg",
+      "original_image_path": "captured_frames/init_frame_20250830_224250.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "gray and purple keys",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white and black",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white pages with writing",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "black and red",
+            "operated": false
+          },
+          {
+            "id": "cd-1",
+            "name": "cd",
+            "attributes": "green and transparent",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-30T22:43:03.819316",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To effectively organize the desktop, it's crucial to understand the user's preferences regarding the arrangement of items. This might include prioritizing certain items, grouping similar objects, or placing specific items in particular areas. Asking about these preferences ensures that the organization aligns with the user's needs and habits.",
+      "robot_question": "Could you please share how you'd like the items on your desktop organized? For example, do you prefer to group similar items together, place certain items in specific areas, or prioritize any particular item on the desk?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-08-30T22:43:05.304306",
+  "total_interactions": 2
+}

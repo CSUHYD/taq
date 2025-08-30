@@ -1,0 +1,114 @@
+{
+  "session_id": "organize_desktop_auto_20250830_222651",
+  "custom_session_id": null,
+  "start_time": "2025-08-30T22:26:51.143980",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-30T22:30:21.522316",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_223021_513.jpg",
+      "original_image_path": "captured_frames/init_frame_20250830_223004.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "white and gray",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "blue and black",
+            "operated": false
+          },
+          {
+            "id": "marker-1",
+            "name": "marker",
+            "attributes": "red and black",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white with writing",
+            "operated": false
+          },
+          {
+            "id": "cd-1",
+            "name": "cd",
+            "attributes": "green",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-30T22:31:02.159764",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "I need to choose an unoperated item to interact with as part of the organizing task. Let's start with the 'keyboard' since it's a central item on a desktop and often needs to be positioned first for other items to be organized around it.",
+      "robot_question": "Where is the white and gray keyboard located on the desktop?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-30T22:33:57.492402",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To start organizing the desktop, I will focus on the keyboard as it is a large item and often serves as a central point of organization. Asking for its exact placement will help me determine how to position other items around it.",
+      "robot_question": "Where is the white and gray keyboard located on the desktop?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-08-30T22:37:06.368953",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The goal is to organize the desktop. I should start by addressing one of the unoperated items. Since the keyboard is a fundamental item, I'll begin by clarifying its exact placement location to ensure it's properly positioned.",
+      "robot_question": "Where is the keyboard located on the desk?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-08-30T22:39:30.494446",
+      "type": "item_status_change",
+      "operation_text": "place(#keyboard-1, table_center)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-08-30T22:41:14.643955",
+  "total_interactions": 5
+}

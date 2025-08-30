@@ -1,0 +1,86 @@
+{
+  "session_id": "organize_desktop_auto_20250830_165234",
+  "custom_session_id": null,
+  "start_time": "2025-08-30T16:52:34.929915",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-30T16:52:53.084423",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_165253_074.jpg",
+      "original_image_path": "captured_frames/init_frame_20250830_165236.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "gray and black",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white pages with handwritten notes",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "blue",
+            "operated": false
+          },
+          {
+            "id": "mousepad-1",
+            "name": "mousepad",
+            "attributes": "white",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-30T16:53:01.419329",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The keyboard is a core item for desktop organization, and its exact placement is crucial for efficiency.",
+      "robot_question": "Where should the gray and black keyboard be placed?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-30T16:53:15.646106",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, table_center)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

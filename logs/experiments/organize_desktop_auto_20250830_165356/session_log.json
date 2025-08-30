@@ -1,0 +1,92 @@
+{
+  "session_id": "organize_desktop_auto_20250830_165356",
+  "custom_session_id": null,
+  "start_time": "2025-08-30T16:53:56.820246",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-30T16:54:03.865227",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_165403_859.jpg",
+      "original_image_path": "captured_frames/init_frame_20250830_165400.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "gray and purple keys",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white and black",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white pages with writing",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "blue and white",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-30T17:03:42.617618",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The task is to organize the desktop, and I need to start by focusing on an unoperated item. The keyboard is a central object on a desktop, so it makes sense to begin by positioning it correctly.",
+      "robot_question": "Where should the keyboard be placed?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-30T17:03:55.654198",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, table_center)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-08-30T21:05:48.178707",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "Before organizing the desktop, it's important to understand the user's preferences regarding the placement of items. This ensures the organization aligns with their workflow and aesthetic choices. The question should focus on how the user prefers the items to be arranged, considering both functionality and visual appeal.",
+      "robot_question": "How would you like the items on your desktop to be organized? For example, should the keyboard and mouse be kept closer to the center for easier access, or would you prefer the notebook and pen to be grouped together for better workflow?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-08-30T21:05:50.290943",
+  "total_interactions": 4
+}

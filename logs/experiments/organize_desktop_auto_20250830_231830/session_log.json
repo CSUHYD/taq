@@ -1,0 +1,201 @@
+{
+  "session_id": "organize_desktop_auto_20250830_231830",
+  "custom_session_id": null,
+  "start_time": "2025-08-30T23:18:30.838640",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-30T23:18:47.620446",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_231847_618.jpg",
+      "original_image_path": "captured_frames/init_frame_20250830_231844.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "gray and white",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "black and red",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white with handwritten notes",
+            "operated": false
+          },
+          {
+            "id": "cable-1",
+            "name": "cable",
+            "attributes": "black",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-30T23:19:07.745768",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "I need to start organizing the desktop by addressing one item at a time. The keyboard is a foundational item that should be placed correctly first, as it is essential for computer use.",
+      "robot_question": "Where should the gray and white keyboard be placed?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-30T23:20:02.097051",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, table_center)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-08-30T23:21:24.729855",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The mouse is an unoperated item, and its placement is crucial for organizing the desktop. Asking for its location ensures precise interaction.",
+      "robot_question": "Where is the white mouse located on the desktop?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-08-30T23:23:19.341841",
+      "type": "item_status_change",
+      "operation_text": "place(mouse-1, right_of_keyboard)",
+      "updated_items": [
+        {
+          "id": "mouse-1",
+          "name": "mouse",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-08-30T23:23:39.400201",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To organize the desktop, I'll start by focusing on one item at a time. Since all items are currently unoperated, I'll choose the 'book' as the first item to address. To proceed effectively, I need to know its exact location on the desktop.",
+      "robot_question": "Where is the book located on the desktop?"
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-08-30T23:25:00.015660",
+      "type": "item_status_change",
+      "operation_text": "place(book-1, bookshelf)",
+      "updated_items": [
+        {
+          "id": "book-1",
+          "name": "book",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-08-30T23:25:54.745996",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The goal is to organize the desktop, and the first step is to focus on one unoperated item. Since all items are currently unoperated, I will choose the first item in the list, which is the pen. The question should ask for its exact placement location to begin the organization process.",
+      "robot_question": "Where is the pen located on the desktop?"
+    },
+    {
+      "interaction_id": 8,
+      "timestamp": "2025-08-30T23:26:19.774034",
+      "type": "item_status_change",
+      "operation_text": "place(pen-1, desktop_right_of_mouse)",
+      "updated_items": [
+        {
+          "id": "pen-1",
+          "name": "pen",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 9,
+      "timestamp": "2025-08-30T23:26:36.706200",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To organize the desktop, I need to start by focusing on an unoperated item. The notebook has handwritten notes, which suggests it might be important to handle with care. Asking about its exact placement will help me plan how to move or store it effectively.",
+      "robot_question": "Where is the notebook located on the desktop?"
+    },
+    {
+      "interaction_id": 10,
+      "timestamp": "2025-08-30T23:28:18.559143",
+      "type": "item_status_change",
+      "operation_text": "store(notebook-1, bookshelf)",
+      "updated_items": [
+        {
+          "id": "notebook-1",
+          "name": "notebook",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 11,
+      "timestamp": "2025-08-30T23:28:33.197402",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The task is to organize a desktop, and the unoperated item is a black cable. To proceed, I need to know the exact location of the cable on the desktop so I can pick it up and organize it accordingly.",
+      "robot_question": "Where is the black cable located on the desktop?"
+    },
+    {
+      "interaction_id": 12,
+      "timestamp": "2025-08-30T23:33:03.410818",
+      "type": "item_status_change",
+      "operation_text": "place(cable-1, left_side_of_desktop)",
+      "updated_items": [
+        {
+          "id": "cable-1",
+          "name": "cable",
+          "operated": true
+        }
+      ]
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

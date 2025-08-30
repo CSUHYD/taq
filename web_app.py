@@ -183,11 +183,9 @@ class WebVideoSystem:
                 strategy=strategy
             )
             
-            reasoning = vlm_response.reasoning
             question = vlm_response.question
             
             print(f"Debug - Structured response received")
-            print(f"Debug - parsed reasoning: {reasoning}")
             print(f"Debug - parsed question: {question}")
             
             # Backend now records conversation; frontend only displays
@@ -197,7 +195,6 @@ class WebVideoSystem:
             socketio.emit('status_update', {'status': self.current_status})
             
             return {
-                "reasoning": reasoning,
                 "question": question,
                 "success": True
             }

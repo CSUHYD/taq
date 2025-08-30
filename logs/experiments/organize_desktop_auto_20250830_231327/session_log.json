@@ -1,0 +1,142 @@
+{
+  "session_id": "organize_desktop_auto_20250830_231327",
+  "custom_session_id": null,
+  "start_time": "2025-08-30T23:13:27.104031",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-30T23:13:47.310283",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_231347_296.jpg",
+      "original_image_path": "captured_frames/init_frame_20250830_231331.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "gray and purple keys",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white and black",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "blue and black ink",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white pages with writing",
+            "operated": false
+          },
+          {
+            "id": "cup-1",
+            "name": "cup",
+            "attributes": "green",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-30T23:13:59.969014",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The task is to organize the desktop, so the first step is to identify the position of an unoperated item to start the organization process. Since the items are not yet operated, I will choose the first unoperated item from the list, which is the 'keyboard', and ask for its exact placement.",
+      "robot_question": "Where is the keyboard located on the desk?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-30T23:15:06.747992",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, table_center)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-08-30T23:18:27.871805",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_3_231827_865.jpg",
+      "original_image_path": "captured_frames/init_frame_20250830_231823.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "gray and purple keys",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white and black",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white pages with writing",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "blue and black ink",
+            "operated": false
+          },
+          {
+            "id": "marker-1",
+            "name": "marker",
+            "attributes": "black and red ink",
+            "operated": false
+          },
+          {
+            "id": "cable-1",
+            "name": "cable",
+            "attributes": "black",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-08-30T23:18:30.832025",
+  "total_interactions": 4
+}

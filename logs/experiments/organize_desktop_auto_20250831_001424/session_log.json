@@ -1,0 +1,104 @@
+{
+  "session_id": "organize_desktop_auto_20250831_001424",
+  "custom_session_id": null,
+  "start_time": "2025-08-31T00:14:24.912768",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-31T00:14:30.357442",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_001430_353.jpg",
+      "original_image_path": "captured_frames/init_frame_20250831_001426.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "white and gray",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white with handwritten notes",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "black and red",
+            "operated": false
+          },
+          {
+            "id": "marker-1",
+            "name": "marker",
+            "attributes": "black and red",
+            "operated": false
+          },
+          {
+            "id": "funnel-1",
+            "name": "funnel",
+            "attributes": "green",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-31T00:14:39.472404",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To organize the desktop, I need to start by identifying a specific item to focus on. The 'keyboard' is a critical item that typically needs to be positioned first for efficient workspace setup. Asking about its placement will help determine where it should be placed or moved to ensure proper organization.",
+      "robot_question": "Where should the keyboard be placed?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-31T00:14:53.705872",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, table_center)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-08-31T00:15:02.144033",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To start organizing the desktop, I will choose an unoperated item and ask for its exact placement location.",
+      "robot_question": "Where is the mouse located on the desktop?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-08-31T00:15:37.182306",
+  "total_interactions": 4
+}

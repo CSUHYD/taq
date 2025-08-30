@@ -1,0 +1,45 @@
+{
+  "session_id": "organize_desktop_auto_20250830_221553",
+  "custom_session_id": null,
+  "start_time": "2025-08-30T22:15:53.082695",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-30T22:16:10.421114",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_221610_414.jpg",
+      "original_image_path": "captured_frames/init_frame_20250830_221556.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "white and gray",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-30T22:16:18.289445",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To effectively organize the desktop, it's important to understand the user's preferences regarding the placement of items. Since the desktop contains a keyboard, I need to ask about any specific location or arrangement the user prefers for this item. Additionally, it's helpful to inquire about any other items or principles they may want to apply to the organization process.",
+      "robot_question": "Would you like the keyboard placed in a specific area of the desktop, or do you have any other items you'd like to organize along with it?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-08-30T22:16:18.392267",
+  "total_interactions": 2
+}

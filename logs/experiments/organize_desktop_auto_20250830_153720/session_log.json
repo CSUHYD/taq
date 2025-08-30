@@ -1,0 +1,45 @@
+{
+  "session_id": "organize_desktop_auto_20250830_153720",
+  "custom_session_id": null,
+  "start_time": "2025-08-30T15:37:20.907991",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-30T16:22:02.320787",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_162202_313.jpg",
+      "original_image_path": "captured_frames/init_frame_20250830_162148.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "gray and purple keys",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-30T16:22:18.819751",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "Since the task is to organize the desktop and the keyboard is the only unoperated item, the next step should involve locating its exact placement to determine if it needs to be moved or adjusted.",
+      "robot_question": "Where is the keyboard located on the desktop?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-08-30T16:52:34.927030",
+  "total_interactions": 2
+}

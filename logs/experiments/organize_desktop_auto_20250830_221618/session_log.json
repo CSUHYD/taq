@@ -1,0 +1,184 @@
+{
+  "session_id": "organize_desktop_auto_20250830_221618",
+  "custom_session_id": null,
+  "start_time": "2025-08-30T22:16:18.393147",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-30T22:16:32.759324",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_221632_757.jpg",
+      "original_image_path": "captured_frames/init_frame_20250830_221628.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "gray and white, ergonomic design",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white, wireless",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover, titled 'Research Design'",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white pages, handwritten notes",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "blue ink, black cap",
+            "operated": false
+          },
+          {
+            "id": "pen-2",
+            "name": "pen",
+            "attributes": "red ink, black cap",
+            "operated": false
+          },
+          {
+            "id": "cup-1",
+            "name": "cup",
+            "attributes": "green and white striped",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-30T22:16:58.564368",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_1_221658_560.jpg",
+      "original_image_path": "captured_frames/init_frame_20250830_221654.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "white and black keys",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white and black",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white pages with writing",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "blue and white",
+            "operated": false
+          },
+          {
+            "id": "pen-2",
+            "name": "pen",
+            "attributes": "black and white",
+            "operated": false
+          },
+          {
+            "id": "pen-3",
+            "name": "pen",
+            "attributes": "red and white",
+            "operated": false
+          },
+          {
+            "id": "cup-1",
+            "name": "cup",
+            "attributes": "green and white striped",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-30T22:17:07.789264",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The keyboard is an essential item for the desktop setup and should be placed in a central position for easy access. By asking about its specific placement, we can start organizing the desktop effectively.",
+      "robot_question": "Where should the keyboard be placed?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-08-30T22:17:27.812866",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, table_center)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-08-30T22:17:32.679744",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To organize the desktop, I should start by addressing one item at a time. The mouse is a logical first choice since it's a commonly used device and is likely to be in frequent use. Its placement is crucial for easy access during work or leisure activities.",
+      "robot_question": "Where is the white and black mouse located?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-08-30T22:18:34.461320",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The task is to organize the desktop, and I need to start by addressing one of the unoperated items. Among the items, the 'mouse' is a logical starting point since it is essential for using the computer, and its placement might affect desk accessibility.",
+      "robot_question": "Where is the white and black mouse located on the desktop?"
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-08-30T22:19:18.444938",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "I need to organize the desktop by picking an unoperated item to start with. The mouse is a logical starting point since it's a common item on a desktop and is unoperated.",
+      "robot_question": "Where is the white and black mouse located on the desktop?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-08-30T22:19:40.646130",
+  "total_interactions": 7
+}

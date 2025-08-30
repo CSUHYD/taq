@@ -1,0 +1,85 @@
+{
+  "session_id": "organize_desktop_auto_20250831_001205",
+  "custom_session_id": null,
+  "start_time": "2025-08-31T00:12:05.317860",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-31T00:12:28.679304",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_001228_623.jpg",
+      "original_image_path": "captured_frames/init_frame_20250831_001212.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "white and gray with purple keys",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white and black",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white with handwritten notes",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "blue and red ink",
+            "operated": false
+          },
+          {
+            "id": "cup-1",
+            "name": "cup",
+            "attributes": "green plastic",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-31T00:12:48.465626",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "The task is to organize the desktop, so I should focus on the first unoperated item in the list. The keyboard is listed first and has not been operated, making it a logical starting point.",
+      "robot_question": "Where is the keyboard located on the desktop?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-31T00:13:22.928056",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To start organizing the desktop, I should first identify the location of an unoperated item. The keyboard is a critical item and typically placed in a specific location on the desktop. Asking about its position will help initiate the organization process.",
+      "robot_question": "Where is the white and gray keyboard with purple keys located on the desktop?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-08-31T00:14:24.909273",
+  "total_interactions": 3
+}

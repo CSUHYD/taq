@@ -1,0 +1,81 @@
+{
+  "session_id": "organize_desktop_auto_20250830_015541",
+  "custom_session_id": null,
+  "start_time": "2025-08-30T01:55:41.557145",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-30T01:56:03.827359",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_015603_820.jpg",
+      "original_image_path": "captured_frames/init_frame_20250830_015547.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "gray and white",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white with text",
+            "operated": false
+          },
+          {
+            "id": "smartphone-1",
+            "name": "smartphone",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "glass-1",
+            "name": "glass",
+            "attributes": "clear with text",
+            "operated": false
+          },
+          {
+            "id": "plastic-1",
+            "name": "plastic bag",
+            "attributes": "transparent",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-30T01:56:11.871353",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_reasoning": "To effectively organize the desktop, it's important to understand the user's preferences for item placement and categorization. This could include prioritizing frequently used items, grouping similar objects, or arranging items based on visual aesthetics or functionality. Asking about these preferences ensures that the organization aligns with the user's needs and habits.",
+      "robot_question": "Could you please share your preferences for organizing the desktop? For example, do you want to prioritize frequently used items, group similar objects together, or arrange items based on color or function?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-08-30T01:56:46.053654",
+  "total_interactions": 2
+}

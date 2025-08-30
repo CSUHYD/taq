@@ -1,0 +1,180 @@
+{
+  "session_id": "organize_desktop_auto_20250831_024222",
+  "custom_session_id": null,
+  "start_time": "2025-08-31T02:42:22.586309",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-31T02:42:45.405641",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_024245_395.jpg",
+      "original_image_path": "captured_frames/init_frame_20250831_024241.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "gray and white",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white with writing",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "blue",
+            "operated": false
+          },
+          {
+            "id": "pen-2",
+            "name": "pen",
+            "attributes": "red",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-31T02:43:26.291309",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the gray and white keyboard be placed?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-31T02:43:47.710084",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, table_center)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-08-31T02:43:57.553515",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the white mouse be placed?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-08-31T02:44:15.649966",
+      "type": "item_status_change",
+      "operation_text": "place(mouse-1, keyboard-1_right_side)",
+      "updated_items": [
+        {
+          "id": "mouse-1",
+          "name": "mouse",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-08-31T02:44:31.107425",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the book with the yellow and white cover located on the desktop?"
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-08-31T02:44:48.793216",
+      "type": "item_status_change",
+      "operation_text": "store(book-1, bookshelf)",
+      "updated_items": [
+        {
+          "id": "book-1",
+          "name": "book",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-08-31T02:44:56.843688",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the white notebook with writing located?"
+    },
+    {
+      "interaction_id": 8,
+      "timestamp": "2025-08-31T02:45:29.544535",
+      "type": "item_status_change",
+      "operation_text": "place(notebook-1, book-1)",
+      "updated_items": [
+        {
+          "id": "notebook-1",
+          "name": "notebook",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 9,
+      "timestamp": "2025-08-31T02:45:50.640874",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the blue pen located on the desktop?"
+    },
+    {
+      "interaction_id": 10,
+      "timestamp": "2025-08-31T02:46:19.631908",
+      "type": "item_status_change",
+      "operation_text": "store(pen-1, pen_holder); store(pen-2, pen_holder)",
+      "updated_items": [
+        {
+          "id": "pen-1",
+          "name": "pen",
+          "operated": true
+        },
+        {
+          "id": "pen-2",
+          "name": "pen",
+          "operated": true
+        }
+      ]
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-08-31T02:56:44.614305",
+  "total_interactions": 11
+}

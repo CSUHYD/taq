@@ -373,14 +373,7 @@
             color: #2c3e50;
         }
 
-        .reasoning {
-            font-style: italic;
-            color: #666;
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: rgba(0,0,0,0.05);
-            border-radius: 5px;
-        }
+        /* reasoning removed */
 
         .question {
             font-weight: bold;
@@ -962,7 +955,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    addRobotMessage(data.reasoning, data.question);
+                    addRobotMessage(data.question);
                     hasActiveQuestion = true;
                     
                 } else {
@@ -1027,7 +1020,7 @@
         }
 
         // Add robot message to conversation
-        function addRobotMessage(reasoning, question) {
+        function addRobotMessage(question) {
             const conversation = document.getElementById('conversation');
             
             // Remove empty conversation message if it exists
@@ -1043,7 +1036,6 @@
             
             messageDiv.innerHTML = `
                 <div class="message-header">🤖 Robot</div>
-                ${reasoning ? `<div class="reasoning"><strong>Reasoning:</strong> ${reasoning}</div>` : ''}
                 <div class="question"><strong>Question:</strong> ${question}</div>
                 <div class="timestamp">${now}</div>
             `;
@@ -1171,7 +1163,7 @@
                     
                     data.forEach(message => {
                         if (message.type === 'robot') {
-                            addRobotMessage(message.reasoning, message.question);
+                            addRobotMessage(message.question);
                         } else if (message.type === 'user') {
                             addUserMessage(message.response);
                         } else if (message.type === 'robot_response') {
@@ -1236,7 +1228,6 @@
                             messageDiv.className = 'history-message history-robot';
                             messageDiv.innerHTML = `
                                 <div><strong>🤖 Robot Question</strong></div>
-                                ${message.reasoning ? `<div><em>Reasoning:</em> ${message.reasoning}</div>` : ''}
                                 <div><strong>Question:</strong> ${message.question}</div>
                                 <div class="history-timestamp">${timestamp}</div>
                             `;

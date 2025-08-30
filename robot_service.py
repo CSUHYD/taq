@@ -120,7 +120,6 @@ class ExperimentLogger:
             "strategy": strategy,
             "image_file": image_filename,
             "original_image_path": image_path,
-            "robot_reasoning": vlm_response.reasoning,
             "robot_question": vlm_response.question
         }
         
@@ -374,14 +373,11 @@ class RobotService:
             return []
 
         og_cfg = self.config.get("object_grounding")
-        if not og_cfg or 'systext' not in og_cfg or 'usertext' not in og_cfg:
-            raise ValueError("object_grounding prompt missing in config")
         systext = og_cfg['systext']
 
         robot = (latest_qa or {}).get("robot") or {}
         user = (latest_qa or {}).get("user") or {}
         robot_question = robot.get("question") or ""
-        robot_reasoning = robot.get("reasoning") or ""
         user_response = user.get("response") or ""
 
         def _to_dict(it):
@@ -396,65 +392,58 @@ class RobotService:
                 'operated': getattr(it, 'operated', None),
             }
 
-        # Build surface-matched candidate items from Q&A to guide VLM
-        qa_text = f"{robot_question} {user_response}".lower()
-        def _name_tokens(nm: str) -> list[str]:
-            import re as _re
-            return [t for t in _re.split(r"[^a-zA-Z0-9]+", (nm or "").lower()) if len(t) > 2]
-        candidates = []
-        for it in [ _to_dict(x) for x in items ]:
-            nm = (it.get('name') or '').strip()
-            if not nm:
-                continue
-            toks = _name_tokens(nm)
-            if any(tok in qa_text for tok in toks):
-                candidates.append(nm)
-        candidates_block = json.dumps(sorted(list(set(candidates))), ensure_ascii=False)
 
         items_block = json.dumps([_to_dict(it) for it in items], ensure_ascii=False)
         usertext_template = og_cfg['usertext']
         usertext = usertext_template.format(
             items_block=items_block,
             robot_question=robot_question,
-            robot_reasoning=robot_reasoning,
             user_response=user_response,
-            candidates_block=candidates_block,
+            conversation_history=self.conversation_history,
         )
 
         options = og_cfg.get("payload_options", {"temperature": 0.1, "num_predict": 140})
-        # Expect an array of DesktopItem objects
-        array_schema = {"type": "array", "items": DesktopItem.model_json_schema()}
+        # Expect an array of item ID strings
+        array_schema = {"type": "array", "items": {"type": "string"}}
         raw = self.vlm_api.vlm_request_with_format(
             systext=systext,
             usertext=usertext,
             format_schema=array_schema,
             options=options,
         )
-        try:
-            data = json.loads(raw)
-            if not isinstance(data, list):
-                data = []
-        except Exception as e:
-            print(f"Failed to parse object grounding result: {e}")
-            print(f"Raw grounding response: {raw}")
-            return None
+        data = json.loads(raw)
+        # Normalize helper
+        def _norm(v):
+            if v is None:
+                return None
+            s = str(v).strip()
+            return s or None
 
-        # Merge parsed items directly into self.relevant_items (de-dup by id/name)
-        existing_ids = {d.get('id') for d in self.relevant_items if d.get('id')}
-        existing_names = {d.get('name') for d in self.relevant_items}
-        for obj in data:
+        # Build id -> item dict from provided items
+        id_to_item: dict[str, dict] = {}
+        for it in items or []:
+            dsrc = _to_dict(it)
+            nid = _norm(dsrc.get('id'))
+            if nid:
+                id_to_item[nid] = dsrc
+
+        # Merge matched items by ID into self.relevant_items (de-dup by ID)
+        existing_ids = {(_norm(d.get('id')) or '') for d in self.relevant_items if _norm(d.get('id'))}
+
+        if not isinstance(data, list):
+            data = []
+        for rid in data:
             try:
-                item = DesktopItem.model_validate(obj)
-                d = item.model_dump()
-                iid = (d.get('id') or '').strip() if d.get('id') else None
-                nm = (d.get('name') or '').strip() if d.get('name') else None
-                if (iid and iid in existing_ids) or (not iid and nm in existing_names):
+                iid = _norm(rid)
+                if not iid or iid in existing_ids:
                     continue
+                src = id_to_item.get(iid)
+                if not src:
+                    continue  # ignore unknown IDs
+                d = dict(src)
+                d['id'] = iid  # ensure normalized id
                 self.relevant_items.append(d)
-                if iid:
-                    existing_ids.add(iid)
-                if nm:
-                    existing_names.add(nm)
+                existing_ids.add(iid)
             except Exception:
                 continue
 
@@ -463,7 +452,8 @@ class RobotService:
     def preference_parser(self,
                           task_description: str,
                           latest_qa: dict | None = None,
-                          items: list | None = None) -> UserPreferences | None:
+                          items: list | None = None,
+                          conversation_history: str | None = None) -> UserPreferences | None:
         """Extract personalized user preferences from the latest Q&A using VLM.
 
         Returns a UserPreferences object on success and persists it to backend state
@@ -490,12 +480,19 @@ class RobotService:
         robot = (latest_qa or {}).get('robot') or {}
         user = (latest_qa or {}).get('user') or {}
         robot_question = robot.get('question') or ''
-        robot_reasoning = robot.get('reasoning') or ''
         user_response = user.get('response') or ''
 
-        pp_cfg = self.config.get('preference_parser')
-        if not pp_cfg or 'systext' not in pp_cfg or 'usertext' not in pp_cfg:
+        pp_root = self.config.get('preference_parser')
+        if not isinstance(pp_root, dict):
             raise ValueError("preference_parser prompt missing in config")
+        strategy = getattr(self, 'current_strategy', 'direct-querying')
+        pp_cfg = pp_root.get(strategy)
+        if not pp_cfg or 'systext' not in pp_cfg or 'usertext' not in pp_cfg:
+            # fallback to any flat legacy block if present
+            if 'systext' in pp_root and 'usertext' in pp_root:
+                pp_cfg = pp_root
+            else:
+                raise ValueError(f"preference_parser prompt missing for strategy: {strategy}")
         systext = pp_cfg['systext']
         usertext_template = pp_cfg['usertext']
         options = pp_cfg.get('payload_options', {"temperature": 0.2, "num_predict": 220})
@@ -504,10 +501,9 @@ class RobotService:
             task=task_description or self.config.get('task_description', ''),
             items_block=items_block,
             robot_question=robot_question,
-            robot_reasoning=robot_reasoning,
             user_response=user_response,
+            conversation_history=self.conversation_history,
         )
-
         raw = self.vlm_api.vlm_request_with_format(
             systext=systext,
             usertext=usertext,
@@ -537,7 +533,8 @@ class RobotService:
                           latest_qa: dict | None = None,
                           relevant_items: list | None = None,
                           user_prefs: 'UserPreferences | dict | None' = None,
-                          strategy: str = "direct-querying") -> str | bool:
+                          strategy: str = "direct-querying",
+                          conversation_history: str | None = None) -> str | bool:
         """Estimate if current target items have enough info to execute predicate actions.
 
         Inputs:
@@ -586,9 +583,8 @@ class RobotService:
         robot = (latest_qa or {}).get('robot') or {}
         user = (latest_qa or {}).get('user') or {}
         robot_question = robot.get('question') or ''
-        robot_reasoning = robot.get('reasoning') or ''
         user_response = user.get('response') or ''
-
+  
         ac_root = self.config.get('ambiguity_checker')
         if not isinstance(ac_root, dict):
             raise ValueError("ambiguity_checker prompt missing in config")
@@ -604,8 +600,8 @@ class RobotService:
             items_block=items_block,
             preferences_block=preferences_block,
             robot_question=robot_question,
-            robot_reasoning=robot_reasoning,
             user_response=user_response,
+            conversation_history=self.conversation_history,
         )
 
         raw = self.vlm_api.vlm_request_with_format(
@@ -698,14 +694,14 @@ class RobotService:
         prefs = self.preference_parser(
             task_description=self.config.get('task_description', ''),
             latest_qa=latest,
-            items=self.get_relevant_items() or self.items,
+            items=relevant_items,
         )
         self.user_preferences.append(prefs)
 
         ambiguity_info = self.ambiguity_checker(
             task_description=self.config.get('task_description', ''),
             latest_qa=latest,
-            relevant_items=self.get_relevant_items() or self.items,
+            relevant_items=relevant_items,
             user_prefs=prefs,
             strategy=getattr(self, 'current_strategy', 'direct-querying'),
         )
@@ -713,6 +709,7 @@ class RobotService:
         # 4) Plan action when not ambiguous and mark operated items
         planned_operation, act_user_reply = self._maybe_plan_action_if_unambiguous(
             ambiguity_info=ambiguity_info,
+            relevant_items=relevant_items,
             latest=latest,
             prefs=prefs,
         )
@@ -767,14 +764,14 @@ class RobotService:
     def _all_items_operated(self) -> bool:
         return bool(self.items) and all(bool(getattr(it, 'operated', False)) for it in self.items)
 
-    def _maybe_plan_action_if_unambiguous(self, *, ambiguity_info, latest, prefs):
+    def _maybe_plan_action_if_unambiguous(self, ambiguity_info, relevant_items, latest, prefs):
         planned_operation = ""
         act_user_reply = None
         if ambiguity_info is False:
             try:
                 act = self.plan_action(
                     latest_qa=latest,
-                    items=self.get_relevant_items() or self.items,
+                    relevant_items=relevant_items,
                     user_prefs=prefs,
                     task_description=self.config.get('task_description', ''),
                 )
@@ -864,9 +861,10 @@ class RobotService:
             return f"{closing} Preference summary: {preferences_summary['summary']}"
         return closing
 
+
     def plan_action(self,
                     latest_qa: dict,
-                    items,
+                    relevant_items,
                     user_prefs: UserPreferences | dict | None,
                     task_description: str) -> ActResult | None:
         """Plan predicate action using current context and preferences.
@@ -889,7 +887,7 @@ class RobotService:
                 'attributes': getattr(it, 'attributes', None),
                 'operated': getattr(it, 'operated', None),
             }
-        items_block = json.dumps([_to_dict(it) for it in (items or [])], ensure_ascii=False)
+        items_block = json.dumps([_to_dict(it) for it in (relevant_items or [])], ensure_ascii=False)
 
         # Preferences block
         if hasattr(user_prefs, 'model_dump'):
@@ -902,7 +900,6 @@ class RobotService:
         robot = (latest_qa or {}).get('robot') or {}
         user = (latest_qa or {}).get('user') or {}
         robot_question = robot.get('question') or ''
-        robot_reasoning = robot.get('reasoning') or ''
         user_response = user.get('response') or ''
 
         systext = ap_cfg['systext']
@@ -914,7 +911,6 @@ class RobotService:
             items_block=items_block,
             preferences_block=preferences_block,
             robot_question=robot_question,
-            robot_reasoning=robot_reasoning,
             user_response=user_response,
         )
 
@@ -967,6 +963,8 @@ class RobotService:
 
     def clear_conversation(self):
         self.conversation_history = []
+        # Also reset parsed user preferences on restart
+        self.user_preferences = []
 
     def get_relevant_items(self) -> list[dict]:
         return list(self.relevant_items)

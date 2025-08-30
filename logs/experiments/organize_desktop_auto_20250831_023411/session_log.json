@@ -1,0 +1,134 @@
+{
+  "session_id": "organize_desktop_auto_20250831_023411",
+  "custom_session_id": null,
+  "start_time": "2025-08-31T02:34:11.380676",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-08-31T02:34:17.931980",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_023417_926.jpg",
+      "original_image_path": "captured_frames/init_frame_20250831_023413.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "white and gray",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white and black",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "blue ink",
+            "operated": false
+          },
+          {
+            "id": "pen-2",
+            "name": "pen",
+            "attributes": "red ink",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white cover",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white with blue writing",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-08-31T02:34:22.024905",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the keyboard located?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-08-31T02:35:24.389498",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, table_center)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-08-31T02:35:33.342691",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the pen with blue ink located on the desktop?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-08-31T02:35:52.830260",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the mouse be placed?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-08-31T02:36:14.067146",
+      "type": "item_status_change",
+      "operation_text": "place(mouse-1, right_of_keyboard)",
+      "updated_items": [
+        {
+          "id": "mouse-1",
+          "name": "mouse",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-08-31T02:36:38.128974",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the pen with blue ink located?"
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-08-31T02:37:18.119432",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the pen with blue ink located on the desktop?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}
