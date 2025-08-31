@@ -1,0 +1,150 @@
+{
+  "session_id": "organize_desktop_auto_20250901_020758",
+  "custom_session_id": null,
+  "start_time": "2025-09-01T02:07:58.619997",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-01T02:08:27.578642",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_020827_571.jpg",
+      "original_image_path": "captured_frames/init_frame_20250901_020806.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "monitor-1",
+            "name": "monitor",
+            "attributes": "black, large, flat-screen",
+            "operated": false
+          },
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "yellow, ergonomic",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "black, wired",
+            "operated": false
+          },
+          {
+            "id": "mousepad-1",
+            "name": "mousepad",
+            "attributes": "white, rectangular",
+            "operated": false
+          },
+          {
+            "id": "stack-1",
+            "name": "stack of books",
+            "attributes": "white, thin",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white, open",
+            "operated": false
+          },
+          {
+            "id": "coffee-1",
+            "name": "coffee cup",
+            "attributes": "white, disposable",
+            "operated": false
+          },
+          {
+            "id": "mug-1",
+            "name": "mug",
+            "attributes": "green, ceramic",
+            "operated": false
+          },
+          {
+            "id": "bottle-1",
+            "name": "bottle",
+            "attributes": "green, tall",
+            "operated": false
+          },
+          {
+            "id": "decorative-1",
+            "name": "decorative item",
+            "attributes": "orange, flame-shaped",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen holder",
+            "attributes": "black, cylindrical",
+            "operated": false
+          },
+          {
+            "id": "cable-1",
+            "name": "cable",
+            "attributes": "black, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-2",
+            "name": "cable",
+            "attributes": "green, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-3",
+            "name": "cable",
+            "attributes": "white, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-4",
+            "name": "cable",
+            "attributes": "black, flat",
+            "operated": false
+          },
+          {
+            "id": "cable-5",
+            "name": "cable",
+            "attributes": "black, flat",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-01T02:09:19.864917",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the monitor be placed on the desktop?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-01T02:09:32.183912",
+      "type": "item_status_change",
+      "operation_text": "place(monitor-1, keyboard-1)",
+      "updated_items": [
+        {
+          "id": "monitor-1",
+          "name": "monitor",
+          "operated": true
+        },
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

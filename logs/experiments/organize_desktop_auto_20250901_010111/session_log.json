@@ -1,0 +1,37 @@
+{
+  "session_id": "organize_desktop_auto_20250901_010111",
+  "custom_session_id": null,
+  "start_time": "2025-09-01T01:01:11.559401",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-01T01:02:38.925134",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_010238_917.jpg",
+      "original_image_path": "captured_frames/init_frame_20250901_010216.jpg",
+      "scan": {
+        "items": [],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-01T01:03:07.913668",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_1_010307_912.jpg",
+      "original_image_path": "captured_frames/init_frame_20250901_010258.jpg",
+      "scan": {
+        "items": [],
+        "summary": null
+      }
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "session_id": "organize_desktop_auto_20250901_023411",
+  "custom_session_id": null,
+  "start_time": "2025-09-01T02:34:11.335156",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-01T02:34:14.740317",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Could you please specify which items are essential to keep on the desktop and in what arrangement you prefer? For example, do you want the keyboard and mouse close to the monitor, or do you have a particular location in mind for the decorative objects and coffee mugs?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-01T02:34:19.050681",
+  "total_interactions": 1
+}

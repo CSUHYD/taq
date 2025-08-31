@@ -1,0 +1,144 @@
+{
+  "session_id": "organize_desktop_auto_20250901_025611",
+  "custom_session_id": null,
+  "start_time": "2025-09-01T02:56:11.257712",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-01T02:56:28.341189",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_025628_335.jpg",
+      "original_image_path": "captured_frames/init_frame_20250901_025620.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "monitor-1",
+            "name": "monitor",
+            "attributes": "black, large",
+            "operated": false
+          },
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "yellow, black",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "mouse-2",
+            "name": "mouse pad",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "stack-1",
+            "name": "stack of books",
+            "attributes": "white, thin",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white, open",
+            "operated": false
+          },
+          {
+            "id": "cup-1",
+            "name": "cup",
+            "attributes": "green, plastic",
+            "operated": false
+          },
+          {
+            "id": "cup-2",
+            "name": "cup",
+            "attributes": "white, plastic",
+            "operated": false
+          },
+          {
+            "id": "bottle-1",
+            "name": "bottle",
+            "attributes": "brown, tall",
+            "operated": false
+          },
+          {
+            "id": "bottle-2",
+            "name": "bottle",
+            "attributes": "clear, tall",
+            "operated": false
+          },
+          {
+            "id": "box-1",
+            "name": "box",
+            "attributes": "red, small",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen holder",
+            "attributes": "black, tall",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-01T02:56:34.561534",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "How would you like your desktop organized? Would you prefer items grouped by category (e.g., electronics together, office supplies together), arranged by color, or sorted by size?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-01T02:57:11.562236",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Would you prefer the desktop items organized by type, color, or functionality, and should frequently used items be placed closer to you?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-01T02:57:41.897111",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like the stack of books and notebooks placed on the desktop?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-01T02:58:42.170201",
+      "type": "item_status_change",
+      "operation_text": "place(stack-1, right_side_desktop), place(notebook-1, right_side_desktop)",
+      "updated_items": [
+        {
+          "id": "stack-1",
+          "name": "stack of books",
+          "operated": true
+        },
+        {
+          "id": "notebook-1",
+          "name": "notebook",
+          "operated": true
+        }
+      ]
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

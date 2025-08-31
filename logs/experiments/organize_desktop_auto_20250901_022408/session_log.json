@@ -1,0 +1,230 @@
+{
+  "session_id": "organize_desktop_auto_20250901_022408",
+  "custom_session_id": null,
+  "start_time": "2025-09-01T02:24:08.018010",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-01T02:24:29.067671",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_022429_062.jpg",
+      "original_image_path": "captured_frames/init_frame_20250901_022414.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "black and yellow",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-01T02:24:49.561031",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the keyboard located on the desktop?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-01T02:25:03.183072",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, books_area)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-01T02:25:22.637835",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_3_022522_636.jpg",
+      "original_image_path": "captured_frames/init_frame_20250901_022512.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "monitor-1",
+            "name": "monitor",
+            "attributes": "black, large, flat-screen",
+            "operated": false
+          },
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "yellow keys, ergonomic",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "black, wired",
+            "operated": false
+          },
+          {
+            "id": "mouse-2",
+            "name": "mouse pad",
+            "attributes": "white, rectangular",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white, stacked",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "white, stacked",
+            "operated": false
+          },
+          {
+            "id": "coffee-1",
+            "name": "coffee cup",
+            "attributes": "white, disposable",
+            "operated": false
+          },
+          {
+            "id": "mug-1",
+            "name": "mug",
+            "attributes": "green, with handle",
+            "operated": false
+          },
+          {
+            "id": "cable-1",
+            "name": "cable",
+            "attributes": "black, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-2",
+            "name": "cable",
+            "attributes": "green, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-3",
+            "name": "cable",
+            "attributes": "black, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-4",
+            "name": "cable",
+            "attributes": "black, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-5",
+            "name": "cable",
+            "attributes": "black, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-6",
+            "name": "cable",
+            "attributes": "black, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-7",
+            "name": "cable",
+            "attributes": "black, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-8",
+            "name": "cable",
+            "attributes": "black, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-9",
+            "name": "cable",
+            "attributes": "black, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-10",
+            "name": "cable",
+            "attributes": "black, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-11",
+            "name": "cable",
+            "attributes": "black, coiled",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-01T02:25:31.221380",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the monitor be placed on the desktop?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-01T02:26:46.782295",
+      "type": "item_status_change",
+      "operation_text": "place(monitor-1, desktop)",
+      "updated_items": [
+        {
+          "id": "monitor-1",
+          "name": "monitor",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-01T02:26:54.564534",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the mouse be placed on the desktop?"
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-09-01T02:27:10.770247",
+      "type": "item_status_change",
+      "operation_text": "place(mouse-1, near_book-1)",
+      "updated_items": [
+        {
+          "id": "mouse-1",
+          "name": "mouse",
+          "operated": true
+        },
+        {
+          "id": "book-1",
+          "name": "book",
+          "operated": true
+        }
+      ]
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

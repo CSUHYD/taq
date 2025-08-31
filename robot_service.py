@@ -9,7 +9,6 @@ from vlmCall_ollama import VLMAPI, load_prompt_config
 
 # Pydantic models for business logic
 class VLMResponse(BaseModel):
-    reasoning: str
     question: str
 
 class ResponseAnalysis(BaseModel):
@@ -314,22 +313,20 @@ class RobotService:
             }
         # If direct-querying, filter to unoperated items when available
         filtered_items = items
-        if strat_key == 'direct-querying':
-            try:
-                tmp = []
-                for it in items:
-                    d = _to_dict(it)
-                    if not bool(d.get('operated')):
-                        tmp.append(d)
-                if tmp:
-                    filtered_items = tmp
-            except Exception:
-                filtered_items = items
+        tmp = []
+        for it in items:
+            d = _to_dict(it)
+            if not bool(d.get('operated')):
+                tmp.append(d)
+        if tmp:
+            filtered_items = tmp
+
         items_block = json.dumps([_to_dict(it) for it in filtered_items], ensure_ascii=False)
         usertext = usertext_template.format(
             task_description=task_description,
             items_block=items_block,
-            ambiguity_info=ambiguity_info or "(none)"
+            ambiguity_info=ambiguity_info or "(none)",
+            conversation_history = self.conversation_history
         )
         
         # 调用基础API
@@ -352,7 +349,6 @@ class RobotService:
         )
         # Also persist to backend conversation
         self.append_robot_question(
-            reasoning=parsed_response.reasoning,
             question=parsed_response.question,
             image_path=None,
         )
@@ -533,8 +529,7 @@ class RobotService:
                           latest_qa: dict | None = None,
                           relevant_items: list | None = None,
                           user_prefs: 'UserPreferences | dict | None' = None,
-                          strategy: str = "direct-querying",
-                          conversation_history: str | None = None) -> str | bool:
+                          strategy: str = "direct-querying") -> str | bool:
         """Estimate if current target items have enough info to execute predicate actions.
 
         Inputs:
@@ -612,9 +607,7 @@ class RobotService:
         )
 
         result = AmbiguityCheck.model_validate_json(raw)
-        if result.ambiguous:
-            return (result.ambiguity_info or '').strip() or "Ambiguity exists, but details were not provided."
-        return False
+        return result
 
 
     def summarize_preferences(self) -> dict | None:
@@ -698,7 +691,7 @@ class RobotService:
         )
         self.user_preferences.append(prefs)
 
-        ambiguity_info = self.ambiguity_checker(
+        ambiguity_block = self.ambiguity_checker(
             task_description=self.config.get('task_description', ''),
             latest_qa=latest,
             relevant_items=relevant_items,
@@ -708,7 +701,7 @@ class RobotService:
 
         # 4) Plan action when not ambiguous and mark operated items
         planned_operation, act_user_reply = self._maybe_plan_action_if_unambiguous(
-            ambiguity_info=ambiguity_info,
+            ambiguity=ambiguity_block.ambiguous,
             relevant_items=relevant_items,
             latest=latest,
             prefs=prefs,
@@ -721,7 +714,7 @@ class RobotService:
         # Base reply from action/ambiguity context
         reply_text = self._compose_base_reply(
             act_user_reply=act_user_reply,
-            ambiguity_info=ambiguity_info,
+            ambiguity_info=ambiguity_block.ambiguity_info,
             planned_operation=planned_operation,
         )
 
@@ -736,7 +729,7 @@ class RobotService:
             "robot_reply": reply_text,
             "operation": planned_operation,
             "relevant_objects": self.get_relevant_items(),
-            "ambiguity": ambiguity_info,
+            "ambiguity": ambiguity_block.ambiguity_info,
             "preferences": pref_list,
             "completed": all_operated,
             "preferences_summary": preferences_summary,
@@ -764,10 +757,10 @@ class RobotService:
     def _all_items_operated(self) -> bool:
         return bool(self.items) and all(bool(getattr(it, 'operated', False)) for it in self.items)
 
-    def _maybe_plan_action_if_unambiguous(self, ambiguity_info, relevant_items, latest, prefs):
+    def _maybe_plan_action_if_unambiguous(self, ambiguity, relevant_items, latest, prefs):
         planned_operation = ""
         act_user_reply = None
-        if ambiguity_info is False:
+        if ambiguity is False:
             try:
                 act = self.plan_action(
                     latest_qa=latest,
@@ -778,13 +771,20 @@ class RobotService:
                 if act and getattr(act, 'operation', None):
                     planned_operation = act.operation
                     act_user_reply = getattr(act, "user_reply", None)
-                    self._mark_operated_items_from_act(planned_operation, act.operated_item_ids or [])
+                    updated = self._mark_operated_items_from_act(act.operated_item_ids or [])
+                    if updated:
+                        # Log with the known planned operation text
+                        self.logger.log_item_status_change(planned_operation, updated)
             except Exception as e:
                 print(f"Act planning failed: {e}")
         return planned_operation, act_user_reply
 
-    def _mark_operated_items_from_act(self, operation_text: str, operated_item_ids: list[str]):
-        updated = []
+    def _mark_operated_items_from_act(self, operated_item_ids: list[str]) -> list[dict]:
+        """Mark items as operated using only operated_item_ids from the planner.
+
+        Returns a list of updated item dicts for logging.
+        """
+        updated: list[dict] = []
         # Normalize IDs coming from planner output
         norm: set[str] = set()
         for iid in set(operated_item_ids or []):
@@ -794,43 +794,15 @@ class RobotService:
                     s = s[1:]
                 if s:
                     norm.add(s.lower())
-
-        # Also extract IDs directly from the operation text to cover multi-action plans
-        norm |= self._extract_ids_from_operation(operation_text)
         if not norm:
-            return
+            return updated
         for it in self.items:
             if getattr(it, 'id', None) and it.id.lower() in norm and not getattr(it, 'operated', False):
                 it.operated = True
                 updated.append({"id": it.id, "name": it.name, "operated": True})
-        if updated:
-            self.logger.log_item_status_change(operation_text, updated)
-        # Also prune executed items from current relevant_items focus list
+        # Prune executed items from the current relevant_items focus list
         self._prune_relevant_items_by_ids(norm)
-
-    def _extract_ids_from_operation(self, text: str | None) -> set[str]:
-        """Extract item IDs from an operation text.
-
-        Supports patterns like #id and validates bare tokens like type-index
-        against existing item IDs to avoid false positives.
-        """
-        out: set[str] = set()
-        if not text:
-            return out
-        try:
-            # Collect known IDs for validation
-            known = {getattr(it, 'id', '').strip().lower() for it in self.items if getattr(it, 'id', None)}
-            # Match '#id' occurrences
-            for m in re.findall(r"#([A-Za-z0-9][A-Za-z0-9_-]{0,63})", text):
-                out.add(m.strip().lower())
-            # Match bare tokens that look like 'type-123' and are known IDs
-            for m in re.findall(r"\b([A-Za-z][A-Za-z0-9_-]*-\d{1,4})\b", text):
-                ml = m.strip().lower()
-                if ml in known:
-                    out.add(ml)
-        except Exception:
-            return out
-        return out
+        return updated
 
     def _prune_relevant_items_by_ids(self, id_set: set[str]):
         if not isinstance(self.relevant_items, list) or not self.relevant_items:
@@ -912,6 +884,7 @@ class RobotService:
             preferences_block=preferences_block,
             robot_question=robot_question,
             user_response=user_response,
+            conversation_history=self.conversation_history
         )
 
         raw = self.vlm_api.vlm_request_with_format(
@@ -929,10 +902,9 @@ class RobotService:
 
 
     # Conversation management (backend)
-    def append_robot_question(self, reasoning: str, question: str, image_path: str | None = None):
+    def append_robot_question(self, question: str, image_path: str | None = None):
         self.conversation_history.append({
             "type": "robot",
-            "reasoning": reasoning,
             "question": question,
             "timestamp": datetime.now().isoformat(),
             "image_path": image_path,
@@ -1023,7 +995,69 @@ class RobotService:
                 options=options,
             )
             import json as _json
-            data = _json.loads(raw)
+            def _strip_code_fences(s: str) -> str:
+                t = (s or "").strip()
+                if t.startswith("```") and t.endswith("```"):
+                    t = t.strip('`').strip()
+                # common case: starts with ```json
+                if t.startswith("```json"):
+                    t = t[len("```json"):].strip()
+                if t.endswith("```"):
+                    t = t[:-3].strip()
+                return t
+
+            def _extract_json_array(s: str) -> str | None:
+                """Attempt to extract a valid JSON array from messy text.
+
+                Strategies:
+                - If we can find a matched [...] via bracket counting, return it.
+                - Otherwise, cut from first '[' to last '}' and close with ']' (fix trailing comma).
+                """
+                if not s:
+                    return None
+                start = s.find('[')
+                if start == -1:
+                    return None
+                # Try bracket matching first
+                depth = 0
+                i = start
+                while i < len(s):
+                    ch = s[i]
+                    if ch == '[':
+                        depth += 1
+                    elif ch == ']':
+                        depth -= 1
+                        if depth == 0:
+                            return s[start:i+1]
+                    i += 1
+                # No matching closing bracket; salvage by cutting at last '}'
+                last_obj_end = s.rfind('}')
+                if last_obj_end == -1:
+                    return None
+                candidate = s[start:last_obj_end+1]
+                # Remove trailing comma before the last object if present
+                # e.g., "...}\n,\n  garbage" -> remove the comma
+                # Trim whitespace at the end to inspect preceding char
+                trimmed = candidate.rstrip()
+                # If the very end is '}', ensure the char before it is not a comma
+                # Also handle case like '},\n  }' which isn't valid; we'll only handle final trailing comma
+                # Here we simply ensure the substring ends with '}' and not '},'
+                if trimmed.endswith('},'):
+                    trimmed = trimmed[:-2] + '}'
+                candidate = trimmed
+                # Close the array
+                candidate = candidate + ']'  # we already have the starting '[' from 'start'
+                return candidate
+
+            txt = _strip_code_fences(raw)
+            try:
+                data = _json.loads(txt)
+            except Exception:
+                # Attempt array extraction if extra text surrounds JSON
+                arr = _extract_json_array(txt)
+                if arr is None:
+                    raise
+                data = _json.loads(arr)
             if not isinstance(data, list):
                 data = []
             parsed_items: list[DesktopItem] = []

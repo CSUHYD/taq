@@ -30,7 +30,7 @@
     },
     "parallel-exploration": {
       "systext": "You are a home service robot with advanced visual perception capabilities. Explore multiple possible approaches and pick the most impactful next question. Always respond in English.",
-      "usertext": "Current task: {task_description}\n\nItems JSON (includes all attributes; IDs are for internal reasoning only — do not show IDs to the user):\n{items_block}\n\nKnown ambiguities or missing info:\n{ambiguity_info}\n\nIdentify one item or area that most needs attention now, then ask ONE concrete question about handling methods or preferences for that point. Keep it short and actionable.\n\nReturn both your reasoning and the specific question in English.",
+      "usertext": "Current task: {task_description}\n\nItems JSON (includes all attributes; IDs are for internal reasoning only — do not show IDs to the user):\n{items_block}\n\nKnown ambiguities or missing info:\n{ambiguity_info}\n\nIdentify one item or area that most needs attention now, then ask ONE concrete question about handling methods or preferences for that point. Keep it short and actionable.\n\nReturn the specific question in English.",
       "payload_options": {
         "temperature": 0.9,
         "num_predict": 300
@@ -38,7 +38,7 @@
     },
     "direct-querying": {
       "systext": "You are a home service robot with advanced visual perception capabilities. Ask direct, specific questions about immediate actions. Focus on concrete, actionable details. Always respond in English. Keep questions short and specific to a single item. Do not include any IDs in the question.",
-      "usertext": "Current task: {task_description}\n\nItems JSON (each item has fields id, name, attributes, operated):\n{items_block}\n\nRules for choosing the target:\n- Choose an UNOPERATED item (operated == false).\nWrite ONE concise question that clarifies LOCAL information about the chosen item or the next micro-step (e.g., exact placement location).\n- Keep it short and actionable.\n- Do NOT include any IDs.\n\nReturn both your short reasoning and the specific question in English.",
+      "usertext": "Current task: {task_description}\nConversation_history: {conversation_history}\nItems JSON (each item has fields id, name, attributes, operated):\n{items_block}\n\nRules for choosing the target:\n- Choose an UNOPERATED item (operated == false).\nWrite ONE concise question that clarifies LOCAL information about the chosen item or the next micro-step (e.g., exact placement location).\n- Keep it short and actionable.\n- Do NOT include any IDs.\n\nReturn the specific question in English.",
       "payload_options": {
         "temperature": 0.9,
         "num_predict": 300
@@ -78,14 +78,14 @@
         "num_predict": 160
       }
     },
-    "direct-querying": {
-      "systext": "You are an ambiguity analyst for direct operations. Determine ONLY whether the latest Q&A, the GIVEN ITEMS, and known user preferences provide a clear placement LOCATION (destination) for the target item(s). Method/orientation/arrangement style is NOT required for sufficiency. Consider ONLY items listed in the Items JSON; ignore any unlisted items. If the destination is known, mark not ambiguous. If not, mark as ambiguous and propose one concise question asking ONLY for the location (e.g., which drawer/shelf/area).",
-      "usertext": "Task: {task}\nUser Preferences JSON:\n{preferences_block}\n\nItems JSON (CONSIDER ONLY THESE ITEMS):\n{items_block}\nConversation history:\n{conversation_history}\nLatest Q&A:\n- Robot question: {robot_question}\n- User response: {user_response}\n\nFocus: sufficiency of destination ONLY (placement location) for the listed items.\nRules:\n- Consider ONLY items listed in Items JSON; ignore unlisted items.\n- Consider it sufficient if the destination is clear.\n- If the user requests to put multiple items together, and a clear location for ANY of those items is already known from conversation history or preferences, TREAT THAT KNOWN LOCATION AS THE DESTINATION and mark NOT ambiguous. Do not ask for a location.\n- Do NOT require method/orientation/arrangement details.\n- If insufficient, ask ONE concise clarifying question focusing solely on the destination.\n\nReturn JSON with fields:\n- ambiguous: boolean (overall)\n- operation_ambiguity: boolean (is destination unknown/unclear?)\n- preference_ambiguity: boolean (are user preferences insufficient to choose a destination?)\n- ambiguity_info: short location-only clarifying question suggestions",
-      "payload_options": {
-        "temperature": 0.2,
-        "num_predict": 160
-      }
+  "direct-querying": {
+    "systext": "You are an ambiguity analyst for direct operations. Determine ONLY whether the latest Q&A, the GIVEN ITEMS, and known user preferences provide a clear placement LOCATION (destination) for the target item(s). Method/orientation/arrangement style is NOT required for sufficiency. Consider ONLY items listed in the Items JSON; ignore any unlisted items. If the destination is known, mark not ambiguous. If not, mark as ambiguous and propose one concise question asking ONLY for the location (e.g., which drawer/shelf/area).",
+    "usertext": "Task: {task}\nUser Preferences JSON:\n{preferences_block}\n\nItems JSON (CONSIDER ONLY THESE ITEMS):\n{items_block}\nConversation history:\n{conversation_history}\nLatest Q&A:\n- Robot question: {robot_question}\n- User response: {user_response}\n\nFocus: sufficiency of destination ONLY (placement location) for the listed items.\nRules:\n- Consider ONLY items listed in Items JSON; ignore unlisted items.\n- Consider it sufficient if the destination is clear.\n- If the user requests to put multiple items together, and a clear location for ANY of those items is already known from conversation history or preferences, TREAT THAT KNOWN LOCATION AS THE DESTINATION and mark NOT ambiguous. Do not ask for a location.\n- Do NOT require method/orientation/arrangement details.\n- If insufficient, ask ONE concise clarifying question focusing solely on the destination.\n\nReturn JSON with fields:\n- ambiguous: boolean (overall)\n- ambiguity_info: short location-only clarifying question suggestions",
+    "payload_options": {
+      "temperature": 0.2,
+      "num_predict": 160
     }
+  }
   },
   "preference_parser": {
     "user-preference-first": {
@@ -113,8 +113,8 @@
     }
   },
   "act_planner": {
-    "systext": "You are an action planner. Using the latest Q&A, current items, and user preferences, output a single predicate-style action and the item IDs to act on. Also craft a concise, lively user-facing reply describing the planned action. Examples: place(keyboard-1, table_center); store(notebook-1, drawer_A). Output JSON only.",
-    "usertext": "Task: {task}\nUser Preferences JSON:\n{preferences_block}\n\nItems JSON (with IDs):\n{items_block}\n\nLatest Q&A:\n- Robot question: {robot_question}\n- User response: {user_response}\n\nReturn JSON with fields: operation (string), operated_item_ids (array of raw item IDs exactly as in Items JSON;), user_reply (concise, friendly).",
+    "systext": "You are an action planner. Using the latest Q&A, current items, user preferences, and conversation history, output a single predicate-style action and the item IDs for the operated items. The `operated_item_ids` field must contain the IDs of the item(s) to be operated on. Also craft a concise, lively user-facing reply describing the planned action. Examples: place(keyboard-1, table_center), operated_item_ids: [\"keyboard-1\"]; store(notebook-1, drawer_A), operated_item_ids: [\"notebook-1\"]. To place a pen next to a book, the operation is `place(pen-1, book-1)` and the operated item is the pen, so `operated_item_ids` is [\"pen-1\"]. Output JSON only.",
+    "usertext": "Task: {task}\nUser Preferences JSON:\n{preferences_block}\n\nItems JSON (with IDs):\n{items_block}\n\nConversation history:\n{conversation_history}\n\nLatest Q&A:\n- Robot question: {robot_question}\n- User response: {user_response}\n\nReturn JSON with fields: operation (string), operated_item_ids (array of raw item IDs exactly as in Items JSON;), user_reply (concise, friendly).",
     "payload_options": {
       "temperature": 0.2,
       "num_predict": 160

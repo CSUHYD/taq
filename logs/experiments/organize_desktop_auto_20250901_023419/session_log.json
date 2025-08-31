@@ -1,0 +1,69 @@
+{
+  "session_id": "organize_desktop_auto_20250901_023419",
+  "custom_session_id": null,
+  "start_time": "2025-09-01T02:34:19.054431",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-01T02:34:23.828441",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the monitor located?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-01T02:34:42.605350",
+      "type": "item_status_change",
+      "operation_text": "place(monitor-1, stack-1)",
+      "updated_items": [
+        {
+          "id": "monitor-1",
+          "name": "monitor",
+          "operated": true
+        },
+        {
+          "id": "stack-1",
+          "name": "stack of books",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-01T02:34:57.921094",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the keyboard be placed?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-01T02:37:01.214807",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, coffee-1)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        },
+        {
+          "id": "coffee-1",
+          "name": "coffee mug",
+          "operated": true
+        }
+      ]
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}
