@@ -1,0 +1,42 @@
+{
+  "session_id": "organize_desktop_auto_20250901_042505",
+  "custom_session_id": null,
+  "start_time": "2025-09-01T04:25:05.228907",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-01T04:25:24.368528",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_042524_362.jpg",
+      "original_image_path": "captured_frames/init_frame_20250901_042510.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "black and yellow",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-01T04:25:31.760967",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the black and yellow keyboard located on the desktop?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

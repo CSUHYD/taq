@@ -1,0 +1,96 @@
+{
+  "session_id": "organize_desktop_auto_20250901_040337",
+  "custom_session_id": null,
+  "start_time": "2025-09-01T04:03:37.184532",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-01T04:03:51.214729",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_040351_209.jpg",
+      "original_image_path": "captured_frames/init_frame_20250901_040341.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "monitor-1",
+            "name": "monitor",
+            "attributes": "black, large, flat-screen",
+            "operated": false
+          },
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "black and yellow, ergonomic",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "black, wired",
+            "operated": false
+          },
+          {
+            "id": "mousepad-1",
+            "name": "mousepad",
+            "attributes": "black, rectangular",
+            "operated": false
+          },
+          {
+            "id": "stack-1",
+            "name": "stack of books",
+            "attributes": "white, multiple books",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "blue, closed",
+            "operated": false
+          },
+          {
+            "id": "stack-2",
+            "name": "stack of papers",
+            "attributes": "white, thin",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-01T04:03:55.284296",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "How would you like to organize your desktop? Would you prefer a more functional setup, focusing on easy access to frequently used items, or a more aesthetically pleasing arrangement with a focus on symmetry and visual appeal?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-01T04:05:36.735083",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "I understand that you prefer to group items by function. Could you clarify if there are any specific zones you'd like to reserve for other items, such as the notebook or the stack of papers?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-01T04:06:56.194282",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Can I confirm that you'd like the stack of books and the stack of papers placed together on the left side of your desk? If so, would you prefer them stacked on top of each other or placed side by side?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

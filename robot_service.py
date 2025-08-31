@@ -326,6 +326,7 @@ class RobotService:
             task_description=task_description,
             items_block=items_block,
             ambiguity_info=ambiguity_info or "(none)",
+            user_preferences = self.user_preferences,
             conversation_history = self.conversation_history
         )
         
@@ -448,18 +449,14 @@ class RobotService:
     def preference_parser(self,
                           task_description: str,
                           latest_qa: dict | None = None,
-                          items: list | None = None,
-                          conversation_history: str | None = None) -> UserPreferences | None:
+                          conversation_history: list | None = None,
+                          preference: list | dict | None = None) -> UserPreferences | None:
         """Extract personalized user preferences from the latest Q&A using VLM.
 
         Returns a UserPreferences object on success and persists it to backend state
         and conversation history; returns None on parsing failure.
         """
         latest_qa = latest_qa or self.get_latest_qa()
-        items_source = items
-        if items_source is None:
-            items_source = self.get_relevant_items() or self.get_desktop_items_snapshot().get('items', [])
-
         def _to_dict(it):
             if hasattr(it, 'model_dump'):
                 return it.model_dump()
@@ -471,8 +468,7 @@ class RobotService:
                 'attributes': getattr(it, 'attributes', None),
                 'operated': getattr(it, 'operated', None),
             }
-        items_block = json.dumps([_to_dict(it) for it in (items_source or [])], ensure_ascii=False)
-
+        
         robot = (latest_qa or {}).get('robot') or {}
         user = (latest_qa or {}).get('user') or {}
         robot_question = robot.get('question') or ''
@@ -495,10 +491,11 @@ class RobotService:
 
         usertext = usertext_template.format(
             task=task_description or self.config.get('task_description', ''),
-            items_block=items_block,
+            preferences_block = preference,
+            items_block = self.relevant_items,
             robot_question=robot_question,
             user_response=user_response,
-            conversation_history=self.conversation_history,
+            conversation_history=conversation_history,
         )
         raw = self.vlm_api.vlm_request_with_format(
             systext=systext,
@@ -687,7 +684,8 @@ class RobotService:
         prefs = self.preference_parser(
             task_description=self.config.get('task_description', ''),
             latest_qa=latest,
-            items=relevant_items,
+            conversation_history = self.conversation_history,
+            preference = self.user_preferences
         )
         self.user_preferences.append(prefs)
 

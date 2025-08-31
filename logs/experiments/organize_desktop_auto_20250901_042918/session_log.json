@@ -1,0 +1,243 @@
+{
+  "session_id": "organize_desktop_auto_20250901_042918",
+  "custom_session_id": null,
+  "start_time": "2025-09-01T04:29:18.767443",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-01T04:29:32.650627",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_042932_644.jpg",
+      "original_image_path": "captured_frames/init_frame_20250901_042922.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "monitor-1",
+            "name": "monitor",
+            "attributes": "black, large, flat-screen",
+            "operated": false
+          },
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "black and yellow, ergonomic",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "black, wired",
+            "operated": false
+          },
+          {
+            "id": "mousepad-1",
+            "name": "mousepad",
+            "attributes": "black, small",
+            "operated": false
+          },
+          {
+            "id": "stack-1",
+            "name": "stack of books",
+            "attributes": "white, multiple books",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "blue cover, open",
+            "operated": false
+          },
+          {
+            "id": "stack-2",
+            "name": "stack of papers",
+            "attributes": "white, thin",
+            "operated": false
+          },
+          {
+            "id": "coffee-1",
+            "name": "coffee mug",
+            "attributes": "white, with lid",
+            "operated": false
+          },
+          {
+            "id": "water-1",
+            "name": "water bottle",
+            "attributes": "clear, tall",
+            "operated": false
+          },
+          {
+            "id": "decorative-1",
+            "name": "decorative plant",
+            "attributes": "orange, artificial",
+            "operated": false
+          },
+          {
+            "id": "bottle-1",
+            "name": "bottle",
+            "attributes": "dark, tall, possibly wine",
+            "operated": false
+          },
+          {
+            "id": "cable-1",
+            "name": "cable",
+            "attributes": "black, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-2",
+            "name": "cable",
+            "attributes": "black, long",
+            "operated": false
+          },
+          {
+            "id": "cable-3",
+            "name": "cable",
+            "attributes": "black, short",
+            "operated": false
+          },
+          {
+            "id": "cable-4",
+            "name": "cable",
+            "attributes": "black, thin",
+            "operated": false
+          },
+          {
+            "id": "cable-5",
+            "name": "cable",
+            "attributes": "black, thick",
+            "operated": false
+          },
+          {
+            "id": "cable-6",
+            "name": "cable",
+            "attributes": "black, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-7",
+            "name": "cable",
+            "attributes": "black, long",
+            "operated": false
+          },
+          {
+            "id": "cable-8",
+            "name": "cable",
+            "attributes": "black, short",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-01T04:29:36.653377",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "How would you like the items on your desktop organized? For example, do you prefer items grouped by type, color, or purpose?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-01T04:30:09.493133",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To organize items by function, should the cables be grouped together in a specific location on the desktop, or should they be placed near the devices they are connected to?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-01T04:31:03.405906",
+      "type": "item_status_change",
+      "operation_text": "group(cables, right_side_of_desktop)",
+      "updated_items": [
+        {
+          "id": "cable-1",
+          "name": "cable",
+          "operated": true
+        },
+        {
+          "id": "cable-2",
+          "name": "cable",
+          "operated": true
+        },
+        {
+          "id": "cable-3",
+          "name": "cable",
+          "operated": true
+        },
+        {
+          "id": "cable-4",
+          "name": "cable",
+          "operated": true
+        },
+        {
+          "id": "cable-5",
+          "name": "cable",
+          "operated": true
+        },
+        {
+          "id": "cable-6",
+          "name": "cable",
+          "operated": true
+        },
+        {
+          "id": "cable-7",
+          "name": "cable",
+          "operated": true
+        },
+        {
+          "id": "cable-8",
+          "name": "cable",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-01T04:31:13.850405",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To organize items by function, should the office supplies like the stack of books and papers be grouped together in a specific area, or should they be placed near the areas where they are most commonly used?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-01T04:32:27.514394",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Should the stack of books and papers be grouped together on the left side of the desktop, or placed near the monitor for easy access?"
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-01T04:32:51.351013",
+      "type": "item_status_change",
+      "operation_text": "group(stack-1, stack-2, left_side_of_desktop)",
+      "updated_items": [
+        {
+          "id": "stack-1",
+          "name": "stack of books",
+          "operated": true
+        },
+        {
+          "id": "stack-2",
+          "name": "stack of papers",
+          "operated": true
+        }
+      ]
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

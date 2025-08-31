@@ -1,0 +1,111 @@
+{
+  "session_id": "organize_desktop_auto_20250901_040029",
+  "custom_session_id": null,
+  "start_time": "2025-09-01T04:00:29.442185",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-01T04:00:49.573578",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_040049_566.jpg",
+      "original_image_path": "captured_frames/init_frame_20250901_040043.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "monitor-1",
+            "name": "monitor",
+            "attributes": "black, large",
+            "operated": false
+          },
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "yellow, black",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "mousepad-1",
+            "name": "mousepad",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "stacked-1",
+            "name": "stacked books",
+            "attributes": "white, multiple",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white, open",
+            "operated": false
+          },
+          {
+            "id": "cups-1",
+            "name": "cups",
+            "attributes": "white, plastic",
+            "operated": false
+          },
+          {
+            "id": "bottle-1",
+            "name": "bottle",
+            "attributes": "dark, tall",
+            "operated": false
+          },
+          {
+            "id": "decorative-1",
+            "name": "decorative item",
+            "attributes": "orange, flame-shaped",
+            "operated": false
+          },
+          {
+            "id": "sticky-1",
+            "name": "sticky notes",
+            "attributes": "red, small",
+            "operated": false
+          },
+          {
+            "id": "cable-1",
+            "name": "cable",
+            "attributes": "black, coiled",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-01T04:00:55.041630",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "How would you like your desktop organized? (e.g., by color, function, or preference for certain items to be closer?)"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-01T04:03:05.122328",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Do you have any specific items that you prefer to be placed closer to you for easier access?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "session_id": "organize_desktop_auto_20250901_040736",
+  "custom_session_id": null,
+  "start_time": "2025-09-01T04:07:36.759872",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-01T04:08:08.338629",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_040808_330.jpg",
+      "original_image_path": "captured_frames/init_frame_20250901_040801.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "yellow and black",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "mousepad-1",
+            "name": "mousepad",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "stack-1",
+            "name": "stack of books",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "cup-1",
+            "name": "cup",
+            "attributes": "green",
+            "operated": false
+          },
+          {
+            "id": "cup-2",
+            "name": "cup",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "bottle-1",
+            "name": "bottle",
+            "attributes": "green",
+            "operated": false
+          },
+          {
+            "id": "bottle-2",
+            "name": "bottle",
+            "attributes": "brown",
+            "operated": false
+          },
+          {
+            "id": "decorative-1",
+            "name": "decorative item",
+            "attributes": "orange and yellow",
+            "operated": false
+          },
+          {
+            "id": "decorative-2",
+            "name": "decorative item",
+            "attributes": "yellow and orange",
+            "operated": false
+          },
+          {
+            "id": "decorative-3",
+            "name": "decorative item",
+            "attributes": "white and orange",
+            "operated": false
+          },
+          {
+            "id": "decorative-4",
+            "name": "decorative item",
+            "attributes": "yellow and orange",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-01T04:08:13.856657",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "How would you like your desktop organized? Should I prioritize functionality, aesthetics, or a mix of both?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-01T04:08:45.109823",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Which items should I group together for optimal functionality? For example, should I place the keyboard and mousepad together as they are commonly used together?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-01T04:09:35.588459",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Should I group the mouse and the keyboard/mousepad set together as they are also commonly used together?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}
