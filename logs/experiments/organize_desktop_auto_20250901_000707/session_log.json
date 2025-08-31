@@ -1,0 +1,197 @@
+{
+  "session_id": "organize_desktop_auto_20250901_000707",
+  "custom_session_id": null,
+  "start_time": "2025-09-01T00:07:07.747543",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-01T00:07:40.188104",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_000740_182.jpg",
+      "original_image_path": "captured_frames/init_frame_20250901_000730.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "monitor-1",
+            "name": "monitor",
+            "attributes": "black, large, flat-screen",
+            "operated": false
+          },
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "yellow, compact",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "black, standard size",
+            "operated": false
+          },
+          {
+            "id": "mousepad-1",
+            "name": "mousepad",
+            "attributes": "black, standard size",
+            "operated": false
+          },
+          {
+            "id": "stack-1",
+            "name": "stack of books",
+            "attributes": "white, multiple books",
+            "operated": false
+          },
+          {
+            "id": "notebook-1",
+            "name": "notebook",
+            "attributes": "white, open",
+            "operated": false
+          },
+          {
+            "id": "coffee-1",
+            "name": "coffee cup",
+            "attributes": "white, disposable",
+            "operated": false
+          },
+          {
+            "id": "mug-1",
+            "name": "mug",
+            "attributes": "green, standard size",
+            "operated": false
+          },
+          {
+            "id": "bottle-1",
+            "name": "bottle",
+            "attributes": "yellow, standard size",
+            "operated": false
+          },
+          {
+            "id": "bottle-2",
+            "name": "bottle",
+            "attributes": "green, standard size",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen holder",
+            "attributes": "black, standard size",
+            "operated": false
+          },
+          {
+            "id": "figurine-1",
+            "name": "figurine",
+            "attributes": "orange, small, dragon-shaped",
+            "operated": false
+          },
+          {
+            "id": "figurine-2",
+            "name": "figurine",
+            "attributes": "yellow, small, bear-shaped",
+            "operated": false
+          },
+          {
+            "id": "box-1",
+            "name": "box",
+            "attributes": "red, small",
+            "operated": false
+          },
+          {
+            "id": "cable-1",
+            "name": "cable",
+            "attributes": "green, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-2",
+            "name": "cable",
+            "attributes": "black, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-3",
+            "name": "cable",
+            "attributes": "white, coiled",
+            "operated": false
+          },
+          {
+            "id": "cable-4",
+            "name": "cable",
+            "attributes": "black, coiled",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-01T00:07:51.247749",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the black, large, flat-screen monitor located on the desktop?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-01T00:08:17.628395",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the yellow, compact keyboard be placed on the desktop?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-01T00:09:10.619761",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, desktop_center)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-01T00:09:20.053243",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the monitor be placed on the desktop?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-01T00:09:34.886257",
+      "type": "item_status_change",
+      "operation_text": "place(monitor-1, current_position)",
+      "updated_items": [
+        {
+          "id": "monitor-1",
+          "name": "monitor",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-01T00:09:50.054314",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the mouse be placed?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}
