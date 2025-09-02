@@ -1,0 +1,28 @@
+{
+  "session_id": "organize_study_desk_auto_20250902_201141",
+  "custom_session_id": null,
+  "start_time": "2025-09-02T20:11:41.991323",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-02T20:12:04.446551",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_201204_437.jpg",
+      "original_image_path": "captured_frames/init_frame_20250902_201148.jpg",
+      "scan": {
+        "items": [],
+        "summary": null
+      }
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-02T20:12:12.325905",
+  "total_interactions": 1
+}

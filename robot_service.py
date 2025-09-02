@@ -5,6 +5,7 @@ import shutil
 from datetime import datetime
 from pydantic import BaseModel
 from vlmCall_ollama import VLMAPI, load_prompt_config
+import item_list
 
 
 # Pydantic models for business logic
@@ -982,6 +983,16 @@ class RobotService:
         return normalized
 
     def parse_desktop_items(self, image_path) -> list[DesktopItem]:
+        if self.task_description == 'organize study desk':
+            self.items = item_list.STUDY_DESK
+        elif self.task_description == 'organize office desk':
+            self.items = item_list.OFFICE_DESK
+        elif self.task_description == 'organize bar counter':
+            self.items = item_list.BAR_COUNTER
+        return list(self.items)
+
+
+    def parse_desktop_items_auto(self, image_path) -> list[DesktopItem]:
         """Enumerate and return DesktopItem list with IDs using the rule: 物体类型-编号.
 
         - Calls VLM desktop_scan
