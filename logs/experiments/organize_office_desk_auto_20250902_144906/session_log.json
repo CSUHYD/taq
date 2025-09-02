@@ -1,0 +1,16 @@
+{
+  "session_id": "organize_office_desk_auto_20250902_144906",
+  "custom_session_id": null,
+  "start_time": "2025-09-02T14:49:06.934314",
+  "task_description": "organize office desk",
+  "language": "en",
+  "interactions": [],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-02T14:49:08.471283",
+  "total_interactions": 0
+}

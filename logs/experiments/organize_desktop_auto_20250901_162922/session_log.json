@@ -1,0 +1,33 @@
+{
+  "session_id": "organize_desktop_auto_20250901_162922",
+  "custom_session_id": null,
+  "start_time": "2025-09-01T16:29:22.552751",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-01T16:30:12.794106",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_163012_783.jpg",
+      "original_image_path": "captured_frames/init_frame_20250901_162958.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "gray and purple keys",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

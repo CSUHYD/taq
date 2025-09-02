@@ -10,10 +10,9 @@
       "usertext": "Please describe what you see in this image."
     }
   },
-  "task_description": "organize desktop",
   "desktop_scan": {
-    "systext": "You are a vision assistant. Identify only MOVABLE items visible on a desk/table surface (things a person can easily pick up and relocate by hand). Exclude the desk/table itself, built-in fixtures, walls/floor/ceiling, windows/doors, cabinets, shelves/drawers, and other immovable background structures. Return concise object names with brief attributes for each item (e.g., color, size). Do not hallucinate.",
-    "usertext": "Analyze the image and list distinct MOVABLE desktop items only. For each movable item, include a short attributes string when helpful. Do not include counts. Use short nouns. Exclude furniture and fixed/background structures (desk/table, wall, floor, cabinet, shelf, drawer, window, door, etc.).",
+    "systext": "You are a vision assistant. Identify only MOVABLE items visible on a desk/table surface (things a person can easily pick up and relocate by hand). Exclude the desk/table itself, built-in fixtures, walls/floor/ceiling, windows/doors, cabinets, shelves/drawers, and other immovable background structures. Return concise object names with brief attributes for each item (e.g., color, size). Do not hallucinate. Focus on the task-relevant categories provided.",
+    "usertext": "FOCUS CATEGORIES (closed set for this task): {focus_categories}\n\nAnalyze the image and list distinct MOVABLE items that belong to these categories (match synonyms sensibly). For each item, include a short attributes string when helpful. Do not include counts. Use short nouns. Exclude furniture and fixed/background structures (desk/table, wall, floor, cabinet, shelf, drawer, window, door, etc.).",
     "payload_options": {
       "temperature": 0.2,
       "num_predict": 300
@@ -43,14 +42,6 @@
         "temperature": 0.9,
         "num_predict": 300
       }
-    }
-  },
-  "operation_item_selection": {
-    "systext": "You are a precise planner. Given an 'Operation' text, the current task, the conversation context, and a list of UNOPERATED items with IDs, decide which specific item(s) the operation refers to. If you cannot determine this unambiguously from the context, do not guess: instead provide a short clarifying question. Output JSON only.",
-    "usertext": "Current task: {current_task}\nConversation history:\n{conversation_history}\n\nUnoperated items (with IDs, never expose IDs to the user):\n{items_block}\n\nOperation: {operation}\n\nReturn JSON with fields:\n- selected_item_ids: array of raw item IDs (exactly as listed; no leading '#') to mark as operated now\n- clarification_question: string; if selection is ambiguous or insufficient, ask a concise clarifying question here (and leave selected_item_ids empty)",
-    "payload_options": {
-      "temperature": 0.2,
-      "num_predict": 120
     }
   },
   "object_grounding": {

@@ -265,6 +265,10 @@ class RobotService:
         self.relevant_items: list[dict] = []
         self.conversation_history: list[dict] = []
         self.user_preferences: list[UserPreferences] = []
+        # Current task description (set by web_app at runtime)
+        self.task_description: str = ""
+        # Per-task focus categories mapping: { task_description: [category, ...] }
+        self.focus_categories_by_task: dict[str, list[str]] = {}
 
 
     def generate_question(self, 
@@ -392,11 +396,15 @@ class RobotService:
 
         items_block = json.dumps([_to_dict(it) for it in items], ensure_ascii=False)
         usertext_template = og_cfg['usertext']
+        allowed_categories = og_cfg.get('allowed_categories', [])
+        import json as _json
+        categories_block = _json.dumps(allowed_categories, ensure_ascii=False)
         usertext = usertext_template.format(
             items_block=items_block,
             robot_question=robot_question,
             user_response=user_response,
             conversation_history=self.conversation_history,
+            allowed_categories=categories_block,
         )
 
         options = og_cfg.get("payload_options", {"temperature": 0.1, "num_predict": 140})
@@ -457,6 +465,8 @@ class RobotService:
         and conversation history; returns None on parsing failure.
         """
         latest_qa = latest_qa or self.get_latest_qa()
+        # Determine items context (prefer grounded relevant items)
+        items_source = self.get_relevant_items() or self.get_desktop_items_snapshot().get('items', [])
         def _to_dict(it):
             if hasattr(it, 'model_dump'):
                 return it.model_dump()
@@ -468,6 +478,8 @@ class RobotService:
                 'attributes': getattr(it, 'attributes', None),
                 'operated': getattr(it, 'operated', None),
             }
+        import json as _json
+        items_block = _json.dumps([_to_dict(it) for it in (items_source or [])], ensure_ascii=False)
         
         robot = (latest_qa or {}).get('robot') or {}
         user = (latest_qa or {}).get('user') or {}
@@ -489,13 +501,14 @@ class RobotService:
         usertext_template = pp_cfg['usertext']
         options = pp_cfg.get('payload_options', {"temperature": 0.2, "num_predict": 220})
 
+        # Prepare blocks
+        conv_hist = conversation_history if conversation_history is not None else self.conversation_history
         usertext = usertext_template.format(
-            task=task_description or self.config.get('task_description', ''),
-            preferences_block = preference,
-            items_block = self.relevant_items,
+            task=task_description or self.task_description,
+            items_block=items_block,
             robot_question=robot_question,
             user_response=user_response,
-            conversation_history=conversation_history,
+            conversation_history=conv_hist,
         )
         raw = self.vlm_api.vlm_request_with_format(
             systext=systext,
@@ -588,7 +601,7 @@ class RobotService:
         payload_options = ac_cfg.get('payload_options', {"temperature": 0.2, "num_predict": 160})
 
         usertext = usertext_template.format(
-            task=task_description or self.config.get('task_description', ''),
+            task=task_description or self.task_description,
             items_block=items_block,
             preferences_block=preferences_block,
             robot_question=robot_question,
@@ -604,7 +617,9 @@ class RobotService:
         )
 
         result = AmbiguityCheck.model_validate_json(raw)
-        return result
+        if result.ambiguous:
+            return (result.ambiguity_info or '').strip() or "Ambiguity exists, but details were not provided."
+        return False
 
 
     def summarize_preferences(self) -> dict | None:
@@ -650,7 +665,7 @@ class RobotService:
         import json as _json
         systext = cfg['systext']
         usertext = cfg['usertext'].format(
-            task=self.config.get('task_description', ''),
+            task=self.task_description,
             preferences_block=_json.dumps(prefs_list, ensure_ascii=False)
         )
         options = cfg.get('payload_options', { 'temperature': 0.2, 'num_predict': 180 })
@@ -682,15 +697,15 @@ class RobotService:
         relevant_items = self.ground_objects(latest, self.items or [])
         # 3) Update preferences and check ambiguity
         prefs = self.preference_parser(
-            task_description=self.config.get('task_description', ''),
+            task_description=self.task_description,
             latest_qa=latest,
             conversation_history = self.conversation_history,
             preference = self.user_preferences
         )
         self.user_preferences.append(prefs)
 
-        ambiguity_block = self.ambiguity_checker(
-            task_description=self.config.get('task_description', ''),
+        ambiguity_info = self.ambiguity_checker(
+            task_description=self.task_description,
             latest_qa=latest,
             relevant_items=relevant_items,
             user_prefs=prefs,
@@ -699,7 +714,7 @@ class RobotService:
 
         # 4) Plan action when not ambiguous and mark operated items
         planned_operation, act_user_reply = self._maybe_plan_action_if_unambiguous(
-            ambiguity=ambiguity_block.ambiguous,
+            ambiguity_info=ambiguity_info,
             relevant_items=relevant_items,
             latest=latest,
             prefs=prefs,
@@ -712,7 +727,7 @@ class RobotService:
         # Base reply from action/ambiguity context
         reply_text = self._compose_base_reply(
             act_user_reply=act_user_reply,
-            ambiguity_info=ambiguity_block.ambiguity_info,
+            ambiguity_info=ambiguity_info,
             planned_operation=planned_operation,
         )
 
@@ -727,7 +742,7 @@ class RobotService:
             "robot_reply": reply_text,
             "operation": planned_operation,
             "relevant_objects": self.get_relevant_items(),
-            "ambiguity": ambiguity_block.ambiguity_info,
+            "ambiguity": ambiguity_info,
             "preferences": pref_list,
             "completed": all_operated,
             "preferences_summary": preferences_summary,
@@ -755,16 +770,16 @@ class RobotService:
     def _all_items_operated(self) -> bool:
         return bool(self.items) and all(bool(getattr(it, 'operated', False)) for it in self.items)
 
-    def _maybe_plan_action_if_unambiguous(self, ambiguity, relevant_items, latest, prefs):
+    def _maybe_plan_action_if_unambiguous(self, ambiguity_info, relevant_items, latest, prefs):
         planned_operation = ""
         act_user_reply = None
-        if ambiguity is False:
+        if ambiguity_info is False:
             try:
                 act = self.plan_action(
                     latest_qa=latest,
                     relevant_items=relevant_items,
                     user_prefs=prefs,
-                    task_description=self.config.get('task_description', ''),
+                    task_description=self.task_description,
                 )
                 if act and getattr(act, 'operation', None):
                     planned_operation = act.operation
@@ -877,7 +892,7 @@ class RobotService:
         options = ap_cfg.get('payload_options', {"temperature": 0.2, "num_predict": 160})
 
         usertext = usertext_template.format(
-            task=task_description or self.config.get('task_description', ''),
+            task=task_description or self.task_description,
             items_block=items_block,
             preferences_block=preferences_block,
             robot_question=robot_question,
@@ -980,10 +995,20 @@ class RobotService:
         if not ds_cfg or 'systext' not in ds_cfg or 'usertext' not in ds_cfg:
             raise ValueError("desktop_scan prompt missing in config")
         systext = ds_cfg['systext']
-        usertext = ds_cfg['usertext']
+        usertext_template = ds_cfg['usertext']
         options = ds_cfg.get("payload_options", {"temperature": 0.2, "num_predict": 300})
 
         try:
+            # Inject focus categories based on current task
+            import json as _json
+            cats_map = getattr(self, 'focus_categories_by_task', {}) or {}
+            if isinstance(cats_map, dict):
+                cats = cats_map.get(self.task_description, [])
+            else:
+                # Backward compatibility if a flat list was set
+                cats = getattr(self, 'focus_categories', []) or []
+            categories_block = _json.dumps(cats or [], ensure_ascii=False)
+            usertext = usertext_template.format(focus_categories=categories_block)
             array_schema = {"type": "array", "items": DesktopItem.model_json_schema()}
             raw = self.vlm_api.vlm_request_with_format(
                 systext=systext,

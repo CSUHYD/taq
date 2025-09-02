@@ -1,0 +1,77 @@
+{
+  "session_id": "organize_study_desk_auto_20250902_163031",
+  "custom_session_id": null,
+  "start_time": "2025-09-02T16:30:31.070887",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-02T16:30:56.915871",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_163056_909.jpg",
+      "original_image_path": "captured_frames/init_frame_20250902_163039.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "white and gray with purple accents",
+            "operated": false
+          },
+          {
+            "id": "mouse-1",
+            "name": "mouse",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "remote-1",
+            "name": "remote control",
+            "attributes": "white",
+            "operated": false
+          },
+          {
+            "id": "book-1",
+            "name": "book",
+            "attributes": "yellow and white",
+            "operated": false
+          },
+          {
+            "id": "box-1",
+            "name": "box",
+            "attributes": "yellow",
+            "operated": false
+          },
+          {
+            "id": "box-2",
+            "name": "box",
+            "attributes": "yellow",
+            "operated": false
+          },
+          {
+            "id": "pen-1",
+            "name": "pen",
+            "attributes": "black",
+            "operated": false
+          },
+          {
+            "id": "pen-2",
+            "name": "pen",
+            "attributes": "black",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-02T16:31:22.230014",
+  "total_interactions": 1
+}

@@ -1,0 +1,105 @@
+{
+  "session_id": "organize_desktop_auto_20250902_142405",
+  "custom_session_id": null,
+  "start_time": "2025-09-02T14:24:05.307457",
+  "task_description": "organize desktop",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-02T14:24:30.708995",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_0_142430_703.jpg",
+      "original_image_path": "captured_frames/init_frame_20250902_142416.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "grey and purple keys",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-02T14:24:37.698158",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_1_142437_697.jpg",
+      "original_image_path": "captured_frames/init_frame_20250902_142436.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "keyboard-1",
+            "name": "keyboard",
+            "attributes": "gray and purple keys",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-02T14:24:48.509441",
+      "type": "desktop_scan",
+      "image_file": "desktop_scan_2_142448_507.jpg",
+      "original_image_path": "captured_frames/init_frame_20250902_142444.jpg",
+      "scan": {
+        "items": [
+          {
+            "id": "yellow-1",
+            "name": "yellow box",
+            "attributes": "small, rectangular",
+            "operated": false
+          },
+          {
+            "id": "yellow-2",
+            "name": "yellow box",
+            "attributes": "small, rectangular",
+            "operated": false
+          },
+          {
+            "id": "blue-1",
+            "name": "blue pen",
+            "attributes": "medium size",
+            "operated": false
+          },
+          {
+            "id": "black-1",
+            "name": "black pen",
+            "attributes": "medium size",
+            "operated": false
+          },
+          {
+            "id": "white-1",
+            "name": "white paper",
+            "attributes": "stacked, multiple sheets",
+            "operated": false
+          },
+          {
+            "id": "yellow-3",
+            "name": "yellow book",
+            "attributes": "large, open",
+            "operated": false
+          },
+          {
+            "id": "white-2",
+            "name": "white mouse",
+            "attributes": "standard size",
+            "operated": false
+          }
+        ],
+        "summary": null
+      }
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

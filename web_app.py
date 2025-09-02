@@ -11,7 +11,8 @@ from vlmCall_ollama import load_prompt_config
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key'
-socketio = SocketIO(app, cors_allowed_origins="*")
+# socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 
 class WebVideoSystem:
     def __init__(self, model="qwen2.5vl:32b", camera_id=0, use_zmq_source=False, zmq_server_address="192.168.123.164", zmq_port=5555):
@@ -24,7 +25,8 @@ class WebVideoSystem:
         self.is_running = False
         self.current_status = "Ready"
         
-        self.current_task = self.prompt_config.get("task_description", "general home assistance")
+        # Current task is selected from UI; default to an English task
+        self.current_task = "organize study desk"
         
         # Video source configuration
         self.use_zmq_source = use_zmq_source
@@ -39,6 +41,15 @@ class WebVideoSystem:
         else:
             self.start_camera()
         
+        # Inform RobotService of current task for prompt filling
+        setattr(self.robot_service, 'task_description', self.current_task)
+        # Initialize per-task focus categories mapping for the default task
+        fc_map = {
+            "organize study desk": ['bottle','spray','toolset','baseball','owl','tissues','thermos','gamecard','umbrella'],
+            "organize bar counter": ['plate','bowl','brush','sauce','noodles','soap','detergent','spoon','sponge','lemon','can'],
+            "organize office desk": ['bottle','notebook','book','fan','measure','tape','remote','sunglasses','keyboard','basket','bin'],
+        }
+        setattr(self.robot_service, 'focus_categories_by_task', fc_map)
         # Start initial logging session
         session_id = self.robot_service.start_logging_session(self.current_task)
         self.robot_service.logger.current_custom_session_id = None
@@ -338,9 +349,15 @@ def get_conversation():
 @app.route('/status', methods=['GET'])
 def get_status():
     """Get current status"""
+    desc_map = {
+        "organize study desk": "Organize items on a study desk (books, stationery, notebooks).",
+        "organize bar counter": "Arrange items on a bar counter (bottles, cups, mixers).",
+        "organize office desk": "Organize an office desk (keyboard, mouse, documents).",
+    }
     return jsonify({
         "status": video_system.current_status,
-        "task": video_system.current_task
+        "task": video_system.current_task,
+        "task_desc": desc_map.get(video_system.current_task, "")
     })
 
 @app.route('/logging_status', methods=['GET'])
@@ -348,6 +365,52 @@ def get_logging_status():
     """Get current logging session status"""
     summary = video_system.robot_service.get_session_summary()
     return jsonify({'logging_session': summary})
+
+@app.route('/set_task', methods=['POST'])
+def set_task():
+    """Switch current task (frontend-visible) and update backend prompt context.
+    """
+    data = request.get_json() or {}
+    en_task = str(data.get('task', '')).strip()
+    allowed = {"organize study desk", "organize bar counter", "organize office desk"}
+    if en_task not in allowed:
+        return jsonify({"success": False, "error": "Invalid task"}), 400
+
+    # Update display task
+    video_system.current_task = en_task
+    # Update prompt context in backend service
+    try:
+        setattr(video_system.robot_service, 'task_description', en_task)
+    except Exception:
+        pass
+
+    # No longer persist task in prompt config; it is chosen at runtime from UI
+
+    # Ensure the per-task focus map exists; it can be extended here if needed
+    try:
+        if not hasattr(video_system.robot_service, 'focus_categories_by_task') or not isinstance(video_system.robot_service.focus_categories_by_task, dict):
+            video_system.robot_service.focus_categories_by_task = {}
+    except Exception:
+        pass
+
+    # Optionally start a new logging session for the new task
+    try:
+        if hasattr(video_system.robot_service, 'logger'):
+            if video_system.robot_service.logger.current_session:
+                video_system.robot_service.end_logging_session()
+            new_session = video_system.robot_service.start_logging_session(en_task)
+            video_system.robot_service.logger.current_custom_session_id = None
+            print(f"Switched task to {en_task}; new session: {new_session}")
+    except Exception as e:
+        print(f"Failed to rotate logging session on task switch: {e}")
+
+    desc_map = {
+        "organize study desk": "Organize items on a study desk (books, stationery, notebooks).",
+        "organize bar counter": "Arrange items on a bar counter (bottles, cups, mixers).",
+        "organize office desk": "Organize an office desk (keyboard, mouse, documents).",
+    }
+    socketio.emit('status_update', {'status': video_system.current_status})
+    return jsonify({"success": True, "task": en_task, "task_desc": desc_map.get(en_task, "")})
 
 @app.route('/desktop_items', methods=['GET'])
 def get_desktop_items():
@@ -445,4 +508,4 @@ if __name__ == '__main__':
     print(f"Current task: {video_system.current_task}")
     print(f"Video source: {'ZMQ from ' + args.zmq_server + ':' + str(args.zmq_port) if args.use_zmq else 'Camera ' + str(args.camera_id)}")
     
-    socketio.run(app, host='0.0.0.0', port=5050, debug=True, allow_unsafe_werkzeug=True)
+    socketio.run(app, host='0.0.0.0', port=5050, debug=False, allow_unsafe_werkzeug=True)
