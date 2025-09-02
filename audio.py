@@ -36,7 +36,7 @@ class QuestionAudioPlayer:
         self.sport_client.Init()
         
         # 设置音量
-        self.audio_client.SetVolume(85)
+        self.audio_client.SetVolume(100)
         print(f"Audio volume set to: {self.audio_client.GetVolume()}")
 
     def _looks_chinese(self, text: str) -> bool:

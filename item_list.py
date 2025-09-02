@@ -13,11 +13,13 @@ STUDY_DESK = [
     DesktopItem(id='toolset-1', name='toolset', attributes='orange and transparent top', operated=False),
     DesktopItem(id='yogurt-1', name='yogurt', attributes='white, ceramic bottle', operated=False),
     DesktopItem(id='baseball-1', name='baseball', attributes='white with red stitching, MIT logo', operated=False),
-    DesktopItem(id='doll-1', name='doll', attributes='gray, owl-shaped doll', operated=False),
+    DesktopItem(id='doll-2', name='doll', attributes='brown, bear-shaped doll', operated=False),
     DesktopItem(id='tissues-1', name='tissues', attributes='blue and white package', operated=False),
     DesktopItem(id='thermos-1', name='thermos', attributes='light green', operated=False),
     DesktopItem(id='gamecard-1', name='gamecard', attributes='green Xbox game case', operated=False),
-    DesktopItem(id='umbrella-1', name='umbrella', attributes='black and white striped', operated=False)
+    DesktopItem(id='gamecard-2', name='gamecard', attributes='black GTA game case', operated=False),
+    DesktopItem(id='umbrella-1', name='umbrella', attributes='black and white striped', operated=False),
+    DesktopItem(id='remote-1', name='remote', attributes='white, air conditioner remote', operated=False),
 ]
 
 
@@ -29,16 +31,15 @@ OFFICE_DESK = [
     DesktopItem(id='fan-1', name='fan', attributes='small, white, round', operated=False),
     DesktopItem(id='measure-1', name='measure', attributes='retractable tape measure', operated=False),
     DesktopItem(id='tape-1', name='tape', attributes='roll of black electrical tape', operated=False),
-    DesktopItem(id='remote-1', name='remote', attributes='white, air conditioner remote', operated=False),
     DesktopItem(id='sunglasses-1', name='sunglasses', attributes='brown lenses, black frame', operated=False),
     DesktopItem(id='keyboard-1', name='keyboard', attributes='black, Logitech brand', operated=False),
     DesktopItem(id='basket-1', name='basket', attributes='silver, wire mesh', operated=False),
-    DesktopItem(id='bin-1', name='bin', attributes='blue, plastic', operated=False)
+    DesktopItem(id='bin-1', name='bin', attributes='blue, plastic', operated=False),
+    DesktopItem(id='doll-1', name='doll', attributes='gray, owl-shaped doll', operated=False),
 ]
 
 BAR_COUNTER = [
     DesktopItem(id='plate-1', name='plate', attributes='black, with white bird pattern', operated=False),
-    DesktopItem(id='bowl-1', name='bowl', attributes='off-white, ceramic', operated=False),
     DesktopItem(id='bowl-2', name='bowl', attributes='small, white, with gold rim', operated=False),
     DesktopItem(id='brush-1', name='brush', attributes='gray sponge brush on a stick', operated=False),
     DesktopItem(id='sauce-1', name='sauce', attributes='glass jar with red cap', operated=False),

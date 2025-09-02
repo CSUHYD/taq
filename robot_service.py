@@ -506,6 +506,7 @@ class RobotService:
         conv_hist = conversation_history if conversation_history is not None else self.conversation_history
         usertext = usertext_template.format(
             task=task_description or self.task_description,
+            preferences_block = self.user_preferences,
             items_block=items_block,
             robot_question=robot_question,
             user_response=user_response,
@@ -836,9 +837,9 @@ class RobotService:
         if act_user_reply and isinstance(act_user_reply, str) and act_user_reply.strip():
             return act_user_reply.strip()
         if isinstance(ambiguity_info, str) and ambiguity_info.strip():
-            return f"I need a bit more information to proceed: {ambiguity_info.strip()}"
+            return f"{ambiguity_info.strip()}"
         if planned_operation and isinstance(planned_operation, str) and planned_operation.strip():
-            return f"Got it. I will proceed: {planned_operation.strip()}"
+            return f"{planned_operation.strip()}"
         return "Thanks, I noted your response."
 
     def _compose_completion_reply(self, preferences_summary: dict | None) -> str:
@@ -951,6 +952,13 @@ class RobotService:
         self.conversation_history = []
         # Also reset parsed user preferences on restart
         self.user_preferences = []
+        # Reset operated flags on all known items
+        try:
+            for it in self.items or []:
+                if hasattr(it, 'operated'):
+                    it.operated = False
+        except Exception:
+            pass
 
     def get_relevant_items(self) -> list[dict]:
         return list(self.relevant_items)
