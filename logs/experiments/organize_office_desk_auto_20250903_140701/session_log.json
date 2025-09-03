@@ -1,0 +1,106 @@
+{
+  "session_id": "organize_office_desk_auto_20250903_140701",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T14:07:01.341065",
+  "task_description": "organize office desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T14:07:19.334142",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "How would you like to organize your office desk? (e.g., by category, color, or size?)"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T14:07:43.988679",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on your rule to organize items by category, should I place the notebook, both books, and the fan together in a designated spot?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T14:08:06.524697",
+      "type": "item_status_change",
+      "operation_text": "group(notebook-1, book-1, book-2, fan-1)",
+      "updated_items": [
+        {
+          "id": "notebook-1",
+          "name": "notebook",
+          "operated": true
+        },
+        {
+          "id": "book-1",
+          "name": "book",
+          "operated": true
+        },
+        {
+          "id": "book-2",
+          "name": "book",
+          "operated": true
+        },
+        {
+          "id": "fan-1",
+          "name": "fan",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T14:08:33.318087",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on your rule to organize items by category, should I place the bottle, tape measure, and tape together in a designated spot?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T14:09:06.020394",
+      "type": "item_status_change",
+      "operation_text": "store(measure-1, tape-1, office_supplies_box)",
+      "updated_items": [
+        {
+          "id": "measure-1",
+          "name": "measure",
+          "operated": true
+        },
+        {
+          "id": "tape-1",
+          "name": "tape",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-03T14:09:17.583329",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on your rule to organize items by category, should I place the bottle, sunglasses, keyboard, and basket together in a designated spot?"
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-03T14:10:21.994447",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on your rule to organize items by category, should I place the bottle, sunglasses, keyboard, and basket together in a designated spot?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}
