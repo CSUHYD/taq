@@ -1,0 +1,92 @@
+{
+  "session_id": "organize_office_desk_auto_20250903_220851",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T22:08:51.220651",
+  "task_description": "organize office desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T22:08:54.547538",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the bottle with the green cap?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T22:09:32.767635",
+      "type": "item_status_change",
+      "operation_text": "place(bottle-1, yellow_box_right)",
+      "updated_items": [
+        {
+          "id": "bottle-1",
+          "name": "bottle",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T22:09:35.955579",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the notebook with the cork cover?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T22:10:01.932482",
+      "type": "item_status_change",
+      "operation_text": "place(notebook-1, desk_left)",
+      "updated_items": [
+        {
+          "id": "notebook-1",
+          "name": "notebook",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T22:10:13.157484",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Following the pattern we've established, should I place books on the desk's left side?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-03T22:10:34.870471",
+      "type": "item_status_change",
+      "operation_text": "place(book-1, desk_left)",
+      "updated_items": [
+        {
+          "id": "book-1",
+          "name": "book",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-03T22:10:39.666208",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Following the pattern we've established, should I place the book with a white cover and the title 'Design as Art' on the desk's left side?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-03T22:10:51.430352",
+  "total_interactions": 7
+}

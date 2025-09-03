@@ -1,0 +1,79 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_220428",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T22:04:28.919351",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T22:04:51.214608",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "I need to start organizing the study desk. Should I begin with the item that has a phone holder style, which is a lamp?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T22:05:09.842132",
+      "type": "item_status_change",
+      "operation_text": "place(lamp-1, desk_left_side)",
+      "updated_items": [
+        {
+          "id": "lamp-1",
+          "name": "lamp",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T22:05:13.501144",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the actions so far, is the general rule to place all items on the left side of the desk?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T22:05:37.152021",
+      "type": "item_status_change",
+      "operation_text": "place(doll-2, desk_left_side)",
+      "updated_items": [
+        {
+          "id": "doll-2",
+          "name": "doll",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T22:05:40.967466",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "根据之前的动作，是否应该将工具放在桌子的左边？"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-03T22:05:58.953345",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "根据之前的动作，是否应该将物品放在桌子的左边？"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-03T22:06:14.307752",
+  "total_interactions": 6
+}

@@ -1,0 +1,61 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_213334",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T21:33:34.715399",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T21:35:16.536683",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the lamp be placed on the desk?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T21:35:31.761716",
+      "type": "item_status_change",
+      "operation_text": "place(lamp-1, desk_left_side)",
+      "updated_items": [
+        {
+          "id": "lamp-1",
+          "name": "lamp",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T21:35:33.595292",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the toolset be placed on the desk?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T21:35:47.096282",
+      "type": "item_status_change",
+      "operation_text": "place(toolset-1, desk_left_side)",
+      "updated_items": [
+        {
+          "id": "toolset-1",
+          "name": "toolset",
+          "operated": true
+        }
+      ]
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-03T21:37:25.020239",
+  "total_interactions": 4
+}

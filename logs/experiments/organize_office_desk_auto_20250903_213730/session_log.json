@@ -1,0 +1,68 @@
+{
+  "session_id": "organize_office_desk_auto_20250903_213730",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T21:37:30.618091",
+  "task_description": "organize office desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T21:37:34.822238",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To start, where would you like me to put this bottle with a green cap?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T21:37:46.782678",
+      "type": "item_status_change",
+      "operation_text": "place(bottle-1, basket-1)",
+      "updated_items": [
+        {
+          "id": "bottle-1",
+          "name": "bottle",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T21:37:51.457020",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To start, where would you like me to put this book with a white cover and a title that says \"Design as Art\"?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T21:38:41.456049",
+      "type": "item_status_change",
+      "operation_text": "place(book-2, desk_right)",
+      "updated_items": [
+        {
+          "id": "book-2",
+          "name": "book",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T21:38:50.393067",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Understood. Now, for this notebook with a cork cover, should I place it on the right side of the desk based on your previous instruction to put books and notebooks there?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}
