@@ -1475,9 +1475,36 @@
                         const badges = document.createElement('div');
                         badges.className = 'item-badges';
                         const opBadge = document.createElement('span');
+                        opBadge.id = `op-badge-${it.id}`;
                         opBadge.className = 'badge ' + (it.operated ? 'badge-operated' : 'badge-pending');
                         opBadge.textContent = it.operated ? 'Operated' : 'Pending';
                         badges.appendChild(opBadge);
+
+                        // Operated toggle (only if item has id)
+                        if (it.id) {
+                            const toggleWrap = document.createElement('label');
+                            toggleWrap.style.display = 'inline-flex';
+                            toggleWrap.style.alignItems = 'center';
+                            toggleWrap.style.gap = '6px';
+                            toggleWrap.style.fontSize = '12px';
+                            const chk = document.createElement('input');
+                            chk.type = 'checkbox';
+                            chk.checked = !!it.operated;
+                            chk.id = `op-toggle-${it.id}`;
+                            chk.onchange = (e) => {
+                                const newVal = !!e.target.checked;
+                                const prev = !newVal;
+                                e.target.disabled = true;
+                                setItemOperated(it.id, newVal)
+                                    .catch(() => { e.target.checked = prev; })
+                                    .finally(() => { e.target.disabled = false; });
+                            };
+                            const lbl = document.createElement('span');
+                            lbl.textContent = 'Operated';
+                            toggleWrap.appendChild(chk);
+                            toggleWrap.appendChild(lbl);
+                            badges.appendChild(toggleWrap);
+                        }
 
                         header.appendChild(titleWrap);
                         header.appendChild(badges);
@@ -1514,6 +1541,29 @@
                     console.error('Load items error:', err);
                     itemsContent.innerHTML = '<div class="empty-conversation">Error loading items.</div>';
                 });
+        }
+
+        async function setItemOperated(itemId, operated) {
+            const res = await fetch('/set_item_operated', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: itemId, operated: !!operated })
+            });
+            const data = await res.json();
+            if (!data.success) {
+                alert(data.error || 'Failed to update item');
+                throw new Error(data.error || 'update failed');
+            }
+            // Update badge UI
+            const updated = data.item;
+            const badge = document.getElementById(`op-badge-${itemId}`);
+            if (badge) {
+                badge.className = 'badge ' + (updated.operated ? 'badge-operated' : 'badge-pending');
+                badge.textContent = updated.operated ? 'Operated' : 'Pending';
+            }
+            // Re-render items grid to ensure full consistency
+            try { loadItems(); } catch (e) {}
+            return data;
         }
     </script>
 </body>

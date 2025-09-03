@@ -443,6 +443,24 @@ def get_desktop_items():
     except Exception as e:
         return jsonify({"success": False, "error": str(e), "items": [], "summary": None})
 
+@app.route('/set_item_operated', methods=['POST'])
+def set_item_operated():
+    """Manually set an item's operated flag by ID."""
+    try:
+        data = request.get_json() or {}
+        item_id = str(data.get('id', '')).strip()
+        operated = data.get('operated', None)
+        if not item_id or not isinstance(operated, bool):
+            return jsonify({"success": False, "error": "Invalid id or operated flag"}), 400
+        updated = video_system.robot_service.set_item_operated(item_id, operated)
+        if not updated:
+            return jsonify({"success": False, "error": "Item not found or update failed"}), 404
+        # Keep status bar consistent
+        socketio.emit('status_update', {'status': video_system.current_status})
+        return jsonify({"success": True, "item": updated})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
 @app.route('/user_preferences', methods=['GET'])
 def get_user_preferences():
     """Get parsed user preferences.
@@ -530,4 +548,4 @@ if __name__ == '__main__':
     print(f"Current task: {video_system.current_task}")
     print(f"Video source: {'ZMQ from ' + args.zmq_server + ':' + str(args.zmq_port) if args.use_zmq else 'Camera ' + str(args.camera_id)}")
     
-    socketio.run(app, host='0.0.0.0', port=5050, debug=True, allow_unsafe_werkzeug=True)
+    socketio.run(app, host='0.0.0.0', port=5050, debug=False, allow_unsafe_werkzeug=True)

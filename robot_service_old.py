@@ -22,7 +22,6 @@ class AmbiguityCheck(BaseModel):
 
 class UserPreferences(BaseModel):
     organization_principles: list[str] | None = None
-    object_placement_preferences: list[str] | None = None
     constraints_forbidden: list[str] | None = None
 
 class ActResult(BaseModel):
@@ -444,7 +443,7 @@ class RobotService:
             # Fallback: simple textual merge
             flat_points = []
             for p in prefs_list:
-                for key in ('organization_principles', 'object_placement_preferences', 'constraints_forbidden'):
+                for key in ('organization_principles', 'constraints_forbidden'):
                     arr = p.get(key)
                     if isinstance(arr, list):
                         flat_points.extend([str(x) for x in arr if isinstance(x, (str, int, float))])

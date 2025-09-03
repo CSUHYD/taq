@@ -193,6 +193,20 @@ class ExperimentLogger:
         }
         self.session_data["interactions"].append(interaction)
         self._save_session_data()
+
+    def log_preference_summary(self, preferences_summary: dict | None):
+        """记录任务结束时的偏好总结"""
+        if not self.current_session or not preferences_summary:
+            return
+        interaction = {
+            "interaction_id": len(self.session_data["interactions"]),
+            "timestamp": datetime.now().isoformat(),
+            "type": "preferences_summary",
+            "summary": preferences_summary.get("summary"),
+            "key_points": preferences_summary.get("key_points"),
+        }
+        self.session_data["interactions"].append(interaction)
+        self._save_session_data()
     
     def get_session_summary(self):
         """获取当前会话摘要"""

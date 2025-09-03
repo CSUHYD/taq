@@ -516,6 +516,12 @@ class RobotService:
         if all_operated:
             preferences_summary = self.summarize_preferences() or None
             reply_text = self._compose_completion_reply(preferences_summary)
+            # Log preference summary on task completion
+            try:
+                if preferences_summary and hasattr(self, 'logger') and self.logger:
+                    self.logger.log_preference_summary(preferences_summary)
+            except Exception:
+                pass
 
         # 6) Build result and persist
         result = {
@@ -992,3 +998,47 @@ class RobotService:
             for it in self.items
         ]
         return {"items": items, "summary": None}
+
+    def set_item_operated(self, item_id: str, operated: bool) -> dict | None:
+        """Manually set an item's operated flag by ID and return updated item dict.
+
+        Also prunes the item from current relevant_items when marking operated=True,
+        and logs the change in the experiment logger.
+        """
+        if not item_id or not isinstance(operated, bool):
+            return None
+        target = None
+        try:
+            key = str(item_id).strip()
+            key_l = key.lower()
+            for it in self.items or []:
+                iid = getattr(it, 'id', None)
+                if iid and iid.strip().lower() == key_l:
+                    target = it
+                    break
+            if not target:
+                return None
+            # Update flag
+            old = bool(getattr(target, 'operated', False))
+            target.operated = bool(operated)
+            # Update relevant items when marking operated
+            if operated:
+                self._prune_relevant_items_by_ids({key_l})
+            # Log change
+            try:
+                if hasattr(self, 'logger') and self.logger:
+                    self.logger.log_item_status_change(
+                        f"manual-toggle: operated={operated}",
+                        [{"id": target.id, "name": target.name, "operated": target.operated}],
+                    )
+            except Exception:
+                pass
+            return {
+                "id": getattr(target, 'id', None),
+                "name": getattr(target, 'name', None),
+                "attributes": getattr(target, 'attributes', None),
+                "operated": getattr(target, 'operated', False),
+                "was_operated": old,
+            }
+        except Exception:
+            return None
