@@ -1,0 +1,75 @@
+{
+  "session_id": "organize_bar_counter_auto_20250903_195547",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T19:55:47.953259",
+  "task_description": "organize bar counter",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T19:55:50.994341",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to put this plate?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T19:55:59.633432",
+      "type": "item_status_change",
+      "operation_text": "place(plate-1, bar_counter_left)",
+      "updated_items": [
+        {
+          "id": "plate-1",
+          "name": "plate",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T19:56:04.563834",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to put this sponge?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T19:56:20.836171",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to put this brush? (gray sponge brush on a stick)"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T19:56:49.337766",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to put this oil? (glass bottle of cooking oil)"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-03T19:57:02.931063",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to put this sponge? (yellow, wavy shape)"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-03T19:57:36.347434",
+  "total_interactions": 6
+}

@@ -1,0 +1,112 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_201525",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T20:15:25.500304",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T20:15:46.668684",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the lamp located on the desk?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T20:16:01.424018",
+      "type": "item_status_change",
+      "operation_text": "place(lamp-1, desk_left_side)",
+      "updated_items": [
+        {
+          "id": "lamp-1",
+          "name": "lamp",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T20:16:05.199858",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the thermos located on the desk?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T20:16:21.256413",
+      "type": "item_status_change",
+      "operation_text": "store(thermos-1, blue_box-1)",
+      "updated_items": [
+        {
+          "id": "thermos-1",
+          "name": "thermos",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T20:16:25.954004",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the bear-shaped doll on the desk?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-03T20:16:40.547070",
+      "type": "item_status_change",
+      "operation_text": "store(doll-2, green_box-1)",
+      "updated_items": [
+        {
+          "id": "doll-2",
+          "name": "doll",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-03T20:17:15.086949",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the transparent bottle with a blue cap on the desk?"
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-09-03T20:17:34.554414",
+      "type": "item_status_change",
+      "operation_text": "store(mouthwash-1, red_box-1)",
+      "updated_items": [
+        {
+          "id": "mouthwash-1",
+          "name": "mouthwash",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 8,
+      "timestamp": "2025-09-03T20:19:23.549231",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the orange toolset with a transparent top on the desk?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

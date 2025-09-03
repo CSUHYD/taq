@@ -1,0 +1,26 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_195431",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T19:54:31.129478",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T19:54:37.668984",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to put this lamp? The lamp has a white phone holder style and is currently on the desk. I'll need to move it to make space for other items, but I'll keep it where you'd prefer it to be. Would you like it on the shelf, under the desk, or somewhere else on the desk?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-03T19:54:53.040063",
+  "total_interactions": 1
+}

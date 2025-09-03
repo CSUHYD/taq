@@ -1,0 +1,42 @@
+{
+  "session_id": "organize_bar_counter_auto_20250903_210157",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T21:01:57.950503",
+  "task_description": "organize bar counter",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T21:02:01.106772",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To start, where would you like me to put this plate?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T21:02:39.163273",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the pattern you provided for placing the plate, should I place the bowl in the same location on the bar counter?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T21:03:59.176904",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the pattern you provided for placing the plate and the bowl, should I place the brush in the same location on the bar counter?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

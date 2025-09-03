@@ -1,0 +1,24 @@
+{
+  "session_id": "organize_bar_counter_auto_20250903_205241",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T20:52:41.758972",
+  "task_description": "organize bar counter",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T20:53:01.985469",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Can you provide a general rule for organizing items on the bar counter?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

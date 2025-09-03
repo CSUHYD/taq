@@ -1,0 +1,64 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_195807",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T19:58:07.918833",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T19:58:30.724720",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to put this lamp?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T19:58:43.094093",
+      "type": "item_status_change",
+      "operation_text": "place(lamp-1, desk_left_side)",
+      "updated_items": [
+        {
+          "id": "lamp-1",
+          "name": "lamp",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T19:58:46.454856",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to put the toolset?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T19:59:04.045880",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to put the remote?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T19:59:23.740896",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to put the toolset?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

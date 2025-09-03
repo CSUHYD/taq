@@ -1,0 +1,53 @@
+{
+  "session_id": "organize_bar_counter_auto_20250903_211026",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T21:10:26.834037",
+  "task_description": "organize bar counter",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T21:10:42.709650",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To start, where would you like me to place the plate with the white bird pattern?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T21:11:01.214788",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "I've placed the plate with the white bird pattern on the left side of the bar counter. Should I place other items like bowls or sauces on the same side as well?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T21:11:58.930953",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on your preference for placing items like bowls or sauces on the left side, should I place the small white bowl with the gold rim and the glass jar with the red cap there as well?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T21:12:11.824217",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the items already placed on the left side of the bar counter, should I place the gray sponge brush on a stick there as well?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-03T21:12:13.227607",
+  "total_interactions": 4
+}

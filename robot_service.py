@@ -54,6 +54,8 @@ class RobotService:
         self.task_description: str = ""
         # Per-task focus categories mapping: { task_description: [category, ...] }
         self.focus_categories_by_task: dict[str, list[str]] = {}
+        # Accumulate planned operation strings in sequence
+        self.planned_operation: list[str] = []
 
 
     def generate_question(self, 
@@ -116,7 +118,8 @@ class RobotService:
             items_block=items_block,
             ambiguity=ambiguity,
             user_preferences = self.user_preferences,
-            conversation_history = self.conversation_history[-5:]
+            conversation_history = self.conversation_history[-5:],
+            planned_operation = self.planned_operation
         )
         
         # 调用基础API
@@ -238,12 +241,14 @@ class RobotService:
                           task_description: str,
                           latest_qa: dict | None = None,
                           conversation_history: list | None = None,
-                          preference:list[UserPreferences] | None = None) -> UserPreferences | None:
+                          preference: list[UserPreferences] | None = None,
+                          planned_operation: list[str] | None = None) -> UserPreferences | None:
         """Extract personalized user preferences from the latest Q&A using VLM.
 
         Returns a UserPreferences object on success and persists it to backend state
         and conversation history; returns None on parsing failure.
         """
+        print('self.planned_operation: ', self.planned_operation)
         latest_qa = latest_qa or self.get_latest_qa()
         # Determine items context (prefer grounded relevant items)
         items_source = self.get_relevant_items() or self.get_desktop_items_snapshot().get('items', [])
@@ -283,13 +288,15 @@ class RobotService:
 
         # Prepare blocks
         conv_hist = conversation_history if conversation_history is not None else self.conversation_history
+        # Resolve preferences block source if provided
+        prefs_src = preference if preference is not None else self.user_preferences
+        po = planned_operation if planned_operation is not None else getattr(self, 'planned_operation', [])
+
         usertext = usertext_template.format(
             task=task_description or self.task_description,
-            preferences_block = self.user_preferences,
+            preferences_block = prefs_src,
             items_block=items_block,
-            robot_question=robot_question,
-            user_response=user_response,
-            conversation_history=conv_hist,
+            planned_operation=po,
         )
         raw = self.vlm_api.vlm_request_with_format(
             systext=systext,
@@ -481,7 +488,8 @@ class RobotService:
             task_description=self.task_description,
             latest_qa=latest,
             conversation_history = self.conversation_history[-5:],
-            preference = self.user_preferences
+            preference = self.user_preferences,
+            planned_operation = getattr(self, 'planned_operation', []),
         )
         self.user_preferences.append(prefs)
 
@@ -638,6 +646,10 @@ class RobotService:
                 if act and getattr(act, 'operation', None):
                     planned_operation = act.operation
                     act_user_reply = getattr(act, "user_reply", None)
+                    try:
+                        self.planned_operation.append(planned_operation)
+                    except Exception:
+                        pass
                     updated = self._mark_operated_items_from_act(act.operated_item_ids or [])
                     if updated:
                         # Log with the known planned operation text

@@ -1,0 +1,150 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_212816",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T21:28:16.449635",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T21:28:19.403145",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To start, where would you like me to put the lamp?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T21:28:29.836023",
+      "type": "item_status_change",
+      "operation_text": "place(lamp-1, desk_left_side)",
+      "updated_items": [
+        {
+          "id": "lamp-1",
+          "name": "lamp",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T21:28:33.144364",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To continue organizing the study desk, where would you like me to place the mouthwash bottle?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T21:28:42.324013",
+      "type": "item_status_change",
+      "operation_text": "place(mouthwash-1, desk_left_side)",
+      "updated_items": [
+        {
+          "id": "mouthwash-1",
+          "name": "mouthwash",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T21:28:45.459222",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To continue organizing the study desk, where would you like me to place the toolset?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-03T21:28:53.093185",
+      "type": "item_status_change",
+      "operation_text": "place(toolset-1, desk_left_side)",
+      "updated_items": [
+        {
+          "id": "toolset-1",
+          "name": "toolset",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-03T21:28:57.700690",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "I've noticed that the lamp, mouthwash, and toolset have been placed on the desk's left side. Is the general rule to place similar items on the left side of the desk?"
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-09-03T21:29:18.504820",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the user's previous confirmation, it seems items are being placed on the left side of the desk. Let's continue with this rule. Should I place the yogurt on the left side of the desk as well?"
+    },
+    {
+      "interaction_id": 8,
+      "timestamp": "2025-09-03T21:29:28.523673",
+      "type": "item_status_change",
+      "operation_text": "place(yogurt-1, desk_left_side)",
+      "updated_items": [
+        {
+          "id": "yogurt-1",
+          "name": "yogurt",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 9,
+      "timestamp": "2025-09-03T21:29:32.117408",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the previous operations, it seems items are being placed on the left side of the desk. Should I continue placing new items on the left side of the desk as well?"
+    },
+    {
+      "interaction_id": 10,
+      "timestamp": "2025-09-03T21:30:14.304646",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the previous operations, it seems items are being placed on the left side of the desk. Should I continue placing new items on the left side of the desk as well?"
+    },
+    {
+      "interaction_id": 11,
+      "timestamp": "2025-09-03T21:30:48.601420",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "I've noticed that the previous items like the lamp, mouthwash, toolset, and yogurt were placed on the left side of the desk. Should I continue placing new items, such as the baseball or the doll, on the left side of the desk as well?"
+    },
+    {
+      "interaction_id": 12,
+      "timestamp": "2025-09-03T21:31:08.303977",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on previous operations, items such as the lamp, mouthwash, toolset, and yogurt were placed on the left side of the desk. However, your last response indicated that these items should be placed on the right side. Should I continue placing items like the baseball or doll on the right side of the desk, as you previously suggested?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-03T21:31:19.161686",
+  "total_interactions": 13
+}

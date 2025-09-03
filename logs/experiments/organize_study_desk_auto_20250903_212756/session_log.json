@@ -1,0 +1,26 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_212756",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T21:27:56.152373",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T21:28:00.980530",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "How would you like me to organize items on your study desk? Please provide a general rule or preference."
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-03T21:28:16.447705",
+  "total_interactions": 1
+}

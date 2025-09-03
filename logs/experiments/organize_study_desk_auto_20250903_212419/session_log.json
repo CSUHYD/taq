@@ -1,0 +1,121 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_212419",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T21:24:19.410944",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T21:24:26.962274",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "How would you like me to organize items on your study desk? (e.g., by type, color, or function?)"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T21:24:42.715535",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the functional category, where would you like to place the lamp and the remote?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T21:25:07.099646",
+      "type": "item_status_change",
+      "operation_text": "place(remote-1, lamp-1)",
+      "updated_items": [
+        {
+          "id": "remote-1",
+          "name": "remote",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T21:25:10.799655",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like to place the mouthwash, thermos, and tissues?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T21:25:28.700133",
+      "type": "item_status_change",
+      "operation_text": "place(mouthwash-1, tissues-1, thermos-1, blue_box)",
+      "updated_items": [
+        {
+          "id": "mouthwash-1",
+          "name": "mouthwash",
+          "operated": true
+        },
+        {
+          "id": "tissues-1",
+          "name": "tissues",
+          "operated": true
+        },
+        {
+          "id": "thermos-1",
+          "name": "thermos",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-03T21:25:32.424182",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like to place the baseball, the doll, and the umbrella?"
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-03T21:25:48.065635",
+      "type": "item_status_change",
+      "operation_text": "place(baseball-1, doll-2, umbrella-1, green_box)",
+      "updated_items": [
+        {
+          "id": "baseball-1",
+          "name": "baseball",
+          "operated": true
+        },
+        {
+          "id": "doll-2",
+          "name": "doll",
+          "operated": true
+        },
+        {
+          "id": "umbrella-1",
+          "name": "umbrella",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-09-03T21:25:52.152608",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on your preferences, should I place the yogurt, the toolset, and the lamp together in a specific location on the desk?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-03T21:26:17.896716",
+  "total_interactions": 8
+}

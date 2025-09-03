@@ -1,0 +1,108 @@
+{
+  "session_id": "organize_bar_counter_auto_20250903_200155",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T20:01:55.488036",
+  "task_description": "organize bar counter",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T20:01:58.245401",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to put this plate?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T20:02:09.305804",
+      "type": "item_status_change",
+      "operation_text": "place(plate-1, bar_counter_left)",
+      "updated_items": [
+        {
+          "id": "plate-1",
+          "name": "plate",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T20:02:13.198231",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to put the brush?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T20:02:32.383884",
+      "type": "item_status_change",
+      "operation_text": "place(brush-1, bar_counter_right, sink_side)",
+      "updated_items": [
+        {
+          "id": "brush-1",
+          "name": "brush",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T20:02:37.815824",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to put the bowl?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-03T20:02:52.490953",
+      "type": "item_status_change",
+      "operation_text": "place(bowl-2, plate-1)",
+      "updated_items": [
+        {
+          "id": "bowl-2",
+          "name": "bowl",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-03T20:02:57.483423",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to put the noodles?"
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-09-03T20:04:59.906551",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to put the oil?"
+    },
+    {
+      "interaction_id": 8,
+      "timestamp": "2025-09-03T20:05:16.247524",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to put the spoon?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}
