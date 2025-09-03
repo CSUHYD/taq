@@ -1,0 +1,60 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_042816",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T04:28:16.601740",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T04:28:30.733008",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the white lamp be placed on the study desk?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T04:29:33.833355",
+      "type": "item_status_change",
+      "operation_text": "place(lamp-1, left_side_of_desk), place(baseball-1, left_side_of_desk)",
+      "updated_items": [
+        {
+          "id": "lamp-1",
+          "name": "lamp",
+          "operated": true
+        },
+        {
+          "id": "baseball-1",
+          "name": "baseball",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T04:29:53.517452",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the green Xbox game case be placed on the study desk?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T04:30:44.750280",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the white air conditioner remote be placed on the study desk?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

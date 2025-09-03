@@ -1,0 +1,99 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_034629",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T03:46:29.853816",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T03:46:59.849833",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "How would you like to organize items on your study desk? (e.g., by category, by color, or by frequency of use?)"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T03:49:20.700532",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Great! I see a few items that might fit into the entertainment category. Should I place the Xbox game card and the GTA game card in the red box for entertainment-related items?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T03:49:30.551344",
+      "type": "item_status_change",
+      "operation_text": "store(gamecard-1, red_box)",
+      "updated_items": [
+        {
+          "id": "gamecard-1",
+          "name": "gamecard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T03:50:39.573713",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "I noticed some items that are not related to entertainment. Could you help me figure out where to place a lamp, a toolset, and a doll?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T03:51:27.282803",
+      "type": "item_status_change",
+      "operation_text": "store(toolset-1, blue_box)",
+      "updated_items": [
+        {
+          "id": "toolset-1",
+          "name": "toolset",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-03T03:51:39.278609",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "I have a few items left that need to be organized. Could you please tell me where to place the yogurt, mouthwash, tissues, thermos, umbrella, and remote? Remember, we are organizing by function."
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-03T03:52:02.099401",
+      "type": "item_status_change",
+      "operation_text": "store(yogurt-1, green_box)",
+      "updated_items": [
+        {
+          "id": "yogurt-1",
+          "name": "yogurt",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-09-03T03:52:33.121771",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "I have some items left that need to be organized: a lamp, a doll, a baseball, and a gamecard. Could you please tell me where to place each of them based on their function and the rules we've discussed so far?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

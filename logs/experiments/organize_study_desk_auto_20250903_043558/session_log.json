@@ -1,0 +1,91 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_043558",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T04:35:58.158645",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T04:36:04.491591",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the lamp located on the desk?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T04:36:49.565489",
+      "type": "item_status_change",
+      "operation_text": "place(lamp-1, desk_right_side)",
+      "updated_items": [
+        {
+          "id": "lamp-1",
+          "name": "lamp",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T04:37:28.629843",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the baseball and doll be placed in the box?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T04:37:57.339292",
+      "type": "item_status_change",
+      "operation_text": "store(baseball-1, box-1); store(doll-2, box-1)",
+      "updated_items": [
+        {
+          "id": "baseball-1",
+          "name": "baseball",
+          "operated": true
+        },
+        {
+          "id": "doll-2",
+          "name": "doll",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T04:38:07.349056",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the toolset be placed?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-03T04:38:43.395849",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the gamecard be placed?"
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-03T04:38:57.219703",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should the toolset be placed?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

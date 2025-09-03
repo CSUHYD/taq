@@ -1,0 +1,262 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_052105",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T05:21:05.294027",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T05:21:09.240035",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to place this lamp?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T05:21:38.749080",
+      "type": "item_status_change",
+      "operation_text": "place(lamp-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "lamp-1",
+          "name": "lamp",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T05:21:42.812233",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To start organizing, where would you like me to place this mouthwash?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T05:21:51.813359",
+      "type": "item_status_change",
+      "operation_text": "place(mouthwash-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "mouthwash-1",
+          "name": "mouthwash",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T05:21:56.887051",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To continue organizing, where would you like me to place this thermos near the desk? I noticed you've already placed the lamp and mouthwash near the desk, so I thought this might be a good spot for the thermos as well."
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-03T05:22:12.656969",
+      "type": "item_status_change",
+      "operation_text": "place(thermos-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "thermos-1",
+          "name": "thermos",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-03T05:22:18.915963",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To continue organizing, where would you like me to place the gamecards near the desk? I noticed you've already placed the lamp, mouthwash, and thermos near the desk, so I thought this might be a good spot for the gamecards as well."
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-09-03T05:22:38.035282",
+      "type": "item_status_change",
+      "operation_text": "place(gamecard-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "gamecard-1",
+          "name": "gamecard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 8,
+      "timestamp": "2025-09-03T05:22:42.658292",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to place the tissues? I've noticed you've been placing items near the desk, so I thought this might be a good spot for the tissues as well."
+    },
+    {
+      "interaction_id": 9,
+      "timestamp": "2025-09-03T05:22:53.818754",
+      "type": "item_status_change",
+      "operation_text": "place(tissues-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "tissues-1",
+          "name": "tissues",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 10,
+      "timestamp": "2025-09-03T05:23:01.401338",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Would you like me to place the umbrella next to the desk? I've noticed you've been grouping items near the desk, and I thought this might be a good spot for the umbrella as well."
+    },
+    {
+      "interaction_id": 11,
+      "timestamp": "2025-09-03T05:23:12.662750",
+      "type": "item_status_change",
+      "operation_text": "place(umbrella-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "umbrella-1",
+          "name": "umbrella",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 12,
+      "timestamp": "2025-09-03T05:23:20.390439",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the items we've already placed, it seems you prefer keeping certain items near the desk. Would you like me to place the toolset near the desk as well?"
+    },
+    {
+      "interaction_id": 13,
+      "timestamp": "2025-09-03T05:23:33.245075",
+      "type": "item_status_change",
+      "operation_text": "place(toolset-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "toolset-1",
+          "name": "toolset",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 14,
+      "timestamp": "2025-09-03T05:23:39.081033",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the items we've already placed, it seems you prefer keeping certain items near the desk. Would you like me to place the yogurt near the desk as well?"
+    },
+    {
+      "interaction_id": 15,
+      "timestamp": "2025-09-03T05:23:53.517970",
+      "type": "item_status_change",
+      "operation_text": "place(yogurt-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "yogurt-1",
+          "name": "yogurt",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 16,
+      "timestamp": "2025-09-03T05:23:58.131699",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To continue organizing, where would you like me to place the baseball?"
+    },
+    {
+      "interaction_id": 17,
+      "timestamp": "2025-09-03T05:24:12.440937",
+      "type": "item_status_change",
+      "operation_text": "place(baseball-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "baseball-1",
+          "name": "baseball",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 18,
+      "timestamp": "2025-09-03T05:24:18.719891",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To continue organizing, where would you like me to place the gamecard?"
+    },
+    {
+      "interaction_id": 19,
+      "timestamp": "2025-09-03T05:24:31.899101",
+      "type": "item_status_change",
+      "operation_text": "place(gamecard-2, desk_side)",
+      "updated_items": [
+        {
+          "id": "gamecard-2",
+          "name": "gamecard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 20,
+      "timestamp": "2025-09-03T05:24:36.005498",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To continue organizing, where would you like me to place the teddy bear?"
+    },
+    {
+      "interaction_id": 21,
+      "timestamp": "2025-09-03T05:24:55.429194",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To continue organizing, where would you like me to put this toolset? Is it also near the desk like the other items? (I noticed you like keeping most items near the desk.)"
+    },
+    {
+      "interaction_id": 22,
+      "timestamp": "2025-09-03T05:25:16.980881",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To continue organizing, where would you like me to place the umbrella? It seems like items are being kept near the table, so is that still the preferred location for this item as well?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

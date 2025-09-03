@@ -1,0 +1,26 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_002918",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T00:29:18.492209",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T00:29:45.901390",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Would you prefer to organize items by their purpose (e.g., study tools, personal care, entertainment) or by their size and shape?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-03T01:02:18.826452",
+  "total_interactions": 1
+}

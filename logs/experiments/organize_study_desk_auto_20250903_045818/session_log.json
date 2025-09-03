@@ -1,0 +1,258 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_045818",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T04:58:18.255074",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T04:58:22.250636",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "What is your primary organizational rule for items on your study desk? For example, should they be grouped by type, color, or function?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T04:58:26.135945",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the lamp with the phone holder style on the study desk?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T04:58:36.917911",
+      "type": "item_status_change",
+      "operation_text": "place(lamp-1, desk_edge)",
+      "updated_items": [
+        {
+          "id": "lamp-1",
+          "name": "lamp",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T04:58:41.387468",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the toolset with the orange and transparent top on the study desk?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T04:58:49.792696",
+      "type": "item_status_change",
+      "operation_text": "place(toolset-1, desk_edge)",
+      "updated_items": [
+        {
+          "id": "toolset-1",
+          "name": "toolset",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-03T04:58:56.651113",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the brown, bear-shaped doll on the study desk?"
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-03T04:59:06.481750",
+      "type": "item_status_change",
+      "operation_text": "place(doll-2, desk_edge)",
+      "updated_items": [
+        {
+          "id": "doll-2",
+          "name": "doll",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-09-03T04:59:11.653598",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the green Xbox game case on the study desk?"
+    },
+    {
+      "interaction_id": 8,
+      "timestamp": "2025-09-03T04:59:23.790701",
+      "type": "item_status_change",
+      "operation_text": "place(gamecard-1, desk_edge)",
+      "updated_items": [
+        {
+          "id": "gamecard-1",
+          "name": "gamecard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 9,
+      "timestamp": "2025-09-03T04:59:30.359684",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the black GTA game case on the study desk?"
+    },
+    {
+      "interaction_id": 10,
+      "timestamp": "2025-09-03T04:59:56.353649",
+      "type": "item_status_change",
+      "operation_text": "place(gamecard-2, desk_edge)",
+      "updated_items": [
+        {
+          "id": "gamecard-2",
+          "name": "gamecard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 11,
+      "timestamp": "2025-09-03T05:00:03.313084",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the transparent bottle with a blue cap on the study desk?"
+    },
+    {
+      "interaction_id": 12,
+      "timestamp": "2025-09-03T05:00:18.721904",
+      "type": "item_status_change",
+      "operation_text": "place(mouthwash-1, desk_edge)",
+      "updated_items": [
+        {
+          "id": "mouthwash-1",
+          "name": "mouthwash",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 13,
+      "timestamp": "2025-09-03T05:00:23.774595",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the white ceramic yogurt bottle on the study desk?"
+    },
+    {
+      "interaction_id": 14,
+      "timestamp": "2025-09-03T05:00:41.309399",
+      "type": "item_status_change",
+      "operation_text": "place(yogurt-1, desk_edge)",
+      "updated_items": [
+        {
+          "id": "yogurt-1",
+          "name": "yogurt",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 15,
+      "timestamp": "2025-09-03T05:00:46.150843",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the light green thermos on the study desk?"
+    },
+    {
+      "interaction_id": 16,
+      "timestamp": "2025-09-03T05:01:09.205180",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the white air conditioner remote on the study desk?"
+    },
+    {
+      "interaction_id": 17,
+      "timestamp": "2025-09-03T05:01:37.783880",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the white air conditioner remote on the study desk?"
+    },
+    {
+      "interaction_id": 18,
+      "timestamp": "2025-09-03T05:02:11.868044",
+      "type": "item_status_change",
+      "operation_text": "place",
+      "updated_items": [
+        {
+          "id": "remote-1",
+          "name": "remote",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 19,
+      "timestamp": "2025-09-03T05:02:32.922027",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the light green thermos on the study desk?"
+    },
+    {
+      "interaction_id": 20,
+      "timestamp": "2025-09-03T05:02:52.367713",
+      "type": "item_status_change",
+      "operation_text": "place",
+      "updated_items": [
+        {
+          "id": "thermos-1",
+          "name": "thermos",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 21,
+      "timestamp": "2025-09-03T05:03:01.529538",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the white baseball with red stitching and the MIT logo on the study desk?"
+    },
+    {
+      "interaction_id": 22,
+      "timestamp": "2025-09-03T05:03:32.435296",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the blue and white tissue package on the study desk?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

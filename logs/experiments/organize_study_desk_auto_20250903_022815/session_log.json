@@ -1,0 +1,33 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_022815",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T02:28:15.507596",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T02:29:26.604844",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To get started, how would you like me to organize this area?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T02:30:19.012784",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on your preference to put the baseball in the green box, I noticed another item: a baseball. Should I place this baseball in the green box as well?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

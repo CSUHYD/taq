@@ -1,0 +1,33 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_015136",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T01:51:36.158203",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T01:51:55.292872",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "How do you prefer to organize items on your study desk? By category, frequency of use, or another method?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T01:52:47.515524",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Would you like to place the lamp in a specific location on the desk, or should I organize it based on function?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

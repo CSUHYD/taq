@@ -1,0 +1,68 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_040201",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T04:02:01.653515",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T04:02:06.577642",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "What is your main organizational rule for items on the study desk? For example, do you want to group items by category, color, or frequency of use?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T04:02:41.886748",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "I see several items that could be classified as entertainment or study tools. Which of these items do you consider entertainment items: the Xbox game case, the GTA game case, the baseball, and the remote control?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T04:03:18.152519",
+      "type": "item_status_change",
+      "operation_text": "store(gamecard-1, yellow_box)",
+      "updated_items": [
+        {
+          "id": "gamecard-1",
+          "name": "gamecard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T04:03:27.266371",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "根据您之前的选择，游戏卡片、棒球和空调遥控器都被视为娱乐用品。按照您的规则，我把这些物品都放在黄色盒子里好吗？"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T04:09:43.145677",
+      "type": "item_status_change",
+      "operation_text": "store(gamecard-2, yellow_box)",
+      "updated_items": [
+        {
+          "id": "gamecard-2",
+          "name": "gamecard",
+          "operated": true
+        }
+      ]
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

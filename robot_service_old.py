@@ -1,11 +1,12 @@
 import json
+import os
 import re
+import shutil
 from datetime import datetime
-from pydantic import BaseModel, TypeAdapter
+from pydantic import BaseModel
 from vlmCall_ollama import VLMAPI, load_prompt_config
 import item_list
 from experiment_logger import ExperimentLogger
-
 
 # Pydantic models for business logic
 class VLMResponse(BaseModel):
@@ -17,9 +18,11 @@ class OperationSelection(BaseModel):
 
 class AmbiguityCheck(BaseModel):
     ambiguous: bool
+    ambiguity_info: str | None = None
 
 class UserPreferences(BaseModel):
     organization_principles: list[str] | None = None
+    object_placement_preferences: list[str] | None = None
     constraints_forbidden: list[str] | None = None
 
 class ActResult(BaseModel):
@@ -59,7 +62,7 @@ class RobotService:
     def generate_question(self, 
                           items,
                           task_description,
-                          ambiguity: bool,
+                          ambiguity_info: str = "",
                           strategy: str = "direct-querying"):
         """
         基于任务、物体列表和已知歧义信息生成问题
@@ -67,7 +70,7 @@ class RobotService:
         Args:
             items: 物体列表（dict 或 DesktopItem），仅用于规划，不向用户展示ID
             task_description: 当前任务描述
-            ambiguity: 是否不确定
+            ambiguity_info: 已知歧义/不确定信息（初始化为空字符串）
             strategy: 提问策略 ("user-preference-first", "parallel-exploration", "direct-querying")
             
         Returns:
@@ -114,9 +117,9 @@ class RobotService:
         usertext = usertext_template.format(
             task_description=task_description,
             items_block=items_block,
-            ambiguity=ambiguity,
+            ambiguity_info=ambiguity_info or "(none)",
             user_preferences = self.user_preferences,
-            conversation_history = self.conversation_history[-5:]
+            conversation_history = self.conversation_history
         )
         
         # 调用基础API
@@ -181,10 +184,15 @@ class RobotService:
 
         items_block = json.dumps([_to_dict(it) for it in items], ensure_ascii=False)
         usertext_template = og_cfg['usertext']
+        allowed_categories = og_cfg.get('allowed_categories', [])
+        import json as _json
+        categories_block = _json.dumps(allowed_categories, ensure_ascii=False)
         usertext = usertext_template.format(
             items_block=items_block,
             robot_question=robot_question,
-            user_response=user_response
+            user_response=user_response,
+            conversation_history=self.conversation_history,
+            allowed_categories=categories_block,
         )
 
         options = og_cfg.get("payload_options", {"temperature": 0.1, "num_predict": 140})
@@ -238,7 +246,7 @@ class RobotService:
                           task_description: str,
                           latest_qa: dict | None = None,
                           conversation_history: list | None = None,
-                          preference:list[UserPreferences] | None = None) -> UserPreferences | None:
+                          preference: list | dict | None = None) -> UserPreferences | None:
         """Extract personalized user preferences from the latest Q&A using VLM.
 
         Returns a UserPreferences object on success and persists it to backend state
@@ -337,7 +345,7 @@ class RobotService:
         latest_qa = latest_qa or self.get_latest_qa()
         
         # Normalize items to dicts
-        def _to_dict(it): 
+        def _to_dict(it):
             if hasattr(it, 'model_dump'):
                 return it.model_dump()
             if isinstance(it, dict):
@@ -387,7 +395,7 @@ class RobotService:
             preferences_block=preferences_block,
             robot_question=robot_question,
             user_response=user_response,
-            conversation_history=self.conversation_history[-5:],
+            conversation_history=self.conversation_history,
         )
 
         raw = self.vlm_api.vlm_request_with_format(
@@ -399,7 +407,7 @@ class RobotService:
 
         result = AmbiguityCheck.model_validate_json(raw)
         if result.ambiguous:
-            return result.ambiguous
+            return (result.ambiguity_info or '').strip() or "Ambiguity exists, but details were not provided."
         return False
 
 
@@ -436,7 +444,7 @@ class RobotService:
             # Fallback: simple textual merge
             flat_points = []
             for p in prefs_list:
-                for key in ('organization_principles', 'constraints_forbidden'):
+                for key in ('organization_principles', 'object_placement_preferences', 'constraints_forbidden'):
                     arr = p.get(key)
                     if isinstance(arr, list):
                         flat_points.extend([str(x) for x in arr if isinstance(x, (str, int, float))])
@@ -480,12 +488,12 @@ class RobotService:
         prefs = self.preference_parser(
             task_description=self.task_description,
             latest_qa=latest,
-            conversation_history = self.conversation_history[-5:],
+            conversation_history = self.conversation_history,
             preference = self.user_preferences
         )
         self.user_preferences.append(prefs)
 
-        ambiguity = self.ambiguity_checker(
+        ambiguity_info = self.ambiguity_checker(
             task_description=self.task_description,
             latest_qa=latest,
             relevant_items=relevant_items,
@@ -495,7 +503,7 @@ class RobotService:
 
         # 4) Plan action when not ambiguous and mark operated items
         planned_operation, act_user_reply = self._maybe_plan_action_if_unambiguous(
-            ambiguity=ambiguity,
+            ambiguity_info=ambiguity_info,
             relevant_items=relevant_items,
             latest=latest,
             prefs=prefs,
@@ -508,6 +516,7 @@ class RobotService:
         # Base reply from action/ambiguity context
         reply_text = self._compose_base_reply(
             act_user_reply=act_user_reply,
+            ambiguity_info=ambiguity_info,
             planned_operation=planned_operation,
         )
 
@@ -522,7 +531,7 @@ class RobotService:
             "robot_reply": reply_text,
             "operation": planned_operation,
             "relevant_objects": self.get_relevant_items(),
-            "ambiguity": ambiguity,
+            "ambiguity": ambiguity_info,
             "preferences": pref_list,
             "completed": all_operated,
             "preferences_summary": preferences_summary,
@@ -540,74 +549,6 @@ class RobotService:
         })
         return result
 
-
-    def plan_action(self,
-                    latest_qa: dict,
-                    relevant_items,
-                    user_prefs: UserPreferences | dict | None,
-                    task_description: str) -> ActResult | None:
-        """Plan predicate action using current context and preferences.
-
-        Returns ActResult with operation text and operated_item_ids (raw IDs as in items).
-        """
-        ap_cfg = self.config.get('act_planner')
-        if not ap_cfg or 'systext' not in ap_cfg or 'usertext' not in ap_cfg:
-            raise ValueError("act_planner prompt missing in config")
-
-        # Normalize items to dicts
-        def _to_dict(it):
-            if hasattr(it, 'model_dump'):
-                return it.model_dump()
-            if isinstance(it, dict):
-                return it
-            return {
-                'id': getattr(it, 'id', None),
-                'name': getattr(it, 'name', None),
-                'attributes': getattr(it, 'attributes', None),
-                'operated': getattr(it, 'operated', None),
-            }
-        items_block = json.dumps([_to_dict(it) for it in (relevant_items or [])], ensure_ascii=False)
-
-        # Preferences block
-        if hasattr(user_prefs, 'model_dump'):
-            preferences_block = json.dumps(user_prefs.model_dump(), ensure_ascii=False)
-        elif isinstance(user_prefs, dict):
-            preferences_block = json.dumps(user_prefs, ensure_ascii=False)
-        else:
-            preferences_block = json.dumps({}, ensure_ascii=False)
-
-        robot = (latest_qa or {}).get('robot') or {}
-        user = (latest_qa or {}).get('user') or {}
-        robot_question = robot.get('question') or ''
-        user_response = user.get('response') or ''
-
-        systext = ap_cfg['systext']
-        usertext_template = ap_cfg['usertext']
-        options = ap_cfg.get('payload_options', {"temperature": 0.2, "num_predict": 160})
-
-        usertext = usertext_template.format(
-            task=task_description or self.task_description,
-            items_block=items_block,
-            preferences_block=preferences_block,
-            robot_question=robot_question,
-            user_response=user_response,
-            conversation_history=self.conversation_history[-5:]
-        )
-
-        raw = self.vlm_api.vlm_request_with_format(
-            systext=systext,
-            usertext=usertext,
-            format_schema=ActResult.model_json_schema(),
-            options=options,
-        )
-        try:
-            return ActResult.model_validate_json(raw)
-        except Exception as e:
-            print(f"Failed to parse act plan: {e}")
-            print(f"Raw act response: {raw}")
-            return None
-
-
     # ---------- Internal helpers for robot_response ----------
     def _serialize_preferences_list(self) -> list:
         try:
@@ -618,11 +559,11 @@ class RobotService:
     def _all_items_operated(self) -> bool:
         return bool(self.items) and all(bool(getattr(it, 'operated', False)) for it in self.items)
 
-    def _maybe_plan_action_if_unambiguous(self, ambiguity, relevant_items, latest, prefs):
+    def _maybe_plan_action_if_unambiguous(self, ambiguity_info, relevant_items, latest, prefs):
         planned_operation = ""
         act_user_reply = None
-        if ambiguity is False:
-            try: 
+        if ambiguity_info is False:
+            try:
                 act = self.plan_action(
                     latest_qa=latest,
                     relevant_items=relevant_items,
@@ -679,19 +620,88 @@ class RobotService:
             kept.append(d)
         self.relevant_items = kept
 
-    def _compose_base_reply(self, act_user_reply, planned_operation) -> str:
+    def _compose_base_reply(self, *, act_user_reply, ambiguity_info, planned_operation) -> str:
         if act_user_reply and isinstance(act_user_reply, str) and act_user_reply.strip():
             return act_user_reply.strip()
+        if isinstance(ambiguity_info, str) and ambiguity_info.strip():
+            return f"{ambiguity_info.strip()}"
         if planned_operation and isinstance(planned_operation, str) and planned_operation.strip():
             return f"{planned_operation.strip()}"
-        else:
-            return "Thanks, I noted your response."
+        return "Thanks, I noted your response."
 
     def _compose_completion_reply(self, preferences_summary: dict | None) -> str:
         closing = "Great — all items are completed."
         if preferences_summary and preferences_summary.get('summary'):
             return f"{closing} Preference summary: {preferences_summary['summary']}"
         return closing
+
+
+    def plan_action(self,
+                    latest_qa: dict,
+                    relevant_items,
+                    user_prefs: UserPreferences | dict | None,
+                    task_description: str) -> ActResult | None:
+        """Plan predicate action using current context and preferences.
+
+        Returns ActResult with operation text and operated_item_ids (raw IDs as in items).
+        """
+        ap_cfg = self.config.get('act_planner')
+        if not ap_cfg or 'systext' not in ap_cfg or 'usertext' not in ap_cfg:
+            raise ValueError("act_planner prompt missing in config")
+
+        # Normalize items to dicts
+        def _to_dict(it):
+            if hasattr(it, 'model_dump'):
+                return it.model_dump()
+            if isinstance(it, dict):
+                return it
+            return {
+                'id': getattr(it, 'id', None),
+                'name': getattr(it, 'name', None),
+                'attributes': getattr(it, 'attributes', None),
+                'operated': getattr(it, 'operated', None),
+            }
+        items_block = json.dumps([_to_dict(it) for it in (relevant_items or [])], ensure_ascii=False)
+
+        # Preferences block
+        if hasattr(user_prefs, 'model_dump'):
+            preferences_block = json.dumps(user_prefs.model_dump(), ensure_ascii=False)
+        elif isinstance(user_prefs, dict):
+            preferences_block = json.dumps(user_prefs, ensure_ascii=False)
+        else:
+            preferences_block = json.dumps({}, ensure_ascii=False)
+
+        robot = (latest_qa or {}).get('robot') or {}
+        user = (latest_qa or {}).get('user') or {}
+        robot_question = robot.get('question') or ''
+        user_response = user.get('response') or ''
+
+        systext = ap_cfg['systext']
+        usertext_template = ap_cfg['usertext']
+        options = ap_cfg.get('payload_options', {"temperature": 0.2, "num_predict": 160})
+
+        usertext = usertext_template.format(
+            task=task_description or self.task_description,
+            items_block=items_block,
+            preferences_block=preferences_block,
+            robot_question=robot_question,
+            user_response=user_response,
+            conversation_history=self.conversation_history
+        )
+
+        raw = self.vlm_api.vlm_request_with_format(
+            systext=systext,
+            usertext=usertext,
+            format_schema=ActResult.model_json_schema(),
+            options=options,
+        )
+        try:
+            return ActResult.model_validate_json(raw)
+        except Exception as e:
+            print(f"Failed to parse act plan: {e}")
+            print(f"Raw act response: {raw}")
+            return None
+
 
     # Conversation management (backend)
     def append_robot_question(self, question: str, image_path: str | None = None):
@@ -708,44 +718,6 @@ class RobotService:
             "response": response_text,
             "timestamp": datetime.now().isoformat(),
         })
-
-    def get_last_robot_reply(self) -> dict | None:
-        """Return the latest robot reply message from conversation history.
-
-        Returns the full message dict with keys including 'robot_reply'.
-        """
-        for msg in reversed(self.conversation_history):
-            if msg.get("type") == "robot_response" and (msg.get("robot_reply") or "").strip():
-                return msg
-        return None
-
-    def append_robot_reply_replay(self) -> dict | None:
-        """Append a replay entry for the latest robot reply and return it.
-
-        The replay is appended as another 'robot_response' entry with a fresh timestamp
-        and a marker 'replay': True so audio clients can re-play it.
-        Returns the appended message dict, or None if no prior reply exists.
-        """
-        last = self.get_last_robot_reply()
-        if not last:
-            return None
-        try:
-            new_msg = {
-                "type": "robot_response",
-                "operation": last.get("operation", ""),
-                "robot_reply": last.get("robot_reply", ""),
-                "ambiguity": last.get("ambiguity", False),
-                "relevant_objects": last.get("relevant_objects", []),
-                "preferences": last.get("preferences"),
-                "completed": last.get("completed", False),
-                "preferences_summary": last.get("preferences_summary"),
-                "timestamp": datetime.now().isoformat(),
-                "replay": True,
-            }
-            self.conversation_history.append(new_msg)
-            return new_msg
-        except Exception:
-            return None
 
     def get_latest_qa(self) -> dict:
         """Return latest robot question and the next user response if available."""

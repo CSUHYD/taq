@@ -1,0 +1,74 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_042349",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T04:23:49.862318",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T04:23:57.550775",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Let's start organizing your study desk! Could you please share your main organizational principle? For example, do you prefer grouping items by category, color, or frequency of use?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T04:24:14.522466",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "It seems you have a specific preference for placing the doll in a red box. Can you share any other organizational rules or preferences you have for the items on your desk, such as where you'd like to place books, tools, or games?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T04:24:48.815909",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "I've noticed you have preferences for placing specific items in red boxes. Could you please let me know where you'd like to place items like tools, thermoses, or mouthwash, or if you have any other rules for organizing these types of items?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T04:25:25.169293",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on your preference for frequently used items being easy to reach, I've identified some items that might fall into this category: the lamp, tissues, and remote. Could you please tell me if these items should be placed in an easily accessible location on the desk?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T04:25:42.575777",
+      "type": "item_status_change",
+      "operation_text": "place(lamp, tissues, remote, next to the table)",
+      "updated_items": [
+        {
+          "id": "lamp-1",
+          "name": "lamp",
+          "operated": true
+        },
+        {
+          "id": "tissues-1",
+          "name": "tissues",
+          "operated": true
+        },
+        {
+          "id": "remote-1",
+          "name": "remote",
+          "operated": true
+        }
+      ]
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

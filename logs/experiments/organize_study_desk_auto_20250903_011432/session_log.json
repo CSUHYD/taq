@@ -1,0 +1,96 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_011432",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T01:14:32.411442",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T01:14:52.787279",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "How do you prefer to organize items on your study desk? By purpose (e.g., study materials, personal items), size, or color?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T01:15:20.212341",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Would you like to organize items based on how frequently you use them, or is there another criterion you prefer?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T01:16:32.241706",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Would you like to organize items by type, such as separating electronics, games, and personal care items?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T01:18:19.056820",
+      "type": "item_status_change",
+      "operation_text": "store(gamecard-1, green_box), store(gamecard-2, green_box), store(doll-2, green_box)",
+      "updated_items": [
+        {
+          "id": "doll-2",
+          "name": "doll",
+          "operated": true
+        },
+        {
+          "id": "gamecard-1",
+          "name": "gamecard",
+          "operated": true
+        },
+        {
+          "id": "gamecard-2",
+          "name": "gamecard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T01:18:31.270455",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on your preference to group games and toys together in a green box, would you like me to place the baseball (white with red stitching, MIT logo) in the same green box as the games and toys?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-03T01:18:52.629296",
+      "type": "item_status_change",
+      "operation_text": "store(baseball-1, green_box)",
+      "updated_items": [
+        {
+          "id": "baseball-1",
+          "name": "baseball",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-03T01:19:00.309894",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on your preference for organizing items, where would you like me to place the white lamp with a phone holder style? Should it be on the desk itself or on a separate stand?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

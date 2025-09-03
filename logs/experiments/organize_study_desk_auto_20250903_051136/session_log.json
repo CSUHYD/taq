@@ -1,0 +1,289 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_051136",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T05:11:36.789190",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T05:12:20.590977",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To start, where would you like me to put the white lamp with a phone holder style?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T05:12:33.588816",
+      "type": "item_status_change",
+      "operation_text": "place(lamp-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "lamp-1",
+          "name": "lamp",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T05:12:36.221170",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To continue, where would you like me to place the transparent bottle with a blue cap?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T05:12:47.078562",
+      "type": "item_status_change",
+      "operation_text": "place(mouthwash-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "mouthwash-1",
+          "name": "mouthwash",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T05:12:51.224966",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on previous placements, it seems you prefer to keep certain items near the desk. Is there a specific type of item or category of items that you would like to place near the desk?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-03T05:13:17.318739",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To help you organize your study desk, where would you like me to place the orange and transparent top toolset?"
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-03T05:13:28.167756",
+      "type": "item_status_change",
+      "operation_text": "place(toolset-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "toolset-1",
+          "name": "toolset",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-09-03T05:13:33.082066",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To help you organize your study desk, where would you like me to place the green Xbox game case?"
+    },
+    {
+      "interaction_id": 8,
+      "timestamp": "2025-09-03T05:13:43.469466",
+      "type": "item_status_change",
+      "operation_text": "place(gamecard-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "gamecard-1",
+          "name": "gamecard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 9,
+      "timestamp": "2025-09-03T05:13:48.237735",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on previous placements, it seems you prefer to place items near the desk. Would you like me to place the light green thermos near the desk as well?"
+    },
+    {
+      "interaction_id": 10,
+      "timestamp": "2025-09-03T05:14:01.689670",
+      "type": "item_status_change",
+      "operation_text": "place(thermos-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "thermos-1",
+          "name": "thermos",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 11,
+      "timestamp": "2025-09-03T05:14:06.056457",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on your preference to place items near the desk, where would you like me to put the black and white striped umbrella?"
+    },
+    {
+      "interaction_id": 12,
+      "timestamp": "2025-09-03T05:14:17.940247",
+      "type": "item_status_change",
+      "operation_text": "place(umbrella-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "umbrella-1",
+          "name": "umbrella",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 13,
+      "timestamp": "2025-09-03T05:14:21.777713",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To continue organizing, where would you like me to put the white and ceramic yogurt bottle?"
+    },
+    {
+      "interaction_id": 14,
+      "timestamp": "2025-09-03T05:14:34.156098",
+      "type": "item_status_change",
+      "operation_text": "place(yogurt-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "yogurt-1",
+          "name": "yogurt",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 15,
+      "timestamp": "2025-09-03T05:14:56.947264",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like me to place the baseball with the white and red stitching and MIT logo?"
+    },
+    {
+      "interaction_id": 16,
+      "timestamp": "2025-09-03T05:15:08.974704",
+      "type": "item_status_change",
+      "operation_text": "place(baseball-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "baseball-1",
+          "name": "baseball",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 17,
+      "timestamp": "2025-09-03T05:16:33.810451",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To start, where would you like me to put the brown, bear-shaped doll?"
+    },
+    {
+      "interaction_id": 18,
+      "timestamp": "2025-09-03T05:16:51.430621",
+      "type": "item_status_change",
+      "operation_text": "place(doll-2, desk_side)",
+      "updated_items": [
+        {
+          "id": "doll-2",
+          "name": "doll",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 19,
+      "timestamp": "2025-09-03T05:16:55.406637",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To continue organizing, where would you like me to put the white air conditioner remote?"
+    },
+    {
+      "interaction_id": 20,
+      "timestamp": "2025-09-03T05:17:11.909686",
+      "type": "item_status_change",
+      "operation_text": "place(remote-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "remote-1",
+          "name": "remote",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 21,
+      "timestamp": "2025-09-03T05:17:17.731299",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on previous instructions, it seems you prefer placing items on the table. Is that correct?"
+    },
+    {
+      "interaction_id": 22,
+      "timestamp": "2025-09-03T05:18:23.958394",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Since you mentioned placing items near the table, how about putting the baseball near the table as well?"
+    },
+    {
+      "interaction_id": 23,
+      "timestamp": "2025-09-03T05:18:46.679289",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To continue organizing, I noticed you've been placing items around the table. Should I put the umbrella next to the thermos as well, following the pattern of placing related items together near the table?"
+    },
+    {
+      "interaction_id": 24,
+      "timestamp": "2025-09-03T05:19:27.559126",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Since you mentioned that you prefer keeping items near a power source, where would you like me to place the remote control (red and blue, unoperated)?"
+    },
+    {
+      "interaction_id": 25,
+      "timestamp": "2025-09-03T05:20:03.579841",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Since you've already placed the remote control near a power source, where would you like me to place the game controller (black, unoperated)?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

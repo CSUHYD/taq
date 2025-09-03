@@ -707,6 +707,9 @@
                 <button class="btn btn-history" id="history-btn" onclick="toggleHistoryModal()">
                     📋 History
                 </button>
+                <button class="btn btn-history" id="replay-btn" onclick="replayLastReply()">
+                    🔁 Replay
+                </button>
                 <button class="btn btn-history" id="prefs-btn" onclick="togglePrefsModal()">
                     ⭐ Preferences
                 </button>
@@ -1190,6 +1193,37 @@
             });
         }
 
+        // Replay last robot reply (also triggers robot TTS via backend monitor)
+        function replayLastReply() {
+            if (isProcessing) return;
+            fetch('/replay_last_reply', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (!data.success) {
+                    alert(data.error || 'No robot reply to replay yet.');
+                    return;
+                }
+                // Browser-side TTS for immediate feedback (optional)
+                try {
+                    if (window && 'speechSynthesis' in window) {
+                        const text = (data.robot_reply || '').toString();
+                        if (text) {
+                            window.speechSynthesis.cancel();
+                            const utt = new SpeechSynthesisUtterance(text);
+                            window.speechSynthesis.speak(utt);
+                        }
+                    }
+                } catch (e) { /* no-op */ }
+            })
+            .catch(err => {
+                console.error('Replay error:', err);
+                alert('Failed to replay last reply');
+            });
+        }
+
         // Language toggle removed
 
         function loadConversation() {
@@ -1382,7 +1416,6 @@
                         const header = `<div style=\"font-weight:600;color:#2c3e50;margin-bottom:6px\">Entry ${idx+1}</div>`;
                         block.innerHTML = header +
                             mkList('Organization Principles', p.organization_principles) +
-                            mkList('Object Placement Preferences', p.object_placement_preferences) +
                             mkList('Constraints/Forbidden', p.constraints_forbidden);
         
                         wrap.appendChild(block);

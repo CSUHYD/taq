@@ -1,0 +1,24 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_033652",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T03:36:52.005970",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T03:37:36.095858",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Let's start by establishing some basic organization rules. How do you prefer to organize items on your study desk? For example, do you like to group similar items together, keep essentials in easy reach, or have a specific arrangement in mind?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

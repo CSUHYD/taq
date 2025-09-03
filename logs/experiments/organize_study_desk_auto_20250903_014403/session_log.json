@@ -1,0 +1,33 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_014403",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T01:44:03.371193",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T01:44:08.169533",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Would you prefer to organize the items on your study desk by their purpose (e.g., study-related, personal care, leisure) or by their size?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T01:44:40.438359",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Would you like to place items used frequently for studying (like the lamp) in a central location on the desk, and items used less frequently (like the gamecards) on the sides or in a separate storage area?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

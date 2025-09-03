@@ -1,0 +1,104 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_020958",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T02:09:58.134256",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T02:10:03.139983",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "What organizational principle would you like to use for the study desk? For example, do you prefer grouping items by type, frequency of use, or color?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T02:10:30.553669",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Do you prefer to have frequently used items like the remote and thermos closer to your working area?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T02:11:13.820570",
+      "type": "item_status_change",
+      "operation_text": "place(remote-1, thermos-1)",
+      "updated_items": [
+        {
+          "id": "thermos-1",
+          "name": "thermos",
+          "operated": true
+        },
+        {
+          "id": "remote-1",
+          "name": "remote",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T02:11:31.468215",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Would you like the mouthwash placed near the tissues, as they are both related to personal care items?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T02:12:12.054152",
+      "type": "item_status_change",
+      "operation_text": "place(tissues-1, yellow_box-1)",
+      "updated_items": [
+        {
+          "id": "tissues-1",
+          "name": "tissues",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-03T02:12:27.773488",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Would you like the lamp placed near the study area for better lighting?"
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-03T02:13:00.862283",
+      "type": "item_status_change",
+      "operation_text": "place(mouthwash-1, tissues-1)",
+      "updated_items": [
+        {
+          "id": "mouthwash-1",
+          "name": "mouthwash",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-09-03T02:13:16.519242",
+      "type": "question_generation",
+      "strategy": "user-preference-first",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Would you like the doll placed in the red box since it's considered a toy?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

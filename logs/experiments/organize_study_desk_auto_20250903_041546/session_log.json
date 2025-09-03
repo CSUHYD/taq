@@ -1,0 +1,156 @@
+{
+  "session_id": "organize_study_desk_auto_20250903_041546",
+  "custom_session_id": null,
+  "start_time": "2025-09-03T04:15:46.163746",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-03T04:15:55.920332",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To start, where would you like me to put this lamp?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-03T04:16:06.979046",
+      "type": "item_status_change",
+      "operation_text": "place(lamp, 桌子旁边)",
+      "updated_items": [
+        {
+          "id": "lamp-1",
+          "name": "lamp",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-03T04:16:10.279115",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To start, where would you like me to put this mouthwash?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-03T04:16:54.287795",
+      "type": "item_status_change",
+      "operation_text": "place(mouthwash, 红色盒子里)",
+      "updated_items": [
+        {
+          "id": "mouthwash-1",
+          "name": "mouthwash",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-03T04:16:58.806488",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To start, where would you like me to put this toolset?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-03T04:17:18.689174",
+      "type": "item_status_change",
+      "operation_text": "place(toolset, 绿色盒子里)",
+      "updated_items": [
+        {
+          "id": "toolset-1",
+          "name": "toolset",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-03T04:17:22.340416",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "To start, where would you like me to put this yogurt?"
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-09-03T04:17:39.410637",
+      "type": "item_status_change",
+      "operation_text": "place(yogurt, 桌子旁边)",
+      "updated_items": [
+        {
+          "id": "yogurt-1",
+          "name": "yogurt",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 8,
+      "timestamp": "2025-09-03T04:17:44.085265",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Let's consider this gamecard (green Xbox game case). Based on previous preferences, should I place it near the table or in another location?"
+    },
+    {
+      "interaction_id": 9,
+      "timestamp": "2025-09-03T04:18:16.574222",
+      "type": "item_status_change",
+      "operation_text": "place(gamecard, 红色盒子里)",
+      "updated_items": [
+        {
+          "id": "gamecard-1",
+          "name": "gamecard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 10,
+      "timestamp": "2025-09-03T04:18:25.426619",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Let's consider this baseball (white with red stitching, MIT logo). Based on previous preferences, should I place it near the table or in another location?"
+    },
+    {
+      "interaction_id": 11,
+      "timestamp": "2025-09-03T04:18:59.253866",
+      "type": "item_status_change",
+      "operation_text": "place(baseball, 红色盒子里)",
+      "updated_items": [
+        {
+          "id": "baseball-1",
+          "name": "baseball",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 12,
+      "timestamp": "2025-09-03T04:19:06.074464",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on previous preferences, I notice that entertainment items like gamecards and baseballs are being placed in the red box. Given this pattern, where would you like me to put this doll (brown, bear-shaped doll)?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}
