@@ -1,0 +1,27 @@
+{
+  "session_id": "auto_organize_study_desk_direct-querying_20250904_134648",
+  "custom_session_id": null,
+  "start_time": "2025-09-04T13:46:48.436895",
+  "task_description": "organize study desk",
+  "language": "en",
+  "question_strategy": "direct-querying",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-04T13:46:52.702739",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Can you please tell me where you would like to place the lamp on the desk? It has a white phone holder style design."
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-04T13:46:57.368266",
+  "total_interactions": 1
+}

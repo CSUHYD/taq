@@ -665,21 +665,21 @@
                     <div class="task-label">Current Task:</div>
                     <div class="task-description" id="current-task">Loading...</div>
                     <div class="task-subdesc" id="current-task-desc" style="font-size: 12px; color: #6c757d; margin-top:4px;">&nbsp;</div>
-                    <div class="task-select" style="margin-top:8px; display:flex; justify-content:center;">
-                        <select id="task-selector" class="strategy-dropdown" onchange="onTaskChange()" style="max-width:280px;">
-                            <option value="organize study desk">organize study desk</option>
-                            <option value="organize bar counter">organize bar counter</option>
-                            <option value="organize office desk">organize office desk</option>
-                        </select>
-                    </div>
+            <div class="task-select" style="margin-top:8px; display:flex; justify-content:center;">
+                <select id="task-selector" class="strategy-dropdown" onchange="onTaskChange()" style="max-width:280px;">
+                    <option value="organize study desk">organize study desk</option>
+                    <option value="organize office desk">organize office desk</option>
+                    <option value="organize bar counter">organize bar counter</option>
+                </select>
+            </div>
                 </div>
                 
                 <div class="strategy-selector">
                     <div class="strategy-label">Question Strategy:</div>
                     <select id="question-strategy" class="strategy-dropdown">
-                        <option value="user-preference-first">User Preference First</option>
-                        <option value="parallel-exploration">Parallel Exploration</option>
                         <option value="direct-querying">Direct Querying</option>
+                        <option value="parallel-exploration">Parallel Exploration</option>
+                        <option value="user-preference-first">User-preference First</option>
                     </select>
                 </div>
                 
@@ -810,6 +810,15 @@
             timerInterval = null;
             updateTimerDisplay();
             console.log('Timer reset');
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+            isTimerRunning = false;
+            timerInterval = null;
+            console.log('Timer stopped');
         }
         
         function updateTimerDisplay() {
@@ -1164,6 +1173,13 @@
 
             conversation.appendChild(messageDiv);
             conversation.scrollTop = conversation.scrollHeight;
+
+            // Stop timer when preferences are summarized or task completed
+            try {
+                if (data && (data.completed === true || (data.preferences_summary && data.preferences_summary.summary))) {
+                    stopTimer();
+                }
+            } catch (e) {}
         }
 
         // Restart conversation

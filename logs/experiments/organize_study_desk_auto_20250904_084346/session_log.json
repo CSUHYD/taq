@@ -1,0 +1,135 @@
+{
+  "session_id": "organize_study_desk_auto_20250904_084346",
+  "custom_session_id": null,
+  "start_time": "2025-09-04T08:43:46.227635",
+  "task_description": "organize study desk",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-04T08:44:09.509802",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the lamp located on the desk?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-04T08:46:10.967539",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the mouthwash located on the desk?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-04T08:46:23.652575",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the toolset located on the desk?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-04T08:46:30.460891",
+      "type": "item_status_change",
+      "operation_text": "place(toolset-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "toolset-1",
+          "name": "toolset",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-04T08:46:36.677615",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the lamp?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-04T08:46:50.298474",
+      "type": "item_status_change",
+      "operation_text": "place(lamp-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "lamp-1",
+          "name": "lamp",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-04T08:46:52.557552",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the mouthwash?"
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-09-04T08:47:04.763569",
+      "type": "item_status_change",
+      "operation_text": "place(mouthwash-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "mouthwash-1",
+          "name": "mouthwash",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 8,
+      "timestamp": "2025-09-04T08:47:07.075293",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the yogurt?"
+    },
+    {
+      "interaction_id": 9,
+      "timestamp": "2025-09-04T08:47:14.592091",
+      "type": "item_status_change",
+      "operation_text": "place(yogurt-1, desk_side)",
+      "updated_items": [
+        {
+          "id": "yogurt-1",
+          "name": "yogurt",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 10,
+      "timestamp": "2025-09-04T08:47:18.140522",
+      "type": "preferences_summary",
+      "summary": "The user prefers to organize their study desk by keeping frequently used items within easy reach and grouping similar items together. They also have constraints that include avoiding placing heavy items on the desk edge and steering clear of items that could spill or break near the desk.",
+      "key_points": [
+        "Keep frequently used items within easy reach",
+        "Group similar items together",
+        "Never place heavy items on the desk edge",
+        "Avoid placing items that could spill or break near the desk"
+      ]
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-04T08:48:26.523695",
+  "total_interactions": 11
+}

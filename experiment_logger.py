@@ -12,20 +12,23 @@ class ExperimentLogger:
         self.current_session = None
         self.session_data = {}
         
-    def start_session(self, task_description, language="en", custom_session_id=None):
-        """开始新的实验会话"""
+    def start_session(self, task_description, language="en", custom_session_id=None, question_strategy=None):
+        """开始新的实验会话
+
+        Session directory naming: SessionID_CurrentTask_QuestionStrategy_YYYYMMDD_HHMMSS
+        - SessionID: provided custom_session_id or 'auto'
+        - CurrentTask: sanitized task_description
+        - QuestionStrategy: provided key or 'unknown'
+        """
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        
-        # Create session_id based on new naming convention: {task}_{session_id}_{time}
-        # Clean task description for filename use
-        clean_task = task_description.replace(" ", "_").replace("/", "_").replace("\\", "_")[:20]
-        
-        if custom_session_id:
-            # Clean custom session ID for filename use
-            clean_custom_id = custom_session_id.replace(" ", "_").replace("/", "_").replace("\\", "_")[:30]
-            session_id = f"{clean_task}_{clean_custom_id}_{timestamp}"
-        else:
-            session_id = f"{clean_task}_auto_{timestamp}"
+        # Clean parts for filename use
+        def _clean(s: str, maxlen: int) -> str:
+            return (s or "").replace(" ", "_").replace("/", "_").replace("\\", "_")[:maxlen] or "unknown"
+        clean_task = _clean(task_description, 40)
+        clean_custom_id = _clean(custom_session_id or 'auto', 30)
+        clean_strategy = _clean(question_strategy or 'unknown', 40)
+        # New naming convention
+        session_id = f"{clean_custom_id}_{clean_task}_{clean_strategy}_{timestamp}"
         
         self.current_session = session_id
         session_dir = os.path.join(self.base_log_dir, session_id)
@@ -38,6 +41,7 @@ class ExperimentLogger:
             "start_time": datetime.now().isoformat(),
             "task_description": task_description,
             "language": language,
+            "question_strategy": question_strategy,
             "interactions": [],
             "timing_data": {
                 "task_start_time": None,

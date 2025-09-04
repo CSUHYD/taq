@@ -1,0 +1,146 @@
+{
+  "session_id": "organize_bar_counter_P88_20250904_084845",
+  "custom_session_id": "P88",
+  "start_time": "2025-09-04T08:48:45.123945",
+  "task_description": "organize bar counter",
+  "language": "en",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-04T08:48:46.771915",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "What is the best place to put the sauce on the bar counter?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-04T08:49:23.186362",
+      "type": "item_status_change",
+      "operation_text": "place(sauce-1, table_side)",
+      "updated_items": [
+        {
+          "id": "sauce-1",
+          "name": "sauce",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-04T08:49:26.668547",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the actions so far, is the general rule to place all food items on the side of the table?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-04T08:49:53.982388",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Is it okay to place the bowl on the side of the desk?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-04T08:50:09.244853",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Is it okay to place the bowl on the side of the desk?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-04T08:50:22.722407",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Is it okay to place the bowl on the side of the desk?"
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-04T08:50:34.904671",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Following that rule, should I put the bowl on the side of the desk?"
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-09-04T08:50:56.596606",
+      "type": "item_status_change",
+      "operation_text": "place(bowl-2, table_left_side)",
+      "updated_items": [
+        {
+          "id": "bowl-2",
+          "name": "bowl",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 8,
+      "timestamp": "2025-09-04T08:51:00.692036",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the actions so far, is the general rule to place all tools and cleaning items on the side of the desk, and all food and drink items on the side of the table?"
+    },
+    {
+      "interaction_id": 9,
+      "timestamp": "2025-09-04T08:51:40.407445",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Following the user's preference to put all food in a blue box, should I place the instant noodle cup in the blue box?"
+    },
+    {
+      "interaction_id": 10,
+      "timestamp": "2025-09-04T08:51:51.276094",
+      "type": "item_status_change",
+      "operation_text": "store(noodles-1, blue_box)",
+      "updated_items": [
+        {
+          "id": "noodles-1",
+          "name": "noodles",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 11,
+      "timestamp": "2025-09-04T08:51:54.729829",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the actions so far, is the general rule to place all food items on the table side?"
+    },
+    {
+      "interaction_id": 12,
+      "timestamp": "2025-09-04T08:51:59.208674",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the actions so far, is the general rule to place all food items on the table side?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-04T12:41:51.375225",
+  "total_interactions": 13
+}

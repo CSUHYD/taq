@@ -1,0 +1,175 @@
+{
+  "session_id": "auto_organize_office_desk_direct-querying_20250904_131218",
+  "custom_session_id": null,
+  "start_time": "2025-09-04T13:12:18.518977",
+  "task_description": "organize office desk",
+  "language": "en",
+  "question_strategy": "direct-querying",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-04T13:12:36.733834",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Is the bottle transparent and plastic with a green cap? If so, should it be stored in the basket for organized storage?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-04T13:13:51.636237",
+      "type": "item_status_change",
+      "operation_text": "place(bottle-1, keyboard-1)",
+      "updated_items": [
+        {
+          "id": "bottle-1",
+          "name": "bottle",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-04T13:13:55.225290",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like to place the notebook with a cork cover? Should it be in the basket or another location?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-04T13:14:08.413732",
+      "type": "item_status_change",
+      "operation_text": "place(notebook-1, bin-1)",
+      "updated_items": [
+        {
+          "id": "notebook-1",
+          "name": "notebook",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-04T13:14:13.271369",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where would you like to place the tape with the black electrical cover? Should it be in the basket or another location?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-04T13:14:31.711184",
+      "type": "item_status_change",
+      "operation_text": "place(tape-1, gray_bin-1)",
+      "updated_items": [
+        {
+          "id": "tape-1",
+          "name": "tape",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-04T13:14:35.753009",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the actions so far, is the general rule to place small items like notebooks and tape measures into baskets or bins?"
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-09-04T13:15:18.543499",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the actions so far, is the general rule to place books in baskets or bins, and smaller items like fans and tape measures in bins?"
+    },
+    {
+      "interaction_id": 8,
+      "timestamp": "2025-09-04T13:15:37.141197",
+      "type": "item_status_change",
+      "operation_text": "place(fan-1, bin-1)",
+      "updated_items": [
+        {
+          "id": "fan-1",
+          "name": "fan",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 9,
+      "timestamp": "2025-09-04T13:15:41.310622",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the actions so far, is the general rule to place books in baskets or bins, and smaller items like fans and tape measures in bins?"
+    },
+    {
+      "interaction_id": 10,
+      "timestamp": "2025-09-04T13:16:21.045269",
+      "type": "item_status_change",
+      "operation_text": "place(measure-1, bin-1)",
+      "updated_items": [
+        {
+          "id": "measure-1",
+          "name": "measure",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 11,
+      "timestamp": "2025-09-04T13:16:25.327195",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Following the rule, should I place the sunglasses in the bin?"
+    },
+    {
+      "interaction_id": 12,
+      "timestamp": "2025-09-04T13:40:43.428468",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the actions so far, is the general rule to place all small items like fans and tape measures in bins, and larger items like books or keyboards in baskets?"
+    },
+    {
+      "interaction_id": 13,
+      "timestamp": "2025-09-04T13:41:22.221036",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, desk_center)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 14,
+      "timestamp": "2025-09-04T13:41:26.329010",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the actions so far, is the general rule to place all small items like fans and tape measures in bins, and larger items like books or keyboards in baskets?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

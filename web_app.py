@@ -50,8 +50,9 @@ class WebVideoSystem:
             "organize office desk": ['bottle','notebook','book','fan','measure','tape','remote','sunglasses','keyboard','basket','bin'],
         }
         setattr(self.robot_service, 'focus_categories_by_task', fc_map)
-        # Start initial logging session
-        session_id = self.robot_service.start_logging_session(self.current_task)
+        # Start initial logging session with default strategy label
+        self.current_strategy = 'direct-querying'
+        session_id = self.robot_service.start_logging_session(self.current_task, question_strategy=self.current_strategy)
         self.robot_service.logger.current_custom_session_id = None
         print(f"Started initial logging session: {session_id}")
         
@@ -162,6 +163,12 @@ class WebVideoSystem:
             self.current_status = "Thinking..."
             socketio.emit('status_update', {'status': self.current_status})
             
+            # Record currently selected strategy for session naming
+            try:
+                self.current_strategy = strategy
+            except Exception:
+                pass
+
             # Handle session_id changes
             current_session = self.robot_service.logger.current_session
             if session_id:
@@ -172,12 +179,12 @@ class WebVideoSystem:
                     if current_session:
                         ended_session = self.robot_service.end_logging_session()
                         print(f"Ended session due to session_id change: {ended_session}")
-                    new_session = self.robot_service.start_logging_session(self.current_task, session_id)
+                    new_session = self.robot_service.start_logging_session(self.current_task, session_id, question_strategy=getattr(self, 'current_strategy', None))
                     self.robot_service.logger.current_custom_session_id = session_id
                     print(f"Started new session with custom ID: {new_session}")
             elif not current_session:
                 # Start auto session if no session exists
-                new_session = self.robot_service.start_logging_session(self.current_task)
+                new_session = self.robot_service.start_logging_session(self.current_task, question_strategy=getattr(self, 'current_strategy', None))
                 self.robot_service.logger.current_custom_session_id = None
                 print(f"Started auto session: {new_session}")
             
@@ -282,8 +289,8 @@ class WebVideoSystem:
             session_id = self.robot_service.end_logging_session()
             print(f"Ended logging session: {session_id}")
         
-        # Start new logging session (auto session on restart)
-        session_id = self.robot_service.start_logging_session(self.current_task)
+        # Start new logging session (auto session on restart) with current strategy
+        session_id = self.robot_service.start_logging_session(self.current_task, question_strategy=getattr(self, 'current_strategy', None))
         self.robot_service.logger.current_custom_session_id = None
         print(f"Started new logging session: {session_id}")
         
@@ -420,7 +427,7 @@ def set_task():
         if hasattr(video_system.robot_service, 'logger'):
             if video_system.robot_service.logger.current_session:
                 video_system.robot_service.end_logging_session()
-            new_session = video_system.robot_service.start_logging_session(en_task)
+            new_session = video_system.robot_service.start_logging_session(en_task, question_strategy=getattr(video_system, 'current_strategy', None))
             video_system.robot_service.logger.current_custom_session_id = None
             print(f"Switched task to {en_task}; new session: {new_session}")
     except Exception as e:

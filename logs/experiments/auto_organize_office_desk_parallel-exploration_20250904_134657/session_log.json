@@ -1,0 +1,17 @@
+{
+  "session_id": "auto_organize_office_desk_parallel-exploration_20250904_134657",
+  "custom_session_id": null,
+  "start_time": "2025-09-04T13:46:57.369158",
+  "task_description": "organize office desk",
+  "language": "en",
+  "question_strategy": "parallel-exploration",
+  "interactions": [],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-04T13:46:58.777092",
+  "total_interactions": 0
+}

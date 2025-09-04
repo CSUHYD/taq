@@ -57,6 +57,15 @@
       "image_file": null,
       "original_image_path": null,
       "robot_question": "Based on the actions so far, is the general rule to group all cleaning supplies on the bar counter right?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-03T23:12:08.028860",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Following the rule to group cleaning supplies on the bar counter right, should I place the yellow, wavy-shaped sponge on the bar counter right?"
     }
   ],
   "timing_data": {
@@ -64,5 +73,7 @@
     "task_end_time": null,
     "total_task_time_seconds": null,
     "interaction_timings": []
-  }
+  },
+  "end_time": "2025-09-03T23:12:21.779915",
+  "total_interactions": 6
 }

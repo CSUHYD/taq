@@ -9,9 +9,9 @@ class DesktopItem(BaseModel):
 
 STUDY_DESK = [
     DesktopItem(id='lamp-1', name='lamp', attributes='white, phone holder style', operated=False),
-    DesktopItem(id='mouthwash-1', name='mouthwash', attributes='transparent bottle with blue cap', operated=False),
-    DesktopItem(id='toolset-1', name='toolset', attributes='orange and transparent top', operated=False),
-    DesktopItem(id='yogurt-1', name='yogurt', attributes='white, ceramic bottle', operated=False),
+    DesktopItem(id='mouthwash-1', name='mouthwash', attributes='transparent bottle with blue', operated=False),
+    DesktopItem(id='toolset-1', name='toolset', attributes='orange and transparent', operated=False),
+    DesktopItem(id='yogurt-1', name='yogurt', attributes='white, plastic bottle', operated=False),
     DesktopItem(id='baseball-1', name='baseball', attributes='white with red stitching, MIT logo', operated=False),
     DesktopItem(id='doll-2', name='doll', attributes='brown, bear-shaped doll', operated=False),
     DesktopItem(id='tissues-1', name='tissues', attributes='blue and white package', operated=False),
@@ -28,7 +28,7 @@ OFFICE_DESK = [
     DesktopItem(id='notebook-1', name='notebook', attributes='cork cover', operated=False),
     DesktopItem(id='book-1', name='book', attributes='white, pink and green cover, "IDEO"', operated=False),
     DesktopItem(id='book-2', name='book', attributes='white cover, "Design as Art"', operated=False),
-    DesktopItem(id='fan-1', name='fan', attributes='small, white, round', operated=False),
+    DesktopItem(id='fan-1', name='fan', attributes='middle, white, round', operated=False),
     DesktopItem(id='measure-1', name='measure', attributes='retractable tape measure', operated=False),
     DesktopItem(id='tape-1', name='tape', attributes='roll of black electrical tape', operated=False),
     DesktopItem(id='sunglasses-1', name='sunglasses', attributes='brown lenses, black frame', operated=False),

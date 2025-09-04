@@ -1,0 +1,61 @@
+{
+  "session_id": "auto_organize_office_desk_direct-querying_20250904_134403",
+  "custom_session_id": null,
+  "start_time": "2025-09-04T13:44:03.522752",
+  "task_description": "organize office desk",
+  "language": "en",
+  "question_strategy": "direct-querying",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-04T13:44:05.979082",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "What is the purpose of the bottle with the green cap on the desk?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-04T13:44:40.180766",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the notebook with the cork cover on the desk?"
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-04T13:45:01.895563",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the bottle with the green cap on the desk?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-04T13:45:15.081182",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the notebook with the cork cover on the desk?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-04T13:45:28.921883",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where should I place the bottle with the green cap on the desk?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

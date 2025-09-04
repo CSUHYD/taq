@@ -1,0 +1,326 @@
+{
+  "session_id": "auto_organize_office_desk_parallel-exploration_20250904_134658",
+  "custom_session_id": null,
+  "start_time": "2025-09-04T13:46:58.777884",
+  "task_description": "organize office desk",
+  "language": "en",
+  "question_strategy": "parallel-exploration",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-04T13:47:02.429673",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Could you please tell me where I should place the bottle?"
+    },
+    {
+      "interaction_id": 1,
+      "timestamp": "2025-09-04T13:47:13.963622",
+      "type": "item_status_change",
+      "operation_text": "place(bottle-1, monitor_side)",
+      "updated_items": [
+        {
+          "id": "bottle-1",
+          "name": "bottle",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 2,
+      "timestamp": "2025-09-04T13:47:17.362022",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the actions so far, is the general rule to place items near the monitor side?"
+    },
+    {
+      "interaction_id": 3,
+      "timestamp": "2025-09-04T13:47:39.709725",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the actions so far, is the general rule to place items near the monitor side?"
+    },
+    {
+      "interaction_id": 4,
+      "timestamp": "2025-09-04T13:47:52.402245",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "What is the preferred placement for the notebook with a cork cover?"
+    },
+    {
+      "interaction_id": 5,
+      "timestamp": "2025-09-04T13:48:07.353727",
+      "type": "item_status_change",
+      "operation_text": "store(notebook-1, bin-1)",
+      "updated_items": [
+        {
+          "id": "notebook-1",
+          "name": "notebook",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 6,
+      "timestamp": "2025-09-04T13:48:20.876091",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the actions so far, is the general rule to place items with similar purposes or characteristics together?"
+    },
+    {
+      "interaction_id": 7,
+      "timestamp": "2025-09-04T13:48:46.234210",
+      "type": "item_status_change",
+      "operation_text": "store(book-1, bin-1)",
+      "updated_items": [
+        {
+          "id": "book-1",
+          "name": "book",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 8,
+      "timestamp": "2025-09-04T13:48:51.493967",
+      "type": "item_status_change",
+      "operation_text": "manual-toggle: operated=True",
+      "updated_items": [
+        {
+          "id": "book-2",
+          "name": "book",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 9,
+      "timestamp": "2025-09-04T13:48:55.669706",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the actions so far, is the general rule to place items with similar purposes or characteristics together?"
+    },
+    {
+      "interaction_id": 10,
+      "timestamp": "2025-09-04T13:49:05.299394",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the actions so far, is the general rule to place items with similar purposes or characteristics together?"
+    },
+    {
+      "interaction_id": 11,
+      "timestamp": "2025-09-04T13:49:18.352004",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Should I store the roll of black electrical tape in the blue plastic bin?"
+    },
+    {
+      "interaction_id": 12,
+      "timestamp": "2025-09-04T13:49:33.266419",
+      "type": "item_status_change",
+      "operation_text": "store(tape-1, bin-1)",
+      "updated_items": [
+        {
+          "id": "tape-1",
+          "name": "tape",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 13,
+      "timestamp": "2025-09-04T13:49:39.591686",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "根据之前的动作，应该将键盘放在蓝色的盒子里吗？"
+    },
+    {
+      "interaction_id": 14,
+      "timestamp": "2025-09-04T13:50:23.049301",
+      "type": "item_status_change",
+      "operation_text": "place(keyboard-1, desk_front)",
+      "updated_items": [
+        {
+          "id": "keyboard-1",
+          "name": "keyboard",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 15,
+      "timestamp": "2025-09-04T13:50:27.979536",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the actions so far, is the general rule to store items in the blue plastic bin when they are not needed on the desk?"
+    },
+    {
+      "interaction_id": 16,
+      "timestamp": "2025-09-04T13:51:07.680610",
+      "type": "item_status_change",
+      "operation_text": "store(documents, bin-1)",
+      "updated_items": [
+        {
+          "id": "bin-1",
+          "name": "bin",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 17,
+      "timestamp": "2025-09-04T13:51:11.327543",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Following the rule to store items in the blue plastic bin when they are not needed on the desk, should I store the small white round fan in the bin?"
+    },
+    {
+      "interaction_id": 18,
+      "timestamp": "2025-09-04T13:51:54.615828",
+      "type": "item_status_change",
+      "operation_text": "place(fan-1, computer_side)",
+      "updated_items": [
+        {
+          "id": "fan-1",
+          "name": "fan",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 19,
+      "timestamp": "2025-09-04T13:51:59.735059",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "根据用户偏好，应该把哪些物品放入篮子里？"
+    },
+    {
+      "interaction_id": 20,
+      "timestamp": "2025-09-04T13:52:27.097931",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "After confirming the rule to group documents in bin-1, should I store the retractable tape measure in the basket as well?"
+    },
+    {
+      "interaction_id": 21,
+      "timestamp": "2025-09-04T13:52:42.279592",
+      "type": "item_status_change",
+      "operation_text": "store(measure-1, basket-1)",
+      "updated_items": [
+        {
+          "id": "measure-1",
+          "name": "measure",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 22,
+      "timestamp": "2025-09-04T13:52:45.600875",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Can I group the sunglasses in the basket with the wire mesh?"
+    },
+    {
+      "interaction_id": 23,
+      "timestamp": "2025-09-04T13:53:03.636829",
+      "type": "item_status_change",
+      "operation_text": "store(sunglasses-1, basket-1)",
+      "updated_items": [
+        {
+          "id": "sunglasses-1",
+          "name": "sunglasses",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 24,
+      "timestamp": "2025-09-04T13:53:07.450722",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Based on the actions so far, is the general rule to place all office supplies in the basket with the wire mesh?"
+    },
+    {
+      "interaction_id": 25,
+      "timestamp": "2025-09-04T13:53:32.696528",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Is the owl-shaped doll meant to be placed on the desk as a decorative item?"
+    },
+    {
+      "interaction_id": 26,
+      "timestamp": "2025-09-04T13:54:43.482472",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "What is the best way to organize the silver wire mesh basket and the gray owl-shaped doll on the desk?"
+    },
+    {
+      "interaction_id": 27,
+      "timestamp": "2025-09-04T13:55:19.362405",
+      "type": "item_status_change",
+      "operation_text": "place(basket-1, keyboard-1), place(doll-1, keyboard-1)",
+      "updated_items": [
+        {
+          "id": "basket-1",
+          "name": "basket",
+          "operated": true
+        },
+        {
+          "id": "doll-1",
+          "name": "doll",
+          "operated": true
+        }
+      ]
+    },
+    {
+      "interaction_id": 28,
+      "timestamp": "2025-09-04T13:56:34.942417",
+      "type": "question_generation",
+      "strategy": "parallel-exploration",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Is the general rule to group office supplies and documents together in the blue plastic bin, and place decorative items like the basket and doll near the keyboard on the desk?"
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}

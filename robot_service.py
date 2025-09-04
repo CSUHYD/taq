@@ -454,7 +454,9 @@ class RobotService:
         systext = cfg['systext']
         usertext = cfg['usertext'].format(
             task=self.task_description,
-            preferences_block=_json.dumps(prefs_list, ensure_ascii=False)
+            preferences_block=_json.dumps(prefs_list, ensure_ascii=False),
+            planned_operation = self.planned_operation,
+            conversation_history = self.conversation_history
         )
         options = cfg.get('payload_options', { 'temperature': 0.2, 'num_predict': 180 })
 
@@ -981,9 +983,9 @@ class RobotService:
         return kept
 
     
-    def start_logging_session(self, task_description, custom_session_id=None):
+    def start_logging_session(self, task_description, custom_session_id=None, question_strategy=None):
         """开始日志记录会话（English only）"""
-        return self.logger.start_session(task_description, "en", custom_session_id)
+        return self.logger.start_session(task_description, "en", custom_session_id, question_strategy)
     
     def end_logging_session(self):
         """结束日志记录会话"""
