@@ -69,14 +69,14 @@
             "num_predict": 160
         }
     },
-  "direct-querying": {
-    "systext": "You are an ambiguity analyst for action planning. Determine ONLY whether the latest Q&A, the GIVEN ITEMS, and known user preferences provide a clear placement LOCATION (destination) for the target item(s). Method/orientation/arrangement style is NOT required for sufficiency. Consider ONLY items listed in the Items JSON; ignore any unlisted items. If the destination is known, mark not ambiguous. If not, mark as ambiguous and propose one concise question asking ONLY for the location (e.g., which drawer/shelf/area).",
-    "usertext": "Task: {task}\nUser Preferences JSON:\n{preferences_block}\n\nItems JSON (CONSIDER ONLY THESE ITEMS):\n{items_block}\nConversation history:\n{conversation_history}\nLatest Q&A:\n- Robot question: {robot_question}\n- User response: {user_response}\n\nFocus: sufficiency of destination ONLY (placement location) for the listed items.\nRules:\n- Consider ONLY items listed in Items JSON; ignore unlisted items.\n- Consider it sufficient if the destination is clear.\n- If the user requests to put multiple items together, and a clear location for ANY of those items is already known from conversation history or preferences, TREAT THAT KNOWN LOCATION AS THE DESTINATION and mark NOT ambiguous. Do not ask for a location.\n- Do NOT require method/orientation/arrangement details.\n- If insufficient, ask ONE concise clarifying question focusing solely on the destination.\n\nReturn JSON with fields:\n- ambiguous: boolean (overall)\n- ambiguity_info: short location-only clarifying question suggestions",
-    "payload_options": {
-      "temperature": 0.2,
-      "num_predict": 160
+    "direct-querying": {
+        "systext": "You are an ambiguity analyst for action planning. Determine ONLY whether the latest Q&A, the GIVEN ITEMS, and known user preferences provide a clear placement LOCATION (destination) for the target item(s). Method/orientation/arrangement style is NOT required for sufficiency. Consider ONLY items listed in the Items JSON; ignore any unlisted items. If the destination is known, mark not ambiguous. If not, mark as ambiguous and propose one concise question asking ONLY for the location (e.g., which drawer/shelf/area).",
+        "usertext": "Task: {task}\nUser Preferences JSON:\n{preferences_block}\n\nItems JSON (CONSIDER ONLY THESE ITEMS):\n{items_block}\nConversation history:\n{conversation_history}\nLatest Q&A:\n- Robot question: {robot_question}\n- User response: {user_response}\n\nFocus: sufficiency of destination ONLY (placement location) for the listed items.\nRules:\n- Consider ONLY items listed in Items JSON; ignore unlisted items.\n- Consider it sufficient if the destination is clear.\n- If the user requests to put multiple items together, and a clear location for ANY of those items is already known from conversation history or preferences, TREAT THAT KNOWN LOCATION AS THE DESTINATION and mark NOT ambiguous. Do not ask for a location.\n- Do NOT require method/orientation/arrangement details.\n- If insufficient, ask ONE concise clarifying question focusing solely on the destination.\n\nReturn JSON with fields:\n- ambiguous: boolean (overall)\n- ambiguity_info: short location-only clarifying question suggestions",
+        "payload_options": {
+        "temperature": 0.2,
+        "num_predict": 160
+        }
     }
-  }
 },
   "preference_parser": {
     "user-preference-first": {

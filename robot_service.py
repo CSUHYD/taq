@@ -27,6 +27,16 @@ class ActResult(BaseModel):
     operated_item_ids: list[str] | None = None
     user_reply: str | None = None
 
+class ResponseAnalysis(BaseModel):
+    """Lightweight analysis for logging a user turn.
+
+    Captures the robot's understanding, the planned operation text, and the
+    final reply text for consistent experiment logging and UI display.
+    """
+    understanding: str
+    operation: str | None = None
+    robot_reply: str
+
 class DesktopItem(BaseModel):
     id: str | None = None
     name: str
@@ -534,6 +544,14 @@ class RobotService:
                 pass
 
         # 6) Build result and persist
+        # Build a basic understanding string for UI/logging
+        if ambiguity is False:
+            understanding = "Ambiguity resolved; proceeding with action."
+        elif isinstance(ambiguity, str) and ambiguity.strip():
+            understanding = f"Ambiguity noted: {ambiguity.strip()}"
+        else:
+            understanding = "Ambiguity unknown; awaiting more information."
+
         result = {
             "robot_reply": reply_text,
             "operation": planned_operation,
@@ -542,7 +560,9 @@ class RobotService:
             "preferences": pref_list,
             "completed": all_operated,
             "preferences_summary": preferences_summary,
+            "understanding": understanding,
         }
+        # Persist to conversation history with understanding for history modal
         self.conversation_history.append({
             "type": "robot_response",
             "operation": result["operation"],
@@ -552,8 +572,22 @@ class RobotService:
             "preferences": result.get("preferences"),
             "completed": result.get("completed", False),
             "preferences_summary": result.get("preferences_summary"),
+            "understanding": result.get("understanding"),
             "timestamp": datetime.now().isoformat(),
         })
+
+        # Log this user turn into experiment logs
+        try:
+            analysis = ResponseAnalysis(
+                understanding=understanding,
+                operation=planned_operation or None,
+                robot_reply=reply_text,
+            )
+            if hasattr(self, 'logger') and self.logger:
+                self.logger.log_user_response(user_response, analysis)
+        except Exception:
+            # Keep runtime robust even if logging fails
+            pass
         return result
 
 

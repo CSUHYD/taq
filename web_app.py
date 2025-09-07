@@ -18,7 +18,6 @@ class WebVideoSystem:
     def __init__(self, model="qwen2.5vl:32b", camera_id=0, use_zmq_source=False, zmq_server_address="192.168.123.164", zmq_port=5555):
         # Load prompt configuration (English only)
         self.prompt_config = load_prompt_config()
-        
         self.robot_service = RobotService(model)
         self.camera_id = camera_id
         self.cap = None

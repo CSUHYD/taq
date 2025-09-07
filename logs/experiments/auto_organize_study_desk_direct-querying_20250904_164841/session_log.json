@@ -1,0 +1,17 @@
+{
+  "session_id": "auto_organize_study_desk_direct-querying_20250904_164841",
+  "custom_session_id": null,
+  "start_time": "2025-09-04T16:48:41.234251",
+  "task_description": "organize study desk",
+  "language": "en",
+  "question_strategy": "direct-querying",
+  "interactions": [],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  },
+  "end_time": "2025-09-04T19:44:55.947162",
+  "total_interactions": 0
+}

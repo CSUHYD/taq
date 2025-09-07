@@ -1,0 +1,30 @@
+{
+  "session_id": "auto_organize_study_desk_direct-querying_20250907_151957",
+  "custom_session_id": null,
+  "start_time": "2025-09-07T15:19:57.893146",
+  "task_description": "organize study desk",
+  "language": "en",
+  "question_strategy": "direct-querying",
+  "interactions": [
+    {
+      "interaction_id": 0,
+      "timestamp": "2025-09-07T15:20:14.843567",
+      "type": "question_generation",
+      "strategy": "direct-querying",
+      "image_file": null,
+      "original_image_path": null,
+      "robot_question": "Where is the lamp located on the study desk?",
+      "user_response": "hahaha.",
+      "user_response_timestamp": "2025-09-07T15:20:19.957268",
+      "robot_understanding": "Ambiguity unknown; awaiting more information.",
+      "robot_operation": null,
+      "robot_reply": "Thanks, I noted your response."
+    }
+  ],
+  "timing_data": {
+    "task_start_time": null,
+    "task_end_time": null,
+    "total_task_time_seconds": null,
+    "interaction_timings": []
+  }
+}
